@@ -162,14 +162,14 @@ class M_autocomplete extends CI_Model {
     
     function get_last_code_kasir($trans) {
         if ($trans === 'bkm') {
-            $sql = "select max(id) as id, IFNULL(SUBSTR(kode,5,4),0) as kode from penerimaan";
+            $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from penerimaan order by id desc limit 1";
             $data= $this->db->query($sql)->row();
-            $result['no'] = 'BKM-'.pad($data->kode+1, 4);
+            $result['no'] = 'BKM'.date("ym").pad($data->kode+1, 4);
         }
         if ($trans === 'bkk') {
-            $sql = "select max(id) as id, IFNULL(SUBSTR(kode,5,4),0) as kode from pengeluaran";
+            $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from pengeluaran order by id desc limit 1";
             $data= $this->db->query($sql)->row();
-            $result['no'] = 'BKK-'.pad($data->kode+1, 4);
+            $result['no'] = 'BKK'.date("ym").pad($data->kode+1, 4);
         }
         return $result;
     }

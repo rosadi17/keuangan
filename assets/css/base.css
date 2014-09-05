@@ -259,3 +259,4 @@ select.standar { width: 256px; }
 .list-data-input th { border-right: 1px solid #6eb7ff; height: 20px; border-bottom: 1px solid #ccc; background: #3399ff; border-bottom: #dfdfdf; height: 40px; color: #fff; cursor: pointer; }
 .list-data-input td { border-right: 1px solid #ccc; height: 20px; border-bottom: 1px solid #ccc; height: 18px; padding: 0; }
 .list-data-input td input, .list-data-input td select { margin: 0; border: none; width: 100%; padding: 0; }
+.dialog { display: none; }

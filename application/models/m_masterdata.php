@@ -862,5 +862,22 @@ class M_masterdata extends CI_Model {
         //echo $sql."<br/>";
         return $this->db->query($sql);
     }
+    
+    function save_ubah_password() {
+        $passlama = md5($_POST['passlama']);
+        $passsess = $this->session->userdata('pass');
+        $passbaru = md5($_POST['passbaru']);
+        if ($passsess !== $passlama) {
+            $result['status'] = FALSE;
+        } else {
+            $data = array(
+                'password' => $passbaru
+            );
+            $this->db->where('id', $this->session->userdata('id_user'));
+            $this->db->update('users', $data);
+            $result['status'] = TRUE;
+        }
+        return $result;
+    }
 }
 ?>

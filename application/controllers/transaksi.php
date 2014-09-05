@@ -386,5 +386,52 @@ class Transaksi extends CI_Controller {
         $data = $this->m_transaksi->jurnal_save();
         die(json_encode($data));
     }
+    
+    function jurnal() {
+        $data['title'] = 'Jurnal Transaksi';
+        $this->load->view('transaksi/jurnal', $data);
+    }
+    
+    function manage_jurnal($action, $page = null) {
+        $limit = 20;
+        switch ($action) {
+            case 'list':
+                $search['key'] = '';
+                $search['id']  = '';
+                $data = $this->get_list_data_jurnal($limit, $page, $search);
+                $this->load->view('transaksi/jurnal-table', $data);
+                break;
+            case 'save': 
+                $data = $this->m_transaksi->save_jurnal();
+                die(json_encode($data));
+                break;
+            case 'delete': 
+                $this->m_transaksi->delete_jurnal($_GET['id']);
+                break;
+            
+        }
+    }
+    
+    function save_jurnal_transaksi() {
+        $data = $this->m_transaksi->save_jurnal_transaksi();
+        die(json_encode($data));
+    }
+    
+    function get_list_data_jurnal($limit, $page, $search) {
+        if ($page == 'undefined') {
+            $page = 1;
+        }
+        //$str = 'null';
+        $start = ($page - 1) * $limit;
+        $data['page'] = $page;
+        $data['limit'] = $limit;
+        $data['auto'] = $start+1;
+        $query = $this->m_transaksi->get_data_jurnal($limit, $start, $search);
+        $data['list_data'] = $query['data'];
+        $data['jumlah'] = $query['jumlah'];
+        
+        $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, $search['key']);
+        return $data;
+    }
 }
 ?>

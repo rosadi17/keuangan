@@ -509,5 +509,51 @@ class M_transaksi extends CI_Model {
         $id = $this->db->insert_id();
         return $id;
     }
+    
+    function get_data_jurnal($limit, $start, $search) {
+        $q = NULL;
+        $sql = "select * from jurnal order by id desc";
+        $limitation = null;
+        $limitation.=" limit $start , $limit";
+        $query = $this->db->query($sql . $q . $limitation);
+        //echo $sql . $q . $limitation;
+        $queryAll = $this->db->query($sql . $q);
+        $data['data'] = $query->result();
+        $data['jumlah'] = $queryAll->num_rows();
+        return $data;
+    }
+    
+    function save_jurnal_transaksi() {
+        $this->db->trans_begin();
+        $data = array(
+            'kode_nota' => post_safe('kode_transaksi'),
+            'tanggal' => date("Y-m-d H:i:s"),
+            'id_rekening' => post_safe('kode_perkiraan_d'),
+            'kredit' => currencyToNumber(post_safe('jumlah')),
+            'keterangan' => post_safe('uraian')
+        );
+        $this->db->insert('jurnal', $data);
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $result['status'] = FALSE;
+        }
+        $data2 = array(
+            'kode_nota' => post_safe('kode_transaksi'),
+            'tanggal' => date("Y-m-d H:i:s"),
+            'id_rekening' => post_safe('kode_perkiraan_d'),
+            'debet' => currencyToNumber(post_safe('jumlah')),
+            'keterangan' => post_safe('uraian')
+        );
+        $this->db->insert('jurnal', $data2);
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $result['status'] = FALSE;
+        } else {
+            $this->db->trans_commit();
+            $result['status'] = TRUE;
+        }
+        
+        return $result;
+    }
 }
 ?>

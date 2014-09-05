@@ -655,4 +655,14 @@ class Masterdata extends CI_Controller {
         $data['program'] = $this->m_masterdata->load_all_data_program($id_satker)->result();
         $this->load->view('masterdata/cetak-proja', $data);
     }
+    
+    function ubahpassword() {
+        $data['title'] = 'Ubah Password';
+        $this->load->view('masterdata/ubahpassword', $data);
+    }
+    
+    function save_ubah_password() {
+        $data = $this->m_masterdata->save_ubah_password();
+        die(json_encode($data));
+    }
 }
