@@ -164,12 +164,22 @@ class M_autocomplete extends CI_Model {
         if ($trans === 'bkm') {
             $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from penerimaan order by id desc limit 1";
             $data= $this->db->query($sql)->row();
-            $result['no'] = 'BKM'.date("ym").pad($data->kode+1, 4);
+            if (isset($data->kode)) {
+                $auto = $data->kode;
+            } else {
+                $auto = 0;
+            }
+            $result['no'] = 'BKM'.date("ym").pad($auto+1, 4);
         }
         if ($trans === 'bkk') {
             $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from pengeluaran order by id desc limit 1";
             $data= $this->db->query($sql)->row();
-            $result['no'] = 'BKK'.date("ym").pad($data->kode+1, 4);
+            if (isset($data->kode)) {
+                $auto = $data->kode;
+            } else {
+                $auto = 0;
+            }
+            $result['no'] = 'BKK'.date("ym").pad($auto+1, 4);
         }
         return $result;
     }

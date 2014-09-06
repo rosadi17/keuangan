@@ -1,91 +1,89 @@
-<link rel="stylesheet" href="<?= base_url('assets/css/base.css') ?>" />
+<link rel="stylesheet" href="<?= base_url('assets/css/print-A4-half.css') ?>" media="all" />
 <script type="text/javascript">
-    window.print();
-    setTimeout(function(){ window.close();},300);
+    function cetak() {
+        window.print();
+        setTimeout(function(){ window.close();},300);
+    }
 </script>
+<style type="text/css" media="print">
+    *, body { background: #fff; font-family: Calibri, Arial, "Trebuchet MS"; font-size: 10px; }
+</style>
 <?php
 foreach ($list_data as $detail);
 ?>
-<style type="text/css" media="print">
-    *, body { background: #fff; font-family: Calibri, Arial, "Trebuchet MS"; font-size: 12px; }
-    body { width: 21cm; height: 29.7cm; }
-    h1, h2 { clear: both; }
-    table { background: #fff; } 
-    @page {
-        size: auto;   /* auto is the initial value */
-        margin: 0mm 1cm;  /* this affects the margin in the printer settings */
-    }
-    .warning { color: yellowgreen; }
-</style>
-<body>
-    <div style="height: 0.5cm; background: #fff;">
-        &nbsp;
-    </div>
-<table width="100%" class="list-data-print" cellspacing="0">
-    <tr>
-        <td width="15%"></td>
-        <td align="center" width="60%" style="border-right: 1px solid #000;">
-            <h2>UNIVERSITAS BHAYANGKARA</h2><br/><h1>BUKTI KAS KELUAR</h1><br/>Kampus: Jl. A. Yani 114 Wonocolo Surabaya Telp. 031 - 8285602, 8291055 Fax. 031 - 8285601</td><td width="25%" valign="top">
-            <table style="border: none;"><tr><td style="border: none;">No. BKK:</td><td style="border: none;"><?= $detail->id ?></td></tr><tr><td style="border: none;">Tgl.:</td><td style="border: none;"><?= date("d F Y") ?></td></tr></table></td>
-    </tr>
-</table>
-<table width="100%" class="list-data-print" cellspacing="0">
-    <tr>
-        <th width="15%">KODE<br/>PERKIRAAN</th>
-        <th width="15%">KODE<br/>MA</th>
-        <th width="45%">URAIAN</th>
-        <th width="25%">JUMLAH</th>
-    </tr>
-    <?php
-    $total = 0;
-    foreach ($list_data as $key => $data) { 
+<body onload="cetak();">
+    <div class="page">
+    <table width="100%" cellspacing="0" style="margin-bottom: 2px;">
+        <tr>
+            <td width="15%"></td>
+            <td align="center" width="60%">&nbsp;</td><td width="25%" valign="top" align="right">
+                <table>
+                    <tr><td style="border: none;">&nbsp;</td><td style="border: none; text-align: right;"><?= $detail->id ?></td></tr>
+                    <tr><td style="border: none;"></td><td style="border: none;"><?= date("d F Y") ?></td></tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table width="100%" cellspacing="0">
+        <tr>
+            <th width="15%">&nbsp;</th>
+            <th width="15%">&nbsp;</th>
+            <th width="50%">&nbsp;</th>
+            <th width="20%">&nbsp;</th>
+        </tr>
+        <?php
+        $total = 0;
+        foreach ($list_data as $key => $data) { 
+            ?>
+        <tr valign="top" class="<?= (($data->nominal > $data->jml_renbut)?'warning':NULL) ?>">
+            <td align="center"><?= $data->id_akun_rekening ?></td>
+            <td><?= $data->ma_proja ?></td>
+            <td><?= $data->uraian ?></td>
+            <td align="right"><?= rupiah($data->nominal) ?></td>
+        </tr>
+        <?php 
+        $total = $total + $data->nominal;
+        } 
+        for ($i = 1; $i <= (8-$key); $i++) { ?>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <?php }
         ?>
-    <tr class="<?= (($data->nominal > $data->jml_renbut)?'warning':NULL) ?>">
-        <td align="center"><?= $data->id_akun_rekening ?></td>
-        <td><?= $data->ma_proja ?></td>
-        <td align="center"><?= $data->uraian ?></td>
-        <td align="right"><?= rupiah($data->nominal) ?></td>
-    </tr>
-    <?php 
-    $total = $total + $data->nominal;
-    } 
-    for ($i = 1; $i <= (9-$key); $i++) { ?>
-    <tr>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-    </tr>
-    <?php }
-    ?>
-    <tr>
-        <td colspan="3" align="right">TOTAL:</td>
-        <td align="right"><?= rupiah($total) ?></td>
-    </tr>
-    <tr>
-        <td rowspan="2" valign="top">Terbilang:</td><td colspan="3"><?= toTerbilang($total) ?> rupiah</td>
-    </tr>
-</table>
-<table width="100%" class="list-data-print" cellspacing="0">
-    <tr>
-        <th width="15%" rowspan="2">CATATAN:</th>
-        <th width="15%">Kepala Biro Keuangan</th>
-        <th width="25%">Kepala Bagian Pembukuan</th>
-        <th width="20%">Kasir</th>
-        <th width="25%">Penerima</th>
-    </tr>
-    <tr>
-        <td style="height: 50px;"></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td align="right">NAMA</td>
-        <td align="center"></td>
-        <td align="center"></td>
-        <td align="center"> ( <?= $this->session->userdata('nama') ?> )</td>
-        <td align="center"> ( <?= $detail->penerima ?> ) </td>
-    </tr>
-</table>
+        <tr>
+            <td colspan="3" align="right">&nbsp;</td>
+            <td align="right"><?= rupiah($total) ?></td>
+        </tr>
+        <tr>
+            <td rowspan="2" valign="top">&nbsp;</td><td colspan="3"><?= ucwords(toTerbilang($total)) ?> rupiah</td>
+        </tr>
+        <tr>
+            <td rowspan="2" valign="top">&nbsp;</td><td colspan="3"></td>
+        </tr>
+    </table>
+    <table width="100%" cellspacing="0">
+        <tr>
+            <th width="30%">&nbsp;</th>
+            <th width="15%">&nbsp;</th>
+            <th width="15%">&nbsp;</th>
+            <th width="20%">&nbsp;</th>
+            <th width="20%">&nbsp;</th>
+        </tr>
+        <?php for ($i = 1; $i <= 3; $i++) { ?>
+        <tr>
+            <td colspan="5">&nbsp;</td>
+        </tr>
+        <?php } ?>
+        <tr>
+            <td align="right"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"> <?= $this->session->userdata('nama') ?></td>
+            <td align="center"> <?= $detail->penerima ?></td>
+        </tr>
+    </table>
+    </div>
 </body>

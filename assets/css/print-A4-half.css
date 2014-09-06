@@ -1,0 +1,69 @@
+body {
+        margin: 0;
+        padding: 0;
+        background-color: #FAFAFA;
+        background: #fff; font-family: Calibri, Arial, "Trebuchet MS"; font-size: 12px;
+    }
+    * {
+        background: #fff; font-family: Calibri, Arial, "Trebuchet MS"; font-size: 12px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        line-height: 12px;
+    }
+    .page {
+        width: 21cm;
+        
+        min-height: 19.8cm;
+        padding-top: 0.5cm;
+        padding-left: 1cm;
+        padding-right: 2cm;
+        margin: 1cm auto;
+        border: none;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    .subpage {
+        padding: 1cm;
+        border: 5px red solid;
+        height: 237mm;
+        outline: 2cm #FFEAEA solid;
+    }
+    
+    @page {
+        margin: 0;
+    }
+    @media print {
+        .page {
+            margin: 0;
+            border: initial;
+            border-radius: initial;
+            width: initial;
+            min-height: initial;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+        }
+    }
+h1 { font-size: 20px; margin-bottom: 0; }
+h2 { font-size: 18px; margin-bottom: 0; }
+h3 { font-size: 16px; margin-bottom: 0; }
+.tabel-laporan { border-top: 1px solid #000;empty-cells: show; border-radius:5px; border-spacing:0;margin-top:5px; clear: both; border-collapse: collapse; background: #fff; color: #000}
+
+.tabel-laporan th{text-align: center;}
+.tabel-laporan thead th{
+    border-top: 1px solid #000;line-height: 20px;
+    border-bottom: 1px solid #000;line-height: 20px;
+}
+.tabel-laporan .number{text-align: center;}
+.tabel-laporan th rowspan, td rowspan{vertical-align: middle;}
+
+.subtotal{
+    border-top:1px solid #000;
+    border-bottom:1px solid #000;
+}
+
+.total{
+    border-top:1px solid #000;
+    vertical-align: middle;
+}
