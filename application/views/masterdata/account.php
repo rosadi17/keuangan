@@ -21,7 +21,7 @@
     function form_user_account() {
         var str = '<div id=form-user><form id="save-user-account">'+
                     '<?= form_hidden('id_user_account', NULL, 'id=id_user_account') ?>'+
-                    '<table width=100% class=data-input cellspacing=0>'+
+                    '<table width=100% class=inputan cellspacing=0>'+
                     '<tr><td width=20%>Nama:</td><td><?= form_input('nama', NULL, 'id=nama size=40') ?></td></tr>'+
                     '<tr><td>Username:</td><td><?= form_input('username', NULL, 'id=username size=40') ?></td></tr>'+
                     '<tr><td>User Group:</td><td><select name="group" id="group-user"><option value="">Pilih ...</option><?php foreach ($user_group as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>'+

@@ -43,7 +43,7 @@ function get_list_keg_program(page, src, id) {
 function form_keg_program() {
     var str = '<div id="dialog_keg_program"><form action="" id="save_keg_program">'+
             '<?= form_hidden('id_keg_program', NULL, 'id=id_keg_program') ?>'+
-            '<table width=100% cellpadding=0 cellspacing=0 class=data-input>'+
+            '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
                 '<tr><td width=30%>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>'+
                 '<tr><td>Status:</td><td><select name=status id=status><option value="SPP">SPP</option><option value="NON SPP">NON SPP</option></select></td></tr>'+
                 '<tr><td>Nama Program:</td><td><?= form_input('program', NULL, 'id=program size=60') ?><?= form_hidden('id_program', NULL, 'id=id_program') ?></td></tr>'+

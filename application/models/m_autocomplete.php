@@ -102,7 +102,7 @@ class M_autocomplete extends CI_Model {
     function get_ma_proja($q) {
         $sql = "select u.*, s.nama as satker, 
             u.kode as ma_proja, u.uraian,
-            CONCAT_WS(' - ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan, u.uraian) as keterangan
+            CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as keterangan
             from uraian u
             join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
             join kegiatan k on (sk.id_kegiatan = k.id)

@@ -74,7 +74,7 @@
    }
 </script>
 <div class="kegiatan">
-    <div class="data-input">
+    <div class="inputan">
         <table width="100%" cellspacing="0">
             <tr><td width=10%>Tahun:</td><td><select name="year" id="year" style="width: 72px;"><option value="">Select Year ....</option><?php for($i = 2010; $i <= date("Y"); $i++) { ?> <option value="<?= $i ?>" <?php if ($i == date("Y")) echo "selected"; else echo ""; ?>><?= $i ?></option><?php } ?></select></td></tr>
             <tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>" <?= ($data->id == 1)?'selected':NULL ?>><?= $data->nama ?></option><?php } ?></select></td></tr>

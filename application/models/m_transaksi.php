@@ -17,7 +17,9 @@ class M_transaksi extends CI_Model {
             $q.=" and s.id = '".$search['satker']."'";
         }
         $q.=" order by rk.tanggal asc";
-        $sql = "select rk.*, s.nama as satker, u.kode as ma_proja from rencana_kebutuhan rk
+        $sql = "select rk.*, s.nama as satker, u.kode as ma_proja,
+            CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as detail
+            from rencana_kebutuhan rk
             join uraian u on (rk.id_uraian = u.id)
             join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
             join kegiatan k on (sk.id_kegiatan = k.id)
@@ -34,7 +36,7 @@ class M_transaksi extends CI_Model {
     }
     
     function get_data_renbut_detail($id) {
-        $sql = "select rk.*, rk.id_renbut as id, s.id as id_satker, s.nama as satker, year(rk.tanggal) as tahun_anggaran, 
+        $sql = "select rk.*, rk.id_renbut as id, s.id as id_satker, s.kode as kode_satker, s.nama as satker, year(rk.tanggal) as tahun_anggaran, 
             p.nama_program,k.nama_kegiatan, sk.nama_sub_kegiatan, u.uraian, rk.jml_renbut,
             u.kode as ma_proja from rencana_kebutuhan rk
             join uraian u on (rk.id_uraian = u.id)
@@ -52,12 +54,14 @@ class M_transaksi extends CI_Model {
         $id_uraian  = post_safe('id_uraian');
         $keterangan = post_safe('keterangan');
         $jml_renbut = currencyToNumber(post_safe('jml_renbut'));
+        $kode       = post_safe('nomor');
 //        $cashbon    = post_safe('cashbon');
 //        $nominal    = post_safe('nominal');
         $penerima   = post_safe('penerima');
         if ($id === '') {
             $data = array(
                 'tanggal' => date("Y-m-d"),
+                'kode' => $kode,
                 'tanggal_kegiatan' => $tanggal,
                 'id_uraian' => $id_uraian,
                 'keterangan' => $keterangan,
@@ -69,6 +73,7 @@ class M_transaksi extends CI_Model {
         } else {
             $data = array(
                 'tanggal_kegiatan' => $tanggal,
+                'kode' => $kode,
                 'id_uraian' => $id_uraian,
                 'keterangan' => $keterangan,
                 'jml_renbut' => $jml_renbut,

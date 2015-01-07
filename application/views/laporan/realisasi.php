@@ -47,7 +47,7 @@ function get_list_realisasi(page, src, id) {
 function form_cari() {
     var str = '<div id="dialog_realisasi"><form action="" id="save_realisasi">'+
             '<?= form_hidden('id_realisasi', NULL, 'id=id_realisasi') ?>'+
-            '<table width=100% cellpadding=0 cellspacing=0 class=data-input>'+
+            '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
                 '<tr><td width=30%>Tahun:</td><td><select name="year" id="year" style="width: 74px;"><?php for($i = 2010; $i <= date("Y"); $i++) { ?> <option value="<?= $i ?>" <?php if ($i == date("Y")) { echo "selected"; } ?>><?= $i ?></option><?php } ?></select></td></tr>'+
                 '<tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker style="width: 150px;"><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>'+
             '</table>'+

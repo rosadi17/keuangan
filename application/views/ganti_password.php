@@ -72,7 +72,7 @@
     <?= form_open('', 'id=formpwd') ?>
     
     
-    <div class="data-input">
+    <div class="inputan">
         <fieldset>
             <div class="msg_ok"></div>
             <div class='msg' id="msg_pwd"></div>

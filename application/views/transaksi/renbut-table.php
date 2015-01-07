@@ -15,7 +15,7 @@
         <th width="7%" style="border-top: 1px solid #6eb7ff;">Jml Renbut</th>
     </tr>
     <?php foreach ($list_data as $key => $data) { 
-        $str = $data->id_renbut.'#'.$data->ma_proja.'#'.$data->keterangan.'#'.$data->jml_renbut.'#'.$data->penerima.'#'.$data->id_uraian.'#'.datefmysql($data->tanggal_kegiatan);
+        $str = $data->id_renbut.'#'.$data->ma_proja.'#'.$data->keterangan.'#'.$data->jml_renbut.'#'.$data->penerima.'#'.$data->id_uraian.'#'.datefmysql($data->tanggal_kegiatan).'#'.$data->detail.'#'.$data->kode;
         ?>
     <tr class="<?= ($key%2==1)?'even':'odd' ?>">
         <td align="center"><?= $auto++ ?></td>

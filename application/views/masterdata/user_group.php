@@ -4,7 +4,7 @@
         function form_user_group() {
             var str = '<?= form_open('', 'id=form_group') ?>'+
                 ' <?= form_hidden('id',NULL,'id=id') ?>'+
-                '<table width="100%" cellspacing="0" cellpadding="0" class=data-input>'+
+                '<table width="100%" cellspacing="0" cellpadding="0" class=inputan>'+
                     '<tr><td width="25%">Nama Group</td><td><?= form_input('nama', '','id=nama_group size=40') ?></td></tr>'+
                 '</table>'+
                 '<?= form_close() ?>';

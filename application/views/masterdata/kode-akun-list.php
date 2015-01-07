@@ -91,9 +91,9 @@ $('.add_subsubsubsubrekening').click(function() {
     return false;
 });
 function dialog_s4_rekening() {
-    var str = '<div class=data-input id=dialogx><form action="" id=form_rekening>'+
+    var str = '<div class=inputan id=dialogx><form action="" id=form_rekening>'+
         '<?= form_hidden('id_sub_sub_sub_sub_reks', NULL, 'id=id_sub_sub_sub_sub_reks') ?>'+
-        '<table width=100% cellspacing=0 cellpadding=0 class=data-input>'+
+        '<table width=100% cellspacing=0 cellpadding=0 class=inputan>'+
             '<tr><td width=25%>Kode.:</td><td><?= form_input('kode_subsubsubsub', NULL, 'size=10 onKeyup="Angka(this)" id=kode_subsubsubsub') ?></td></tr>'+
             '<tr><td>Kode Sub Sub Sub:</td><td><?= form_input('', NULL, 'id=id_sss_rek disabled size=40') ?><?= form_hidden('sub_sub_sub_rekening', NULL, 'id=sub_sub_sub_rekening') ?></td></tr>'+
             '<tr><td>Nama:</td><td><?= form_input('nama_ssss', NULL, 'id=nama_ssss size=40') ?></td></tr>'+
@@ -200,8 +200,8 @@ $('.delete').click(function() {
 
 /*Rekening Manage*/
 function dialog_rekening() {
-    var str = '<div class=data-input id=dialogx><form action="" id=form_rekening>'+
-        '<table width=100% cellspacing=0 cellpadding=0 class=data-input>'+
+    var str = '<div class=inputan id=dialogx><form action="" id=form_rekening>'+
+        '<table width=100% cellspacing=0 cellpadding=0 class=inputan>'+
             '<tr><td width=25%>Kode.:</td><td><?= form_input('kode_rek',NULL,'id=kode_rek') ?><input type=hidden name=kode_rek_id id=kode_rek_id /></td></tr>'+
             '<tr><td>Nama:</td><td><?= form_input('nama_rekening', NULL, 'id=nama_rekeningx size=40') ?></td></tr>'+
             '<tr><td>Posisi:</td><td><select name="posisi" id="posisi"><option value="D">Debet</option><option value="C">Kredit</option></select></td></tr>'
@@ -275,9 +275,9 @@ $('.add_subrekening').click(function() {
     return false;
 });
 function dialog_subrekening(id_rek) {
-    var str = '<div class="data-input" id="dialogy">'+
+    var str = '<div class="inputan" id="dialogy">'+
     '<form action="" id=form_subrekening>'+
-    '<table width=100% cellspacing=0 cellpadding=0 class=data-input>'+
+    '<table width=100% cellspacing=0 cellpadding=0 class=inputan>'+
         '<tr><td>Kode:</td><td><?= form_input('kode_sub_rek', NULL, 'id=kode_sub_rek') ?><input type=hidden name=kode_sub_rek_id id=kode_sub_rek_id />'+
         '<tr><td>Nama Rekening:</td><td><select name="rekening_id" id="rekening_id"><option value="">Pilih rekening ...</option><?php foreach ($list_rekening as $rows) { echo '<option value="'.$rows->id.'">'.$rows->nama.'</option>'; } ?></select>'+
         '<tr><td>Nama:</td><td><?= form_input('nama_sub', NULL, 'id=nama_sub size=40') ?>'+
@@ -351,9 +351,9 @@ function save_subrekening() {
 }
 
 function dialog_sub_sub_rekening(id_sub_rekening) {
-    var str = '<div class="data-input" id="dialogz">'+
+    var str = '<div class="inputan" id="dialogz">'+
     '<form action="" id=form_subsubrekening>'+
-    '<table width=100% cellspacing=0 cellpadding=0 class=data-input>'+
+    '<table width=100% cellspacing=0 cellpadding=0 class=inputan>'+
         '<tr><td>Kode:</td><td><?= form_input('kode_sub_sub_rek', NULL, 'id=kode_sub_sub_rek') ?><input type=hidden name=sub_sub_rek_id id=sub_sub_rek_id />'+
         '<tr><td>Sub Rekening:</td><td><?= form_input('', NULL, 'id=sub_rekening_id size=30') ?><input name=sub_rekening_id type=hidden />'+
         '<tr><td>Nama:</td><td><?= form_input('nama_sub_sub', NULL, 'id=nama_sub_sub size=40') ?>'+
@@ -437,9 +437,9 @@ function save_sub_sub() {
 }
 
 function dialog_sub_sub_sub_rekening(id_sub_sub) {
-    var str = '<div class=data-input id=dialogq>'+
+    var str = '<div class=inputan id=dialogq>'+
         '<form action="" id="form_sub_sub_sub">'+
-        '<table width=100% cellspacing=0 cellpadding=0 class=data-input>'+
+        '<table width=100% cellspacing=0 cellpadding=0 class=inputan>'+
             '<tr><td>Kode:</td><td><?= form_input('kode', NULL, 'id=kode') ?><input type=hidden name=id_sub_sub_sub id=id_sub_sub_sub />'+
             '<tr><td>Sub Sub Rekening:</td><td><?= form_input('', NULL, 'id=sub_sub_rek_id size=30') ?><input type=hidden name=sub_sub_rek_id />'+
             '<tr><td>Nama:</td><td><?= form_input('nama', NULL, 'id=nama_sss size=30') ?>'+

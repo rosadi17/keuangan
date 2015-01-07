@@ -41,7 +41,7 @@ function get_list_dropping(page, src, id) {
 function form_cari() {
     var str = '<div id="dialog_dropping"><form action="" id="save_dropping">'+
             '<?= form_hidden('id_dropping', NULL, 'id=id_dropping') ?>'+
-            '<table width=100% cellpadding=0 cellspacing=0 class=data-input>'+
+            '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
                 '<tr><td width=25%>Bulan Tahun:</td><td><select name=bln id=bln style="width: 74px;"><?php foreach ($bulan as $bln) { ?> <option value="<?= $bln[0] ?>" <?= (($bln[0] == date("m"))?'selected':NULL) ?>><?= $bln[1] ?></option><?php } ?></select><select name="year" id="year" style="width: 72px;"><option value="">Select Year ....</option><?php for($i = 2010; $i <= date("Y"); $i++) { ?> <option value="<?= $i ?>" <?php if ($i == date("Y")) echo "selected"; else echo ""; ?>><?= $i ?></option><?php } ?></select></td></tr>'+
                 '<tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>'+
                 '<tr><td width=40%>MA Proja:</td><td><?= form_input('uraian', NULL, 'id=uraian size=60') ?><?= form_hidden('id_uraian', NULL, 'id=id_uraian') ?></td></tr>'+
@@ -99,7 +99,7 @@ function form_cari() {
 
 function edit_dropping(id) {
     var str = '<div id=alert>'+
-            '<table width=100% class=data-input>'+
+            '<table width=100% class=inputan>'+
                 '<tr><td>Status:</td><td><select name=status id=status><option value="Disetujui">Disetujui</option><option value="Ditolak">Ditolak</option></select></td></tr>'+
             '</table>'+
             '</div>';
