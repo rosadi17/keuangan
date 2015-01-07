@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 05, 2014 at 06:09 PM
+-- Generation Time: Oct 08, 2014 at 11:45 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -194,7 +194,14 @@ CREATE TABLE IF NOT EXISTS `pengeluaran` (
   `pengeluaran` double NOT NULL,
   `penerima` varchar(100) NOT NULL,
   `perwabku` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `pengeluaran`
+--
+
+INSERT INTO `pengeluaran` (`id`, `kode`, `sumberdana`, `tanggal`, `id_rekening`, `id_uraian`, `pengeluaran`, `penerima`, `perwabku`) VALUES
+(1, 'BKK14090001', 'Kas', '2014-09-06', 111303, 2, 135000000, 'Arjun', 'Default');
 
 -- --------------------------------------------------------
 
@@ -317,7 +324,7 @@ CREATE TABLE IF NOT EXISTS `rencana_kebutuhan` (
 --
 
 INSERT INTO `rencana_kebutuhan` (`id_renbut`, `tanggal`, `tanggal_kegiatan`, `id_uraian`, `keterangan`, `jml_renbut`, `cashbon`, `nominal`, `penerima`, `verificator`, `status`, `date_verify`, `tanggal_cair`, `id_akun_rekening`) VALUES
-(3, '2014-01-19', '2014-02-10', 2, 'Pengadaan Sarana Prasarana ( Rincian terlampir )', 12500000, 0, 135000000, 'Kirk Hammet M.Kom', 1, 'Disetujui', '2014-01-22', '2014-08-26', 111313),
+(3, '2014-01-19', '2014-02-10', 2, 'Pengadaan Sarana Prasarana ( Rincian terlampir )', 12500000, 0, 135000000, 'Kirk Hammet M.Kom', 1, 'Disetujui', '2014-01-22', '2014-09-06', 111303),
 (4, '2014-01-26', '2014-01-26', 3, 'Pembiayaan, Sarana Prasarana dan Sistem Informasi', 120000000, 0, 0, 'Andi Deris S. Kom', 3, 'Disetujui', '2014-01-26', '2014-08-26', 111303),
 (5, '2014-01-26', '2014-01-26', 4, 'Lembur ', 17000000, 0, 17000000, 'Hari Toha Hidayat', 5, 'Disetujui', '2014-01-26', '2014-01-26', 212120),
 (6, '2014-01-26', '2014-01-26', 3, 'Pembiayaan, Sarana Prasarana dan Sistem Informasi', 20000000, 20000000, 0, 'Arvin Nizar', 2, 'Disetujui', '2014-01-26', '2014-08-26', 111303),
@@ -332,7 +339,7 @@ INSERT INTO `rencana_kebutuhan` (`id_renbut`, `tanggal`, `tanggal_kegiatan`, `id
 CREATE TABLE IF NOT EXISTS `satker` (
 `id` int(11) NOT NULL,
   `nama` varchar(255) NOT NULL,
-  `kode` varchar(3) NOT NULL
+  `kode` varchar(4) NOT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
 --
@@ -349,7 +356,7 @@ INSERT INTO `satker` (`id`, `nama`, `kode`) VALUES
 (8, 'FAK. FISIP', '07'),
 (9, 'FAK. EKONOMI', '06'),
 (10, 'FAK.  HUKUM', '05'),
-(11, 'BAA', '01'),
+(11, 'BAA', '0101'),
 (12, 'PIMPINAN', '13'),
 (13, 'BIKU', '03'),
 (14, 'BAPSI', '02');
@@ -845,7 +852,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 -- AUTO_INCREMENT for table `pengeluaran`
 --
 ALTER TABLE `pengeluaran`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `privileges`
 --

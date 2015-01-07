@@ -36,7 +36,7 @@ function form_unit() {
     var str = '<div id="dialog_unit"><form action="" id="save_unit">'+
             '<?= form_hidden('id_unit', NULL, 'id=id_unit') ?>'+
             '<table width=100% cellpadding=0 cellspacing=0 class=data-input>'+
-                '<tr><td>Kode Satker:</td><td><?= form_input('kode', NULL, 'id=kode') ?></td></tr>'+
+                '<tr><td>Kode Satker:</td><td><?= form_input('kode', NULL, 'id=kode maxlength=4') ?></td></tr>'+
                 '<tr><td width=30%>Nama Unit Satker:</td><td><?= form_input('nama', NULL, 'id=nama size=40 onKeyup="javascript:this.value=this.value.toUpperCase();"') ?></td></tr>'+
             '</table>'+
             '</form></div>';
