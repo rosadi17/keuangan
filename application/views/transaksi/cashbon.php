@@ -48,7 +48,7 @@ function get_list_cashbon(page, src, id) {
 function form_cari_cashbon() {
     var str = '<div id="dialog_cashbon"><form action="" id="save_cashbon">'+
             '<?= form_hidden('id_cashbon', NULL, 'id=id_cashbon') ?>'+
-            '<table width=100% cellpadding=0 cellspacing=0 class=data-input>'+
+            '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
                 '<tr><td width=25%>Bulan Tahun:</td><td><select name=bln id=bln style="width: 74px;"><?php foreach ($bulan as $bln) { ?> <option value="<?= $bln[0] ?>" <?= (($bln[0] === date("m"))?'selected':NULL) ?>><?= $bln[1] ?></option><?php } ?></select><select name="year" id="year" style="width: 74px;"><option value="">Select Year ....</option><?php for($i = 2010; $i <= date("Y"); $i++) { ?> <option value="<?= $i ?>" <?php if ($i === date("Y")) echo "selected";  ?>><?= $i ?></option><?php } ?></select></td></tr>'+
                 '<tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>'+
                 '<tr><td width=40%>MA Proja:</td><td><?= form_input('uraian', NULL, 'id=uraian size=60') ?><?= form_hidden('id_uraian', NULL, 'id=id_uraian') ?></td></tr>'+
@@ -81,7 +81,7 @@ function form_cari_cashbon() {
 function form_cashbon() {
     var str = '<div id="dialog_cashbon"><form action="" id="save_cashbon">'+
             '<?= form_hidden('id_cashbon', NULL, 'id=id_cashbon') ?>'+
-            '<table width=100% cellpadding=0 cellspacing=0 class=data-input>'+
+            '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
                 '<tr><td width=40%>Tanggal:</td><td><?= form_input('tanggal', date("d/m/Y"), 'id=tanggal size=10') ?></td></tr>'+
                 '<tr><td width=40%>MA Proja:</td><td><?= form_input('uraian', NULL, 'id=uraian size=60') ?><?= form_hidden('id_uraian', NULL, 'id=id_uraian') ?></td></tr>'+
                 '<tr><td width=40%>Keterangan:</td><td><?= form_input('keterangan', NULL, 'id=keterangan size=60') ?></td></tr>'+

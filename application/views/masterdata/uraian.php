@@ -43,7 +43,7 @@ function get_list_uraian(page, src, id) {
 function form_uraian() {
     var str = '<div id="dialog_uraian"><form action="" id="save_uraian">'+
             '<?= form_hidden('id_uraian', NULL, 'id=id_uraian') ?>'+
-            '<table width=100% cellpadding=0 cellspacing=0 class=data-input>'+
+            '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
                 '<tr><td width=30%>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>'+
                 '<tr><td>Status:</td><td><select name=status id=status><option value="SPP">SPP</option><option value="NON SPP">NON SPP</option></select></td></tr>'+
                 '<tr><td>Kode / Nama Sub kegiatan:</td><td><?= form_input('sub_kegiatan', NULL, 'id=sub_kegiatan size=60') ?><?= form_hidden('id_sub_kegiatan', NULL, 'id=id_sub_kegiatan') ?></td></tr>'+
@@ -151,7 +151,7 @@ function form_uraian() {
 function edit_uraian(str) {
     var arr = str.split('#');
 /*'<?= form_hidden('id_uraian', NULL, 'id=id_uraian') ?>'+
-'<table width=100% cellpadding=0 cellspacing=0 class=data-input>'+
+'<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
 '<tr><td width=30%>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>'+
 '<tr><td>Status:</td><td><select name=status id=status><option value="SPP">SPP</option><option value="NON SPP">NON SPP</option></select></td></tr>'+
 '<tr><td>Kode / Nama Sub kegiatan:</td><td><?= form_input('sub_kegiatan', NULL, 'id=sub_kegiatan size=60') ?><?= form_hidden('id_sub_kegiatan', NULL, 'id=id_sub_kegiatan') ?></td></tr>'+

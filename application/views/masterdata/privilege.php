@@ -42,7 +42,7 @@
 </script>
 <?= form_open('', 'id = form_priv') ?>
 <div class='msg' id="pesan"></div>
-<table width="100%" class="data-input">
+<table width="100%" class="inputan">
     <tr><td width="15%">ID:</td><td><?= $id ?><?= form_hidden('id_group', $id) ?></td> </tr>
     <tr><td>Nama Profesi:</td><td><?= $nama ?></td> </tr>
 </table>

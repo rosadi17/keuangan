@@ -41,7 +41,7 @@ function get_list_pemasukkan(page, src, id) {
 function form_add() {
     var str = '<div id="dialog_pemasukkan"><form action="" id="save_pemasukkan">'+
             '<?= form_hidden('id_pemasukkan', NULL, 'id=id_pemasukkan') ?>'+
-            '<table width=100% cellpadding=0 cellspacing=0 class=data-input>'+
+            '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
                 '<tr><td width=40%>MA Proja:</td><td><?= form_input('uraian', NULL, 'id=uraian size=60') ?><?= form_hidden('id_uraian', NULL, 'id=id_uraian') ?></td></tr>'+
                 '<tr><td width=40%>Keterangan:</td><td><?= form_input('keterangan', NULL, 'id=keterangan size=60') ?></td></tr>'+
                 '<tr><td>Kode Perkiraan:</td><td><?= form_input('kode_perkiraan', NULL, 'id=kode_perkiraan size=60') ?></td></tr>'+
@@ -144,7 +144,7 @@ function form_add() {
 
 function edit_pemasukkan(id) {
     var str = '<div id=alert>'+
-            '<table width=100% class=data-input>'+
+            '<table width=100% class=inputan>'+
                 '<tr><td>Status:</td><td><select name=status id=status><option value="Disetujui">Disetujui</option><option value="Ditolak">Ditolak</option></select></td></tr>'+
             '</table>'+
             '</div>';

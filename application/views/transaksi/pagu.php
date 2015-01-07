@@ -40,7 +40,7 @@ function get_list_pagu(page, src, id) {
 function form_pagu() {
     var str = '<div id="dialog_pagu"><form action="" id="save_pagu">'+
             '<?= form_hidden('id_pagu', NULL, 'id=id_pagu') ?>'+
-            '<table width=100% cellpadding=0 cellspacing=0 class=data-input>'+
+            '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
                 '<tr><td width=25%>Tahun:</td><td><select name="year" id="year"><option value="">Pilih Tahun ....</option><?php for($i = 2010; $i <= date("Y")+1; $i++) { ?> <option value="<?= $i ?>" <?php if ($i == date("Y")) echo "selected";  ?>><?= $i ?></option><?php } ?></select></td></tr>'+
                 '<tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>'+
                 '<tr><td>Jumlah Pagu (Rp.):</td><td><?= form_input('nama', NULL, 'id=nama size=40 onKeyup="FormNum(this);"') ?></td></tr>'+

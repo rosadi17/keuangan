@@ -43,7 +43,7 @@ function get_list_sub_kegiatan(page, src, id) {
 function form_sub_kegiatan() {
     var str = '<div id="dialog_sub_kegiatan"><form action="" id="save_sub_kegiatan">'+
             '<?= form_hidden('id_sub_kegiatan', NULL, 'id=id_sub_kegiatan') ?>'+
-            '<table width=100% cellpadding=0 cellspacing=0 class=data-input>'+
+            '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
                 '<tr><td width=30%>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>'+
                 '<tr><td>Status:</td><td><select name=status id=status><option value="SPP">SPP</option><option value="NON SPP">NON SPP</option></select></td></tr>'+
                 '<tr><td>Kode / Nama kegiatan:</td><td><?= form_input('kegiatan', NULL, 'id=kegiatan size=60') ?><?= form_hidden('id_kegiatan', NULL, 'id=id_kegiatan') ?></td></tr>'+
