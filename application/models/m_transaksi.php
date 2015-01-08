@@ -380,7 +380,7 @@ class M_transaksi extends CI_Model {
     }
     
     function get_data_pemasukkan_detail($id) {
-        $sql = "select p.*, u.kode, s.nama as sub_rekening, u.uraian from penerimaan p 
+        $sql = "select p.*, p.penyetor as penerima, u.kode as ma_proja, s.nama as sub_rekening, u.uraian, p.pemasukkan as nominal, p.id_rekening as id_akun_rekening from penerimaan p 
             join sub_sub_sub_sub_rekening s on (p.id_rekening = s.id)
             join uraian u on (p.id_uraian = u.id)
             where p.id = '$id'";
@@ -467,20 +467,16 @@ class M_transaksi extends CI_Model {
     
     function print_bukti_kas($id, $jenis) {
         if ($jenis === 'bkm') {
-            $sql = "select p.*, u.kode, s.nama as sub_rekening, u.uraian from penerimaan p 
-                join sub_sub_sub_sub_rekening s on (p.id_rekening = s.id)
-                join uraian u on (p.id_uraian = u.id)
-                where p.id = '$id' order by tanggal desc, id desc";
+            $sql = "select p.*, p.penyetor as penerima, u.kode as ma_proja, s.nama as sub_rekening, u.uraian, p.pemasukkan as nominal, p.id_rekening as id_akun_rekening from penerimaan p 
+            join sub_sub_sub_sub_rekening s on (p.id_rekening = s.id)
+            join uraian u on (p.id_uraian = u.id)
+            where p.id = '$id'";
+            //echo $sql;
         } else {
-            $sql = "select rk.*, rk.id_renbut as id, s.id as id_satker, s.nama as satker, year(rk.tanggal) as tahun_anggaran, 
-            p.nama_program,k.nama_kegiatan, sk.nama_sub_kegiatan, u.uraian, rk.jml_renbut,
-            u.kode as ma_proja from rencana_kebutuhan rk
-            join uraian u on (rk.id_uraian = u.id)
-            join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
-            join kegiatan k on (sk.id_kegiatan = k.id)
-            join program p on (k.id_program = p.id)
-            join satker s on (p.id_satker = s.id)
-        where rk.id_renbut = '$id'";
+            $sql = "select p.*, p.penerima, u.kode as ma_proja, s.nama as sub_rekening, u.uraian, p.pengeluaran as nominal, p.id_rekening as id_akun_rekening from pengeluaran p 
+            join sub_sub_sub_sub_rekening s on (p.id_rekening = s.id)
+            join uraian u on (p.id_uraian = u.id)
+            where p.id = '$id'";
         }
         return $this->db->query($sql);
     }
@@ -559,6 +555,22 @@ class M_transaksi extends CI_Model {
         }
         
         return $result;
+    }
+    
+    function get_data_kasir($limit, $start, $search) {
+        $q = NULL;
+        $sql = "select * from (select pn.*, substr(pn.kode,1,3) as kode_trans, u.uraian as keterangan from penerimaan pn
+                join uraian u on (pn.id_uraian = u.id)
+                UNION ALL select pg.*, substr(pg.kode,1,3) as kode_trans, u.uraian as keterangan from pengeluaran pg
+                join uraian u on (pg.id_uraian = u.id)) a order by tanggal desc";
+        $limitation = null;
+        $limitation.=" limit $start , $limit";
+        $query = $this->db->query($sql . $q . $limitation);
+        //echo $sql . $q . $limitation;
+        $queryAll = $this->db->query($sql . $q);
+        $data['data'] = $query->result();
+        $data['jumlah'] = $queryAll->num_rows();
+        return $data;
     }
 }
 ?>

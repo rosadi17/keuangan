@@ -2,6 +2,7 @@
 <?= $this->load->view('message') ?>
 <div class="titling"><h1><?= $title ?></h1></div>
 <script type="text/javascript">
+    
 function get_last_code_kasir(trans) {
     $.ajax({
         url: '<?= base_url('autocomplete/get_last_code_kasir') ?>/'+trans,
@@ -42,21 +43,55 @@ function cetak_bukti_kas_masuk(id) {
     window.open('<?= base_url('transaksi/manage_pemasukkan') ?>/print_bukti_kas?id='+id, 'Renbut Cetak', 'width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
 }
 
+function print_kasir(id, jenis) {
+    if (jenis === 'BKM') {
+        cetak_bukti_kas(id, 'bkm');
+    } else {
+        cetak_bukti_kas(id, 'bkk');
+    }
+}
+
 $(function() {
+    get_list_rekap_kasir(1);
     $('#tabs').tabs();
-    $('#simpan').button({
-        icons: {
-            secondary: 'ui-icon-circle-check'
-        }
-    }).click(function() {
-        $('#form').submit();
-    });
     $('#reset').button({
         icons: {
             secondary: 'ui-icon-refresh'
         }
     }).click(function() {
         $('#loaddata').load('<?= base_url('transaksi/kasir') ?>');
+    });
+    $('#cari_rekap_button').button({
+        icons: {
+            secondary: 'ui-icon-search'
+        }
+    }).click(function() {
+        $('#form_kasir').dialog({
+            title: 'Form Kasir BKK / BKM',
+            autoOpen: true,
+            width: 480,
+            autoResize:true,
+            modal: true,
+            hide: 'explode',
+            show: 'blind',
+            position: ['center',47],
+            buttons: {
+                "Cancel": function() {
+                    $('#form_kasir').dialog('destroy');
+                }, "Simpan": function() {
+                    $('#form').submit();
+                }
+            }, close: function() {
+                $('#form_kasir').dialog('destroy');
+            }
+        });
+    });
+    $('#reload_kasir_data').button({
+        icons: {
+            secondary: 'ui-icon-refresh'
+        }
+    }).click(function() {
+        get_list_rekap_kasir(1);
     });
     $('#jenis').change(function() {
         var jenis = $(this).val();
@@ -95,14 +130,14 @@ $(function() {
                         success: function(data) {
                             if (data.status === true) {
                                 if (data.act === 'bkm') {
+                                    get_list_rekap_kasir(1);
                                     custom_message('Informasi','Transaksi BKM berhasil dilakukan !');
-                                    cetak_bukti_kas_masuk(data.id);
+                                    cetak_bukti_kas(data.id, 'bkm');
                                 } else {
                                     custom_message('Informasi','Transaksi BKK berhasil dilakukan !');
-                                    cetak_bukti_kas(data.id, data.act);
+                                    cetak_bukti_kas(data.id, 'bkk');
                                 }
-                                $('#simpan').hide();
-                                
+                                $('#form_kasir').dialog('destroy');
                             }
                         }
                     });
@@ -169,6 +204,21 @@ $(function() {
         $(this).val(data.id_akun);
     });
 });
+
+function get_list_rekap_kasir(page) {
+    $.ajax({
+        url: '<?= base_url('transaksi/manage_kasir') ?>/list/'+page,
+        data: $('#form_kasir').serialize(),
+        cache: false,
+        success: function(data) {
+            $('#result-kasir').html(data);
+        }
+    });
+}
+
+function paging(p) {
+    get_list_rekap_kasir(p);
+}
 </script>
 <div class="kegiatan">
     <div id="tabs">
@@ -176,23 +226,29 @@ $(function() {
             <li><a href="#tabs-1">Parameter</a></li>
         </ul>
         <div id="tabs-1">
-            <?= form_open('', 'id=form') ?>
-            <table class="inputan" width="100%">
-                <tr><td>Tanggal:</td><td><?= form_input('tanggal', date("d/m/Y"), 'size=15 id=tanggal') ?></td></tr>
-                <tr><td>Jenis Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Pilih ...', 'bkk' => 'Kas Keluar', 'bkm' => 'Kas Masuk'), NULL, 'id=jenis') ?></td></tr>
-                <tr><td>No.</td><td><?= form_input('no', NULL, 'id=no') ?></td></tr>
-                <tr><td>Sumber Dana:</td><td><?= form_dropdown('sumberdana', array('Kas' => 'Kas', 'Bank' => 'Bank'), NULL, 'id=sumberdana') ?></td></tr>
-                <tr><td>Kode Perkiraan:</td><td><?= form_input('kode_perkiraan', NULL, 'id=kode_perkiraan size=60') ?></td></tr>
-                <tr><td>Kode MA/Proja:</td><td><?= form_input('kode', NULL, 'id=kode') ?><?= form_hidden('id_kode', NULL, 'id=id_kode') ?></td></tr>
-                <tr><td>Pengguna Anggaran:</td><td><?= form_input('pengguna', NULL, 'id=pengguna') ?></td></tr>
-                <tr><td valign="top">Uraian:</td><td><?= form_textarea('uraian', NULL, 'id=uraian rows=4') ?></td></tr>
-                <tr><td>Jumlah Biaya:</td><td><?= form_input('jumlah', NULL, 'id=jumlah') ?></td></tr>
-                <tr><td><?= form_dropdown('user', array('Penerima' => 'Penerima', 'Penyetor' => 'Penyetor'), NULL, 'id=user style="width: 120px;"') ?></td><td><?= form_input('nama_user', NULL, 'id=nama_user') ?></td></tr>
-                <tr><td>Perwabku:</td><td><?= form_dropdown('perwabku', array('Default' => 'Default', 'Belum' => 'Belum (DP)', 'Sudah' => 'Sudah (Pusat Biaya)'), NULL, 'id=perwabku') ?></td></tr>
-                <tr><td></td><td><?= form_button('Simpan', 'id=simpan') ?> <?= form_button('Reset', 'id=reset') ?></td></tr>
-            </table>
-            
-            <?= form_close() ?>
+            <button id="cari_rekap_button">Cari Data</button>
+            <button id="reload_kasir_data">Refresh</button>
+            <div id="result-kasir">
+
+            </div>
         </div>
+    </div>
+    <div id="form_kasir" class="nodisplay">
+        <?= form_open('', 'id=form') ?>
+        <table class="inputan" width="100%">
+            <tr><td>Jenis Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Pilih ...', 'bkk' => 'Kas Keluar', 'bkm' => 'Kas Masuk'), NULL, 'id=jenis') ?></td></tr>
+            <tr><td>Tanggal:</td><td><?= form_input('tanggal', date("d/m/Y"), 'size=15 id=tanggal') ?></td></tr>
+            <tr><td>No.</td><td><?= form_input('no', NULL, 'id=no') ?></td></tr>
+            <tr><td>Sumber Dana:</td><td><?= form_dropdown('sumberdana', array('Kas' => 'Kas', 'Bank' => 'Bank'), NULL, 'id=sumberdana') ?></td></tr>
+            <tr><td>Kode Perkiraan:</td><td><?= form_input('kode_perkiraan', NULL, 'id=kode_perkiraan size=60') ?></td></tr>
+            <tr><td>Kode MA/Proja:</td><td><?= form_input('kode', NULL, 'id=kode') ?><?= form_hidden('id_kode', NULL, 'id=id_kode') ?></td></tr>
+            <tr><td>Pengguna Anggaran:</td><td><?= form_input('pengguna', NULL, 'id=pengguna') ?></td></tr>
+            <tr><td valign="top">Uraian:</td><td><?= form_textarea('uraian', NULL, 'id=uraian rows=4 style="width: 294px;"') ?></td></tr>
+            <tr><td>Jumlah Biaya:</td><td><?= form_input('jumlah', NULL, 'id=jumlah') ?></td></tr>
+            <tr><td><?= form_dropdown('user', array('Penerima' => 'Penerima', 'Penyetor' => 'Penyetor'), NULL, 'id=user style="width: 120px;"') ?></td><td><?= form_input('nama_user', NULL, 'id=nama_user') ?></td></tr>
+            <tr><td>Perwabku:</td><td><?= form_dropdown('perwabku', array('Default' => 'Default', 'Belum' => 'Belum (DP)', 'Sudah' => 'Sudah (Pusat Biaya)'), NULL, 'id=perwabku') ?></td></tr>
+            <!--<tr><td></td><td><?= form_button('Simpan', 'id=simpan') ?> <?= form_button('Reset', 'id=reset') ?></td></tr>-->
+        </table>
+        <?= form_close() ?>
     </div>
 </div>

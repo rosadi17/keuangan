@@ -433,5 +433,34 @@ class Transaksi extends CI_Controller {
         $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, $search['key']);
         return $data;
     }
+    
+    function manage_kasir($action, $page = null) {
+        $limit = 10;
+        switch ($action) {
+            case 'list':
+                $search['key'] = '';
+                $search['id']  = '';
+                $data = $this->get_list_data_kasir($limit, $page, $search);
+                $this->load->view('transaksi/kasir-table', $data);
+                break;
+        }
+    }
+    
+    function get_list_data_kasir($limit, $page, $search) {
+        if ($page == 'undefined') {
+            $page = 1;
+        }
+        //$str = 'null';
+        $start = ($page - 1) * $limit;
+        $data['page'] = $page;
+        $data['limit'] = $limit;
+        $data['auto'] = $start+1;
+        $query = $this->m_transaksi->get_data_kasir($limit, $start, $search);
+        $data['list_data'] = $query['data'];
+        $data['jumlah'] = $query['jumlah'];
+        
+        $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, $search['key']);
+        return $data;
+    }
 }
 ?>

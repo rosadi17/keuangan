@@ -18,7 +18,7 @@ foreach ($list_data as $detail);
             <td width="15%"></td>
             <td align="center" width="60%">&nbsp;</td><td width="25%" valign="top" align="right">
                 <table>
-                    <tr><td style="border: none;">&nbsp;</td><td style="border: none; text-align: right;"><?= $detail->id ?></td></tr>
+                    <tr><td style="border: none;">&nbsp;</td><td style="border: none; text-align: right;"><?= $detail->kode ?></td></tr>
                     <tr><td style="border: none;"></td><td style="border: none;"><?= date("d F Y") ?></td></tr>
                 </table>
             </td>
@@ -35,7 +35,7 @@ foreach ($list_data as $detail);
         $total = 0;
         foreach ($list_data as $key => $data) { 
             ?>
-        <tr valign="top" class="<?= (($data->nominal > $data->jml_renbut)?'warning':NULL) ?>">
+        <tr valign="top">
             <td align="center"><?= $data->id_akun_rekening ?></td>
             <td><?= $data->ma_proja ?></td>
             <td><?= $data->uraian ?></td>
