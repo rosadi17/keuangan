@@ -50,10 +50,11 @@ function form_cari() {
         title: 'Cari Renbut',
         autoOpen: true,
         width: 480,
-        height: 200,
+        autoResize:true,
         modal: true,
-        hide: 'clip',
+        hide: 'explode',
         show: 'blind',
+        position: ['center',47],
         buttons: {
             "Cari": function() {
                 get_list_renbut();

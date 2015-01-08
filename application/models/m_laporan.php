@@ -196,5 +196,34 @@ class M_laporan extends CI_Model {
         //echo $sql;
         return $this->db->query($sql);
     }
+    
+    function get_data_renbut($limit = null, $start = null, $search = null) {
+        $q = null;
+        if ($search['bulan'] !== '') {
+            $q.=" and rk.tanggal like ('%".$search['bulan']."%')";
+        }
+        if (($search['satker'] !== '') and ($search['satker'] !== 'undefined')) {
+            $q.=" and s.id = '".$search['satker']."'";
+        }
+        $q.=" order by rk.tanggal asc";
+        $sql = "select rk.*, s.nama as satker, u.kode as ma_proja,
+            CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as detail
+            from rencana_kebutuhan rk
+            join uraian u on (rk.id_uraian = u.id)
+            join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
+            join kegiatan k on (sk.id_kegiatan = k.id)
+            join program p on (k.id_program = p.id)
+            join satker s on (p.id_satker = s.id)";
+        $limitation = null;
+        if ($limit !== null) {
+            $limitation =" limit $start , $limit";
+        }
+        $query = $this->db->query($sql . $q . $limitation);
+        //echo $sql . $q . $limitation;
+        $queryAll = $this->db->query($sql . $q);
+        $data['data'] = $query->result();
+        $data['jumlah'] = $queryAll->num_rows();
+        return $data;
+    }
 }
 ?>

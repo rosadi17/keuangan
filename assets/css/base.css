@@ -6,7 +6,7 @@ h3 { font-weight: normal; }
 html, body { height: 100%; font-weight: normal; background: #efefef; }
 input[type=text] { border: 1px solid #abadb3; padding: 2px; outline: none; width: 294px; }
 select { border: 1px solid #abadb3; margin: 0; outline: none; padding: 2px; width: 299px; margin-bottom: 1px; }
-textarea { resize: none; border: 1px solid #abadb3; outline: none; max-height: 55px; margin-bottom: 0; width: 294px; }
+textarea { resize: none; border: 1px solid #abadb3; outline: none; max-height: 35px; margin-bottom: 0; width: 260px; }
 input[type=text]:focus, select:focus, textarea:focus { border: 1px solid blue; }
 .aksi { white-space: nowrap; text-transform: none; }
 .aksi .addition {background: url('../images/icons/add.png') no-repeat 0 50%; padding-left:18px;}
@@ -35,32 +35,35 @@ input[type=text]:focus, select:focus, textarea:focus { border: 1px solid blue; }
 .print-area { background: #fff; }
 /*LIST DATA*/
 
-.list-data { border-spacing: 0; border-left: 1px solid #6eb7ff; margin: 5px 0; background: #fff; color: #000; font-size: 11px; }
+.list-data { text-transform: none; border: 1px solid #6eb7ff; margin: 5px 0; background: #fff; color: #000; font-size: 11px; border-spacing: 0; }
 .list-data input[type=text], .list-data input[type=button] { margin: 0; font-size: inherit; }
-.list-data th { border-top: 1px solid #6eb7ff; text-transform: uppercase; font-weight: normal; border-right: 1px solid #6eb7ff; border-bottom: 1px solid #ccc; background: #3399ff; border-bottom: #dfdfdf; height: 30px; color: #fff; cursor: pointer; }
-.list-data td { border-right: 1px solid #ccc; height: 20px; border-bottom: 1px solid #ccc; height: 20px; padding: 2px; empty-cells: show; }
+.list-data input[type=text] { width: 100%; margin: 0; border: none; }
+.list-data select { border: none; }
+.list-data th { font-weight: normal; text-transform: uppercase; border-bottom: 1px solid #ccc; background: #3399ff; border-bottom: #dfdfdf; height: 30px; color: #fff; cursor: pointer; }
+.list-data th.left { text-align: left; }
+.list-data th.right { text-align: right; }
+.list-data td { height: 20px; border-bottom: 1px solid #ccc; height: 20px; empty-cells: show; padding: 1px 2px; }
+.list-data td input[type=text], .list-data td select { padding: 0; }
+.list-data td.aksi { white-space: nowrap; width: 2%; text-align: center; }
 .list-data tfoot td { font-weight: bold; }
 .list-data .even { background: #fff; cursor: pointer; }
 .list-data .odd { background: #f4f4f4; cursor: pointer; }
 .list-data .even:hover, .list-data .odd:hover {background: #d0e7fe; }
-.list-data .warning { background: yellow; color: #000; }
-.list-data .threemonth { background: white; }
-.list-data .urgent { background: red; color: #fff; }
-.list-data .etiket { background: #d4d4d4; width: 20px; height: 17px; color: #000; }
-.tabel-advance th { text-align: left; padding-left: 2px; }
-.tabel-advance td { border-bottom: 1px solid #f4f4f4; }
-.tabel-advance tr td { border-bottom: 1px solid #ccc; }
-.tabel-advance tr td:last-child { border-right: 1px solid #ccc; }
-.tabel-advance th, .tabel-advance td { border-right: none; }
-.tabel-advance td a { color: #333; text-decoration: underline; }
-.tabel-advance td:last-child a { border: 1px solid #6eb7ff; padding: 0px 5px 2px; color: #333333; text-decoration: none; }
-.tabel-advance td:last-child a:hover { background: #6eb7ff; border: 1px solid #6eb7ff; color: #fff; }
+.list-data .link_button { text-transform: capitalize; }
+.list-data .link_button:hover { text-decoration: underline; cursor: pointer; }
 
-.list-data-input { text-transform: uppercase; border-top: 1px solid #6eb7ff; border-left: 1px solid #6eb7ff; margin: 10px 0; background: #fff; color: #000; font-size: 11px; }
-.list-data-input th { border-right: 1px solid #6eb7ff; height: 20px; border-bottom: 1px solid #ccc; background: #3399ff; border-bottom: #dfdfdf; height: 40px; color: #fff; cursor: pointer; }
-.list-data-input td { border-right: 1px solid #ccc; height: 20px; border-bottom: 1px solid #ccc; height: 18px; padding: 0; }
-.list-data-input td input, .list-data-input td select { margin: 0; border: none; width: 100%; padding: 0; }
-.dialog { display: none; }
+.list-data-input { text-transform: uppercase; border-top: 1px solid #6eb7ff; border-left: 1px solid #6eb7ff; margin: 5px 0; background: #fff; color: #000; font-size: 11px; border-spacing: 0; }
+.list-data-input input[type=text], .list-data-input input[type=button] { margin: 0; font-size: inherit; }
+.list-data-input input[type=text] { width: 100%; margin: 0; border: none; }
+.list-data-input select { border: none; }
+.list-data-input th { font-weight: normal; border-right: 1px solid #6eb7ff; border-bottom: 1px solid #ccc; background: #3399ff; border-bottom: #dfdfdf; height: 30px; color: #fff; cursor: pointer; }
+.list-data-input td { border-right: 1px solid #ccc; height: 20px; border-bottom: 1px solid #ccc; height: 20px; empty-cells: show; padding: 1px 2px; }
+.list-data-input tfoot td { font-weight: bold; }
+.list-data-input .even { background: #fff; cursor: pointer; }
+.list-data-input .odd { background: #f4f4f4; cursor: pointer; }
+.list-data-input .even:hover, .list-data-input .odd:hover {background: #d0e7fe; }
+.list-data-input .link_button { text-transform: capitalize; }
+.list-data-input .link_button:hover { text-decoration: underline; cursor: pointer; }
 .data-input { background: #f9f9f9; border: 1px solid #ccc; padding: 10px; }
 .table-neraca { border-top: 1px solid #ccc; border-left: none; border-spacing: 0; }
 .table-neraca td { border-bottom: 1px solid #ccc; border-right: none; padding: 3px 5px; }
@@ -238,3 +241,4 @@ input[type=text]:focus, select:focus, textarea:focus { border: 1px solid blue; }
     height: 20px;
     padding-top: 3px;
 }
+.nodisplay { display: none; }

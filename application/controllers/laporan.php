@@ -216,4 +216,62 @@ class Laporan extends CI_Controller {
         $data['list_data_kelas_int'] = $this->m_laporan->get_data_kas_bank($bulan, 'Kelas Internasional')->result();
         $this->load->view('laporan/kasbank-list', $data);
     }
+    
+    function renbut() {
+        $data['title'] = 'Rekap Rencana Kebutuhan';
+        $data['satker']= $this->m_masterdata->load_satker()->result();
+        $data['bulan'] = array(
+            array('01','Januari'),
+            array('02','Februari'),
+            array('03','Maret'),
+            array('04', 'April'),
+            array('05', 'Mei'),
+            array('06', 'Juni'),
+            array('07', 'Juli'),
+            array('08', 'Agustus'),
+            array('09', 'September'),
+            array('10', 'Oktober'),
+            array('11', 'November'),
+            array('12', 'Desember')
+        );
+        $this->load->view('laporan/rekap-renbut', $data);
+    }
+    
+    function manage_renbut($action, $page = null) {
+        $limit = 10;
+        switch ($action) {
+            case 'list':
+                $search['bulan'] = get_safe('year').'-'.get_safe('bln');
+                $search['satker']= get_safe('id_satker');
+                $data = $this->get_list_data_renbut($limit, $page, $search);
+                $this->load->view('laporan/rekap-renbut-table', $data);
+                break;
+        }
+    }
+    
+    function get_list_data_renbut($limit, $page, $search) {
+        if ($page == 'undefined') {
+            $page = 1;
+        }
+        //$str = 'null';
+        $start = ($page - 1) * $limit;
+        $data['page'] = $page;
+        $data['limit'] = $limit;
+        $data['auto'] = $start+1;
+        $query = $this->m_laporan->get_data_renbut($limit, $start, $search);
+        $data['list_data'] = $query['data'];
+        $data['jumlah'] = $query['jumlah'];
+        
+        $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, null);
+        return $data;
+    }
+    
+    function export_excel_renbut() {
+        $search['bulan'] = get_safe('year').'-'.get_safe('bln');
+        $search['satker']= get_safe('id_satker');
+        $data = $this->get_list_data_renbut(null, null, $search);
+        $data['bulan']   = get_safe('year').'-'.get_safe('bln').'-01';
+        $data['tahun']   = get_safe('year');
+        $this->load->view('laporan/excel-rekap-renbut', $data);
+    }
 }
