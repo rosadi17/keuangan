@@ -63,7 +63,7 @@ $(function() {
     });
     $('#cari_rekap_button').button({
         icons: {
-            secondary: 'ui-icon-search'
+            secondary: 'ui-icon-circle-plus'
         }
     }).click(function() {
         $('#form_kasir').dialog({
@@ -107,6 +107,9 @@ $(function() {
         if ($('#jenis').val() === '') {
             custom_message('Peringatan', 'Jenis transaksi harus dipilih', '#jenis'); return false;
         }
+        if ($('#id_renbut').val() === '') {
+            custom_message('Peringatan', 'Nomor renbut harus dipilih', '#kode_renbut'); return false;
+        }
         if ($('#kode').val() === '') {
             custom_message('Peringatan', 'Kode MA / Proja harus dipilih', '#kode'); return false;
         }
@@ -134,6 +137,7 @@ $(function() {
                                     custom_message('Informasi','Transaksi BKM berhasil dilakukan !');
                                     cetak_bukti_kas(data.id, 'bkm');
                                 } else {
+                                    get_list_rekap_kasir(1);
                                     custom_message('Informasi','Transaksi BKK berhasil dilakukan !');
                                     cetak_bukti_kas(data.id, 'bkk');
                                 }
@@ -149,6 +153,38 @@ $(function() {
             }
         });
         return false;
+    });
+    $('#kode_renbut').autocomplete("<?= base_url('autocomplete/kode_renbut') ?>",
+    {
+        parse: function(data){
+            var parsed = [];
+            for (var i=0; i < data.length; i++) {
+                parsed[i] = {
+                    data: data[i],
+                    value: data[i].id // nama field yang dicari
+                };
+            }
+            return parsed;
+        },
+        formatItem: function(data,i,max){
+            var str = '<div class=result>'+data.kode_rk+' <br/> '+data.keterangan+'</div>';
+            return str;
+        },
+        width: 400, // panjang tampilan pencarian autocomplete yang akan muncul di bawah textbox pencarian
+        dataType: 'json', // tipe data yang diterima oleh library ini disetup sebagai JSON
+        cacheLength: 0,
+        max: 100
+    }).result(
+    function(event,data,formated){
+        $('#id_renbut').val(data.id_rk);
+        $(this).val(data.kode_rk);
+        $('#kode').val(pad(data.ma_proja,5));
+        $('#id_kode').val(data.id);
+        $('#uraian').val(data.keterangan);
+        $('#pengguna').val(data.satker);
+        $('#keterangan').val(data.uraian);
+        $('#jumlah').val(numberToCurrency(data.jml_renbut));
+        $('#nama_user').val(data.penerima);
     });
     $('#kode').autocomplete("<?= base_url('autocomplete/ma_proja') ?>",
     {
@@ -177,7 +213,7 @@ $(function() {
         $('#uraian').val(data.keterangan);
         $('#pengguna').val(data.satker);
         $('#keterangan').val(data.uraian);
-        get_nominal_renbut(data.id);
+        //get_nominal_renbut(data.id);
     });
     $('#kode_perkiraan').autocomplete("<?= base_url('autocomplete/kode_perkiraan') ?>",
     {
@@ -226,7 +262,7 @@ function paging(p) {
             <li><a href="#tabs-1">Parameter</a></li>
         </ul>
         <div id="tabs-1">
-            <button id="cari_rekap_button">Cari Data</button>
+            <button id="cari_rekap_button">Tambah Data</button>
             <button id="reload_kasir_data">Refresh</button>
             <div id="result-kasir">
 
@@ -241,6 +277,7 @@ function paging(p) {
             <tr><td>No.</td><td><?= form_input('no', NULL, 'id=no') ?></td></tr>
             <tr><td>Sumber Dana:</td><td><?= form_dropdown('sumberdana', array('Kas' => 'Kas', 'Bank' => 'Bank'), NULL, 'id=sumberdana') ?></td></tr>
             <tr><td>Kode Perkiraan:</td><td><?= form_input('kode_perkiraan', NULL, 'id=kode_perkiraan size=60') ?></td></tr>
+            <tr><td>Nomor Renbut:</td><td><?= form_input('kode_renbut', NULL, 'id=kode_renbut size=60') ?><?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?></td></tr>
             <tr><td>Kode MA/Proja:</td><td><?= form_input('kode', NULL, 'id=kode') ?><?= form_hidden('id_kode', NULL, 'id=id_kode') ?></td></tr>
             <tr><td>Pengguna Anggaran:</td><td><?= form_input('pengguna', NULL, 'id=pengguna') ?></td></tr>
             <tr><td valign="top">Uraian:</td><td><?= form_textarea('uraian', NULL, 'id=uraian rows=4 style="width: 294px;"') ?></td></tr>

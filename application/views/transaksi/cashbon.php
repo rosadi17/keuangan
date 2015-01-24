@@ -60,10 +60,11 @@ function form_cari_cashbon() {
         title: 'Cari cashbon',
         autoOpen: true,
         width: 480,
-        height: 220,
+        autoResize:true,
         modal: true,
-        hide: 'clip',
+        hide: 'explode',
         show: 'blind',
+        position: ['center',47],
         buttons: {
             "Simpan": function() {
                 get_list_cashbon();
@@ -96,10 +97,11 @@ function form_cashbon() {
         title: 'Tambah cashbon',
         autoOpen: true,
         width: 480,
-        height: 220,
+        autoResize:true,
         modal: true,
-        hide: 'clip',
+        hide: 'explode',
         show: 'blind',
+        position: ['center',47],
         buttons: {
             "Simpan": function() {
                 $('#save_cashbon').submit();

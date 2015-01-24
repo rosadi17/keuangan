@@ -56,15 +56,17 @@ function form_sub_kegiatan() {
         title: 'Tambah Sub Kegiatan',
         autoOpen: true,
         width: 480,
-        height: 230,
+        autoResize: true,
         modal: true,
-        hide: 'clip',
+        hide: 'explode',
         show: 'blind',
+        position: ['center',47],
         buttons: {
+            "Cancel": function() {
+                $(this).dialog().remove();
+            },
             "Simpan": function() {
                 $('#save_sub_kegiatan').submit();
-            }, "Cancel": function() {
-                $(this).dialog().remove();
             }
         }, close: function() {
             $(this).dialog().remove();

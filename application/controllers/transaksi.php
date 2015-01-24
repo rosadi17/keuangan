@@ -6,6 +6,7 @@ class Transaksi extends CI_Controller {
         $data['title'] = 'Rencana Kebutuhan';
         $data['satker']= $this->m_masterdata->load_satker()->result();
         $data['bulan'] = array(
+            array('','Semua'),
             array('01','Januari'),
             array('02','Februari'),
             array('03','Maret'),
@@ -26,10 +27,10 @@ class Transaksi extends CI_Controller {
         $limit = 10;
         switch ($action) {
             case 'list':
-                $search['key'] = $_GET['search'];
-                $search['id']  = $_GET['id'];
-                $search['bulan'] = $_GET['bulan'];
-                $search['satker']= $_GET['id_satker'];
+                //$search['key'] = $_GET['search'];
+                //$search['id']  = $_GET['id'];
+                $search['bulan'] = get_safe('year').'-'.get_safe('bln');
+                $search['satker']= get_safe('id_satker');
                 $data = $this->get_list_data_renbut($limit, $page, $search);
                 $this->load->view('transaksi/renbut-table', $data);
                 break;
@@ -68,9 +69,10 @@ class Transaksi extends CI_Controller {
     
     /**DROPPING*/
     function dropping() {
-        $data['title'] = 'Rencana Kebutuhan';
+        $data['title'] = 'Dropping';
         $data['satker']= $this->m_masterdata->load_satker()->result();
         $data['bulan'] = array(
+            array('','Semua'),
             array('01','Januari'),
             array('02','Februari'),
             array('03','Maret'),
@@ -91,12 +93,12 @@ class Transaksi extends CI_Controller {
         $limit = 10;
         switch ($action) {
             case 'list':
-                $search['key'] = $_GET['search'];
-                $search['id']  = $_GET['id'];
-                $search['bulan'] = $_GET['bulan'];
-                $search['satker']= $_GET['id_satker'];
-                $search['proja'] = $_GET['proja'];
-                $search['pjawab']= $_GET['pjawab'];
+                //$search['key'] = $_GET['search'];
+                $search['id']  = get_safe('id');
+                $search['bulan'] = get_safe('year').'-'.get_safe('bln');
+                $search['satker']= get_safe('id_satker');
+                $search['proja'] = get_safe('id_uraian');
+                $search['pjawab']= get_safe('png_jawab');
                 $data = $this->get_list_data_dropping($limit, $page, $search);
                 $this->load->view('transaksi/dropping-table', $data);
                 break;
@@ -460,6 +462,75 @@ class Transaksi extends CI_Controller {
         $data['jumlah'] = $query['jumlah'];
         
         $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, $search['key']);
+        return $data;
+    }
+    
+    /*PERWABKU*/
+    function perwabku() {
+        $data['title'] = 'Perwabku';
+        $data['satker']= $this->m_masterdata->load_satker()->result();
+        $data['bulan'] = array(
+            array('','Semua'),
+            array('01','Januari'),
+            array('02','Februari'),
+            array('03','Maret'),
+            array('04', 'April'),
+            array('05', 'Mei'),
+            array('06', 'Juni'),
+            array('07', 'Juli'),
+            array('08', 'Agustus'),
+            array('09', 'September'),
+            array('10', 'Oktober'),
+            array('11', 'November'),
+            array('12', 'Desember')
+        );
+        $this->load->view('transaksi/perwabku', $data);
+    }
+    
+    function manage_perwabku($action, $page = null) {
+        $limit = 10;
+        switch ($action) {
+            case 'list':
+                //$search['key'] = $_GET['search'];
+                $search['id']  = get_safe('id');
+                $search['bulan'] = get_safe('year').'-'.get_safe('bln');
+                $search['satker']= get_safe('id_satker');
+                $search['proja'] = get_safe('id_uraian');
+                $search['pjawab']= get_safe('png_jawab');
+                $data = $this->get_list_data_perwabku($limit, $page, $search);
+                $this->load->view('transaksi/perwabku-table', $data);
+                break;
+            case 'save': 
+                $data = $this->m_transaksi->save_perwabku();
+                die(json_encode($data));
+                break;
+            case 'approve': 
+                $id =   $_GET['id'];
+                $status = $_GET['status'];
+                $data = $this->m_transaksi->approve_perwabku($id, $status);
+                die(json_encode($data));
+                break;
+            case 'delete': 
+                $this->m_transaksi->delete_perwabku($_GET['id']);
+                break;
+            
+        }
+    }
+    
+    function get_list_data_perwabku($limit, $page, $search) {
+        if ($page == 'undefined') {
+            $page = 1;
+        }
+        //$str = 'null';
+        $start = ($page - 1) * $limit;
+        $data['page'] = $page;
+        $data['limit'] = $limit;
+        $data['auto'] = $start+1;
+        $query = $this->m_transaksi->get_data_perwabku($limit, $start, $search);
+        $data['list_data'] = $query['data'];
+        $data['jumlah'] = $query['jumlah'];
+        
+        $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, null);
         return $data;
     }
 }

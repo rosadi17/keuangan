@@ -17,54 +17,44 @@ $(function() {
             secondary: 'ui-icon-search'
         }
     }).click(function() {
-        form_cari();
+        $('#dialog_renbut_search').dialog({
+            title: 'Cari Data Rencana Kebutuhan',
+            autoOpen: true,
+            width: 480,
+            autoResize:true,
+            modal: true,
+            hide: 'explode',
+            show: 'blind',
+            position: ['center',47],
+            buttons: {
+                "Cancel": function() {
+                    $('#dialog_renbut_search').dialog('destroy');
+                },
+                "Cari": function() {
+                    get_list_renbut(1);
+                } 
+            }, close: function() {
+                $('#dialog_renbut_search').dialog('destroy');
+            }, open: function() {
+                $('#uraian').focus();
+            }
+        });
     });
     $('#reload_renbut').button({
         icons: {
             secondary: 'ui-icon-refresh'
         }
     }).click(function() {
-        get_list_renbut();
+        get_list_renbut(1);
     });
 });
 function get_list_renbut(page, src, id) {
     $.ajax({
         url: '<?= base_url('transaksi/manage_renbut') ?>/list/'+page,
-        data: 'search='+src+'&id='+id+'&bulan='+$('#year').val()+'-'+$('#bln').val()+'&id_satker='+$('#id_satker').val(),
+        data: $('#search_renbut').serialize(),
         cache: false,
         success: function(data) {
             $('#result').html(data);
-        }
-    });
-}
-
-function form_cari() {
-    var str = '<div id="dialog_renbut"><form action="" id="save_renbut">'+
-            '<?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?>'+
-            '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
-                '<tr><td width=25%>Bulan Tahun:</td><td><select name=bln id=bln style="width: 74px;"><?php foreach ($bulan as $bln) { ?> <option value="<?= $bln[0] ?>" <?= (($bln[0] === date("m"))?'selected':NULL) ?>><?= $bln[1] ?></option><?php } ?></select><select name="year" id="year" style="width: 74px;"><option value="">Select Year ....</option><?php for($i = 2010; $i <= date("Y"); $i++) { ?> <option value="<?= $i ?>" <?php if ($i == date("Y")) { echo "selected"; } ?>><?= $i ?></option><?php } ?></select></td></tr>'+
-                '<tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>'+
-            '</table>'+
-            '</form></div>';
-    $(str).dialog({
-        title: 'Cari Renbut',
-        autoOpen: true,
-        width: 480,
-        autoResize:true,
-        modal: true,
-        hide: 'explode',
-        show: 'blind',
-        position: ['center',47],
-        buttons: {
-            "Cari": function() {
-                get_list_renbut();
-            }, "Cancel": function() {
-                $(this).dialog().remove();
-            }
-        }, close: function() {
-            $(this).dialog().remove();
-        }, open: function() {
-            $('#uraian').focus();
         }
     });
 }
@@ -74,7 +64,7 @@ function get_nominal_renbut(id) {
         url: '<?= base_url('autocomplete/get_nominal_renbut') ?>/'+id,
         dataType: 'json',
         success: function(data) {
-           $('#jml_renbut').val(numberToCurrency(data.total));
+           //$('#jml_renbut').val(numberToCurrency(data.total));
         }
     });
 }
@@ -89,7 +79,7 @@ function form_renbut() {
                 '<tr><td width=40%>Detail:</td><td id="detail"></td></tr>'+
                 '<tr><td width=40%>Jumlah Renbut Rp.:</td><td><?= form_input('jml_renbut', NULL, 'id=jml_renbut size=60 onkeyup="FormNum(this);"') ?></td></tr>'+
                 '<tr><td width=40%>Penerima / PngJawab:</td><td><?= form_input('penerima', NULL, 'id=penerima size=60') ?></td></tr>'+
-                '<tr><td width=40% valign="top">Keterangan:</td><td><?= form_textarea('keterangan', NULL, 'id=keterangan rows="10"') ?></td></tr>'+
+                '<tr><td width=40% valign="top">Keterangan:</td><td><?= form_textarea('keterangan', NULL, 'id=keterangan rows="10" style="width: 294px;"') ?></td></tr>'+
                 /*'<tr><td width=40%>Nominal Rp.:</td><td><?= form_input('nominal', NULL, 'id=nominal size=60 onkeyup="FormNum(this);"') ?></td></tr>'+
                 '<tr><td width=40%>Cash bon Rp.:</td><td><?= form_input('cashbon', NULL, 'id=cashbon size=60 onkeyup="FormNum(this);"') ?></td></tr>'+                
                 '<tr><td width=40%>Penerima / PngJawab:</td><td><?= form_input('penerima', NULL, 'id=penerima size=60') ?></td></tr>'+*/
@@ -258,4 +248,14 @@ function delete_renbut(id, page) {
 
             </div>
         </div>
+    </div>
+    <div id="dialog_renbut_search" class="nodisplay">
+        <form action="" id="search_renbut">
+        <?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?>
+        <table width=100% cellpadding=0 cellspacing=0 class=inputan>
+            <tr><td width=25%>Bulan Tahun:</td><td><select name=bln id=bln style="width: 74px;"><?php foreach ($bulan as $bln) { ?> <option value="<?= $bln[0] ?>" <?= (($bln[0] === date("m"))?'selected':NULL) ?>><?= $bln[1] ?></option><?php } ?></select><select name="year" id="year" style="width: 74px;"><option value="">Select Year ....</option><?php for($i = 2010; $i <= date("Y"); $i++) { ?> <option value="<?= $i ?>" <?php if ($i == date("Y")) { echo "selected"; } ?>><?= $i ?></option><?php } ?></select></td></tr>
+            <tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>
+        </table>
+        </form>
+    </div>
 </div>

@@ -133,7 +133,7 @@ $(function() {
         </div>
     </div>
 </div>
-<div class="dialog">
+<div class="dialog nodisplay">
     <?= form_open('', 'id=form') ?>
     <table class="inputan" width="100%">
         <tr><td>Tanggal:</td><td><?= date("d F Y") ?></td></tr>

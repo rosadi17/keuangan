@@ -4,16 +4,10 @@ class M_transaksi extends CI_Model {
     
     function get_data_renbut($limit = null, $start = null, $search = null) {
         $q = null;
-        if ($search['key'] !== 'undefined') {
-            $q.=" and rk.keterangan like '%".$search['key']."%'";
+        if ($search['bulan'] !== '') {
+            $q.=" and rk.tanggal like ('".$search['bulan']."%')";
         }
-        if ($search['id'] !== 'undefined') {
-            $q.=" and rk.id_renbut = '".$search['id']."'";
-        }
-        if (($search['bulan'] !== '') and ($search['bulan'] !== 'undefined-undefined')) {
-            $q.=" and rk.tanggal like ('%".$search['bulan']."%')";
-        }
-        if (($search['satker'] !== '') and ($search['satker'] !== 'undefined')) {
+        if ($search['satker'] !== '') {
             $q.=" and s.id = '".$search['satker']."'";
         }
         $q.=" order by rk.tanggal asc";
@@ -95,22 +89,16 @@ class M_transaksi extends CI_Model {
     /*DROPPING*/
     function get_data_dropping($limit = null, $start = null, $search = null) {
         $q = null;
-        if ($search['key'] !== 'undefined') {
-            $q.=" and rk.keterangan like '%".$search['key']."%'";
-        }
-        if ($search['id'] !== 'undefined') {
-            $q.=" and rk.id = '".$search['id']."'";
-        }
-        if (($search['bulan'] !== '') and ($search['bulan'] !== 'undefined-undefined')) {
+        if ($search['bulan'] !== '') {
             $q.=" and rk.tanggal like ('%".$search['bulan']."%')";
         }
-        if (($search['satker'] !== '') and ($search['satker'] !== 'undefined')) {
+        if ($search['satker'] !== '') {
             $q.=" and s.id = '".$search['satker']."'";
         }
-        if (($search['proja'] !== '') and ($search['proja'] !== 'undefined')) {
+        if ($search['proja'] !== '') {
             $q.=" having ma_proja like ('%".$search['proja']."%')";
         }
-        if (($search['pjawab'] !== '') and ($search['pjawab'] !== 'undefined')) {
+        if ($search['pjawab'] !== '') {
             $q.=" and rk.penerima like ('%".$search['pjawab']."%')";
         }
         $q.=" order by rk.tanggal asc";
@@ -423,6 +411,7 @@ class M_transaksi extends CI_Model {
         $penyetor= post_safe('nama_user');
         $jumlah = currencyToNumber(post_safe('jumlah'));
         $perwabku= post_safe('perwabku');
+        $id_renbut = post_safe('id_renbut');
         if ($jenis === 'bkm') {
             $data = array(
                 'tanggal' => $tanggal,
@@ -443,6 +432,7 @@ class M_transaksi extends CI_Model {
                 'sumberdana' => $sumber,
                 'tanggal' => $tanggal,
                 'id_rekening' => $kd_perkiraan,
+                'id_renbut' => $id_renbut,
                 'id_uraian' => $maproja,
                 'pengeluaran' => $jumlah,
                 'penerima' => $penyetor,
@@ -458,7 +448,7 @@ class M_transaksi extends CI_Model {
             $this->db->where(array('id_uraian' => $maproja, 'YEAR(tanggal)' => date("Y")));
             $this->db->update('rencana_kebutuhan', $data_cair);
             $get = $this->db->query("select id_renbut from rencana_kebutuhan where id_uraian = '$maproja' and YEAR(tanggal) = '".date("Y")."'")->row();
-            $result['id'] = $get->id_renbut;
+            $result['id'] = $id;
             $result['act'] = 'bkk';
         }
         $result['status'] = TRUE;

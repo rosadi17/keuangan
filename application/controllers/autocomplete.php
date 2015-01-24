@@ -99,4 +99,9 @@ class Autocomplete extends CI_Controller {
         $data = $this->m_autocomplete->get_nominal_renbut($id_uraian)->row();
         die(json_encode($data));
     }
+    
+    function kode_renbut() {
+        $data = $this->m_autocomplete->get_kode_renbut(get_safe('q'))->result();
+        die(json_encode($data));
+    }
 }

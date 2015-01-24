@@ -22,7 +22,7 @@ function preview() {
 </script>
 <style>
     .tabel-advance th { text-align: center; border-bottom: 1px solid #f4f4f4; border-right: 1px solid #f4f4f4; }
-    .tabel-advance td {border-right: 1px solid #ccc; }
+    .tabel-advance td { }
     .tabel-advance tr:last-child td { border-bottom: 1px solid #ccc; }
 </style>
 <div class="searching-box">

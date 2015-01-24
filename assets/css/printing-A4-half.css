@@ -28,7 +28,16 @@ body {
     }
     
     @page {
-        margin: 0;
+        margin-top: 0.9cm;
+        margin-bottom: 0.5cm;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    @page:first {
+        margin-top: 0;
+        margin-bottom: 0.5cm;
+        margin-left: 0;
+        margin-right: 0;
     }
     @media print {
         .page {
@@ -62,4 +71,10 @@ h3 { font-size: 16px; margin-bottom: 0; }
 .total{
     border-top:1px solid #000;
     vertical-align: middle;
+}
+.left {
+    text-align: left;
+}
+.right {
+    text-align: right;
 }

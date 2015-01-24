@@ -31,10 +31,11 @@ function form_cari() {
         title: 'Cari dropping',
         autoOpen: true,
         width: 480,
-        height: 220,
+        autoResize:true,
         modal: true,
-        hide: 'clip',
+        hide: 'explode',
         show: 'blind',
+        position: ['center',47],
         buttons: {
             "Search": function() {
                 get_list_dropping();
@@ -103,10 +104,11 @@ function edit_pencairan(arr) {
         title: 'Form Pencairan Dana',
         autoOpen: true,
         width: 480,
-        height: 253,
+        autoResize:true,
         modal: true,
-        hide: 'clip',
+        hide: 'explode',
         show: 'blind',
+        position: ['center',47],
         buttons: {
             "Simpan": function() {
                 $('#save_renbut').submit();

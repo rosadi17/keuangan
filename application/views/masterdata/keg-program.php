@@ -56,15 +56,17 @@ function form_keg_program() {
         title: 'Tambah Kegiatan',
         autoOpen: true,
         width: 480,
-        height: 230,
+        autoResize: true,
         modal: true,
-        hide: 'clip',
+        hide: 'explode',
         show: 'blind',
+        position: ['center',47],
         buttons: {
+            "Cancel": function() {
+                $(this).dialog().remove();
+            },
             "Simpan": function() {
                 $('#save_keg_program').submit();
-            }, "Cancel": function() {
-                $(this).dialog().remove();
             }
         }, close: function() {
             $(this).dialog().remove();

@@ -49,15 +49,17 @@ function form_sub_sub_uraian() {
         title: 'Tambah sub uraian',
         autoOpen: true,
         width: 480,
-        height: 270,
+        autoResize: true,
         modal: true,
-        hide: 'clip',
+        hide: 'explode',
         show: 'blind',
+        position: ['center',47],
         buttons: {
+            "Cancel": function() {
+                $(this).dialog().remove();
+            },
             "Simpan": function() {
                 $('#save_sub_sub_uraian').submit();
-            }, "Cancel": function() {
-                $(this).dialog().remove();
             }
         }, close: function() {
             $(this).dialog().remove();

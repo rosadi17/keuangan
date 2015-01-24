@@ -54,15 +54,17 @@ function form_program() {
         title: 'Tambah program',
         autoOpen: true,
         width: 480,
-        height: 200,
+        autoResize: true,
         modal: true,
-        hide: 'clip',
+        hide: 'explode',
         show: 'blind',
+        position: ['center',47],
         buttons: {
+            "Cancel": function() {
+                $(this).dialog().remove();
+            },
             "Simpan": function() {
                 $('#save_program').submit();
-            }, "Cancel": function() {
-                $(this).dialog().remove();
             }
         }, close: function() {
             $(this).dialog().remove();

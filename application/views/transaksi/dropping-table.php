@@ -18,14 +18,14 @@
     <?php foreach ($list_data as $key => $data) { 
         $alert = "";
         if ($data->status === 'Disetujui') {
-            $alert = "style='background:green;color:#fff;'";
+            //$alert = "style='background:green;color:#fff;'";
         }
         ?>
     <tr class="<?= ($key%2==1)?'even':'odd' ?>" <?= $alert ?>>
         <td align="center"><?= $auto++ ?></td>
         <td align="center"><?= datefmysql($data->tanggal) ?></td>
         <td><?= $data->keterangan ?></td>
-        <td align="center"><?= $data->satker ?></td>
+        <td><?= $data->satker ?></td>
         <td align="center"><?= $data->ma_proja ?></td>
         <td align="right"><?= rupiah($data->nominal) ?></td>
         <td align="right"><?= rupiah($data->cashbon) ?></td>
