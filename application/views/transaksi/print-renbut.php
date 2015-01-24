@@ -15,7 +15,7 @@
         <tr><td>Tahun Anggaran</td><td>:</td><td><?= $data->tahun_anggaran ?></td></tr>
         <tr><td>Kode Unit Kerja</td><td>:</td><td><?= $data->kode_satker ?></td></tr>
         <tr><td>Unit Kerja</td><td>:</td><td><?= $data->satker ?></td></tr>
-        <tr><td>Jenis Pengeluaran</td><td>:</td><td></td></tr>
+        <tr><td>Jenis Pengeluaran</td><td>:</td><td><?= $data->status_pengeluaran ?></td></tr>
         <tr><td>MA</td><td>:</td><td><?= $data->ma_proja ?></td></tr>
         <tr><td>Program</td><td>:</td><td><?= $data->nama_program ?></td></tr>
         <tr><td>Kegiatan</td><td>:</td><td><?= $data->nama_kegiatan ?></td></tr>

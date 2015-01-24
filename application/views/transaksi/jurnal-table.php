@@ -1,7 +1,7 @@
 <table cellspacing="0" width="100%" class="list-data">
     <tr>
         <th width="3%">No.</th>
-        <th width="10%">Nota</th>
+        <th width="10%">No. Bukti</th>
         <th width="7%">Tanggal</th>
         <th width="20%">Kode Akun</th>
         <th width="10%">Debet</th>
