@@ -69,14 +69,26 @@ function get_nominal_renbut(id) {
     });
 }
 
+function get_nomor_renbut() {
+    $.ajax({
+        url: '<?= base_url('autocomplete/get_nomor_renbut') ?>',
+        dataType: 'json',
+        success: function(data) {
+           $('#nomor').val(data);
+        }
+    });
+}
+
 function form_renbut() {
     var str = '<div id="dialog_renbut"><form action="" id="save_renbut">'+
             '<?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?>'+
             '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
-                '<tr><td width=40%>Nomor:</td><td><?= form_input('nomor', date("ym"), 'id=nomor size=60') ?></td></tr>'+
+                '<tr><td width=40%>Nomor:</td><td><?= form_input('nomor', 'RBT'.date("ym"), 'id=nomor size=60') ?></td></tr>'+
                 '<tr><td width=40%>Tanggal Kegiatan:</td><td><?= form_input('tanggal', date("d/m/Y"), 'id=tanggal size=10') ?></td></tr>'+
+                '<tr><td width=40%>Nomor BKK Cashbon:</td><td><?= form_input('nomorbkk', '', 'id=nomorbkk size=10') ?></td></tr>'+
                 '<tr><td width=40%>MA Proja:</td><td><?= form_input('uraian', NULL, 'id=uraian size=60') ?><?= form_hidden('id_uraian', NULL, 'id=id_uraian') ?></td></tr>'+
                 '<tr><td width=40%>Detail:</td><td id="detail"></td></tr>'+
+                '<tr><td width=40%>Cashbon:</td><td id="nominalcashbon"></td></tr>'+
                 '<tr><td width=40%>Jumlah Renbut Rp.:</td><td><?= form_input('jml_renbut', NULL, 'id=jml_renbut size=60 onkeyup="FormNum(this);"') ?></td></tr>'+
                 '<tr><td width=40%>Penerima / PngJawab:</td><td><?= form_input('penerima', NULL, 'id=penerima size=60') ?></td></tr>'+
                 '<tr><td width=40% valign="top">Keterangan:</td><td><?= form_textarea('keterangan', NULL, 'id=keterangan rows="10" style="width: 294px;"') ?></td></tr>'+
@@ -105,11 +117,44 @@ function form_renbut() {
             $(this).dialog().remove();
         }, open: function() {
             $('#nomor').focus();
+            get_nomor_renbut();
         }
     });
     $('#tanggal').datepicker({
         changeYear: true,
         changeMonth: true
+    });
+    $('#nomorbkk').autocomplete("<?= base_url('autocomplete/nomorbkk') ?>",
+    {
+        parse: function(data){
+            var parsed = [];
+            for (var i=0; i < data.length; i++) {
+                parsed[i] = {
+                    data: data[i],
+                    value: data[i].nama_sub_kegiatan // nama field yang dicari
+                };
+            }
+            return parsed;
+        },
+        formatItem: function(data,i,max){
+            var str = '<div class=result>'+data.kode_cashbon+'</div>';
+            return str;
+        },
+        width: 300, // panjang tampilan pencarian autocomplete yang akan muncul di bawah textbox pencarian
+        dataType: 'json', // tipe data yang diterima oleh library ini disetup sebagai JSON
+        cacheLength: 0,
+        max: 100
+    }).result(
+    function(event,data,formated){
+        $(this).val(data.kode_cashbon);
+        $('#uraian').val(data.kode);
+        $('#id_uraian').val(data.id_uraian);
+        $('#detail').html(data.keterangan);
+        $('#jml_renbut').val('');
+        $('#nominalcashbon').html(numberToCurrency(data.cashbon));
+        $('#penerima').val(data.penanggungjawab);
+        $('#id_renbut').val(data.id_renbut);
+        
     });
     $('#uraian').autocomplete("<?= base_url('autocomplete/ma_proja') ?>",
     {
@@ -251,7 +296,6 @@ function delete_renbut(id, page) {
     </div>
     <div id="dialog_renbut_search" class="nodisplay">
         <form action="" id="search_renbut">
-        <?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?>
         <table width=100% cellpadding=0 cellspacing=0 class=inputan>
             <tr><td width=25%>Bulan Tahun:</td><td><select name=bln id=bln style="width: 74px;"><?php foreach ($bulan as $bln) { ?> <option value="<?= $bln[0] ?>" <?= (($bln[0] === date("m"))?'selected':NULL) ?>><?= $bln[1] ?></option><?php } ?></select><select name="year" id="year" style="width: 74px;"><option value="">Select Year ....</option><?php for($i = 2010; $i <= date("Y"); $i++) { ?> <option value="<?= $i ?>" <?php if ($i == date("Y")) { echo "selected"; } ?>><?= $i ?></option><?php } ?></select></td></tr>
             <tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>

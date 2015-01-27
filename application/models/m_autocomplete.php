@@ -260,4 +260,27 @@ class M_autocomplete extends CI_Model {
         join satker s on (p.id_satker = s.id) where u.id = '$id_uraian'";
         return $this->db->query($sql);
     }
+    
+    function get_nomor_renbut() {
+        $row = $this->db->query("select substr(kode,8,4) as kode from rencana_kebutuhan where kode != '' order by id_renbut desc limit 1")->row();
+        if (!isset($row->kode)) {
+            $nomor = 0;
+        } else {
+            $nomor = $row->kode;
+        }
+        return 'RBT'.date("ym").pad($nomor+1,4);
+    }
+    
+    function nomorbkk($q) {
+        $sql = "select rk.kode_cashbon, rk.cashbon, u.kode, rk.penerima as penanggungjawab, rk.id_renbut, rk.id_uraian,
+            CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as keterangan 
+            from rencana_kebutuhan rk
+            join uraian u on (rk.id_uraian = u.id)
+            join sub_kegiatan sk on (sk.id = u.id_sub_kegiatan)
+            join kegiatan k on (sk.id_kegiatan = k.id)
+            join program p on (k.id_program = p.id)
+            join satker s on (p.id_satker = s.id)
+            where rk.kode = '' and rk.kode_cashbon like ('$q%')";
+        return $this->db->query($sql);
+    }
 }

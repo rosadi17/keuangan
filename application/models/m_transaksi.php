@@ -18,7 +18,8 @@ class M_transaksi extends CI_Model {
             join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
             join kegiatan k on (sk.id_kegiatan = k.id)
             join program p on (k.id_program = p.id)
-            join satker s on (p.id_satker = s.id)";
+            join satker s on (p.id_satker = s.id)
+            where rk.kode != ''";
         $limitation = null;
         $limitation.=" limit $start , $limit";
         $query = $this->db->query($sql . $q . $limitation);
@@ -65,12 +66,14 @@ class M_transaksi extends CI_Model {
             $this->db->insert('rencana_kebutuhan', $data);
             $id_renbut = $this->db->insert_id();
         } else {
+            $renbut = $this->db->get_where('rencana_kebutuhan', array('id_renbut' => $id))->row();
             $data = array(
                 'tanggal_kegiatan' => $tanggal,
                 'kode' => $kode,
                 'id_uraian' => $id_uraian,
                 'keterangan' => $keterangan,
                 'jml_renbut' => $jml_renbut,
+                'nominal' => $jml_renbut-$renbut->cashbon,
                 'penerima' => $penerima
             );
             $this->db->where('id_renbut', $id);
@@ -412,6 +415,7 @@ class M_transaksi extends CI_Model {
         $jumlah = currencyToNumber(post_safe('jumlah'));
         $perwabku= post_safe('perwabku');
         $id_renbut = post_safe('id_renbut');
+        $uraian = post_safe('uraian');
         if ($jenis === 'bkm') {
             $data = array(
                 'tanggal' => $tanggal,
@@ -420,25 +424,50 @@ class M_transaksi extends CI_Model {
                 'id_rekening' => $kd_perkiraan,
                 'id_uraian' => $maproja,
                 'pemasukkan' => $jumlah,
-                'penyetor' => $penyetor,
-                'perwabku' => $perwabku
+                'penyetor' => $penyetor
             );
             $this->db->insert('penerimaan', $data);
             $result['id'] = $this->db->insert_id();
             $result['act'] = 'bkm';
         } else {
-            $data = array(
-                'kode' => $no,
-                'sumberdana' => $sumber,
-                'tanggal' => $tanggal,
-                'id_rekening' => $kd_perkiraan,
-                'id_renbut' => $id_renbut,
-                'id_uraian' => $maproja,
-                'pengeluaran' => $jumlah,
-                'penerima' => $penyetor,
-                'perwabku' => $perwabku
-            );
-            $this->db->insert('pengeluaran', $data);
+            if ($id_renbut !== '') {
+                $data = array(
+                    'kode' => $no,
+                    'sumberdana' => $sumber,
+                    'tanggal' => $tanggal,
+                    'id_rekening' => $kd_perkiraan,
+                    'id_renbut' => ($id_renbut === '')?$id_renbut:NULL,
+                    'id_uraian' => $maproja,
+                    'pengeluaran' => $jumlah,
+                    'penerima' => $penyetor,
+                    'perwabku' => $perwabku
+                );
+                $this->db->insert('pengeluaran', $data);
+            } else {
+                $data = array(
+                    'kode' => $no,
+                    'sumberdana' => $sumber,
+                    'tanggal' => $tanggal,
+                    'id_rekening' => $kd_perkiraan,
+                    //'id_renbut' => ($id_renbut === '')?$id_renbut:NULL,
+                    'id_uraian' => $maproja,
+                    'pengeluaran' => $jumlah,
+                    'penerima' => $penyetor,
+                    'perwabku' => $perwabku
+                );
+                $this->db->insert('pengeluaran', $data);
+                
+                $data_renbut = array(
+                    'tanggal' => date("Y-m-d"),
+                    'kode_cashbon' => $no,
+                    'tanggal_kegiatan' => $tanggal,
+                    'id_uraian' => $maproja,
+                    'keterangan' => $uraian,
+                    'cashbon' => $jumlah,
+                    'penerima' => $penyetor
+                );
+                $this->db->insert('rencana_kebutuhan', $data_renbut);
+            }
             $id = $this->db->insert_id();
             $data_cair  = array(
                 'nominal'  => $jumlah,
@@ -549,9 +578,9 @@ class M_transaksi extends CI_Model {
     
     function get_data_kasir($limit, $start, $search) {
         $q = NULL;
-        $sql = "select * from (select pn.*, substr(pn.kode,1,3) as kode_trans, u.uraian as keterangan from penerimaan pn
+        $sql = "select * from (select pn.*, substr(pn.kode,1,3) as kode_trans, u.uraian as keterangan, IFNULL(pn.id_renbut,'') as renbut from penerimaan pn
                 join uraian u on (pn.id_uraian = u.id)
-                UNION ALL select pg.*, substr(pg.kode,1,3) as kode_trans, u.uraian as keterangan from pengeluaran pg
+                UNION ALL select pg.*, substr(pg.kode,1,3) as kode_trans, u.uraian as keterangan, IFNULL(pg.id_renbut,'') as renbut from pengeluaran pg
                 join uraian u on (pg.id_uraian = u.id)) a order by tanggal desc";
         $limitation = null;
         $limitation.=" limit $start , $limit";

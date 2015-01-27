@@ -213,13 +213,15 @@ class M_laporan extends CI_Model {
             join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
             join kegiatan k on (sk.id_kegiatan = k.id)
             join program p on (k.id_program = p.id)
-            join satker s on (p.id_satker = s.id)";
+            join satker s on (p.id_satker = s.id)
+            where rk.kode != ''
+            ";
         $limitation = null;
         if ($limit !== null) {
             $limitation =" limit $start , $limit";
         }
         $query = $this->db->query($sql . $q . $limitation);
-        //echo $sql . $q . $limitation;
+        echo $sql . $q . $limitation;
         $queryAll = $this->db->query($sql . $q);
         $data['data'] = $query->result();
         $data['jumlah'] = $queryAll->num_rows();

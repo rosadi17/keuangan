@@ -104,4 +104,15 @@ class Autocomplete extends CI_Controller {
         $data = $this->m_autocomplete->get_kode_renbut(get_safe('q'))->result();
         die(json_encode($data));
     }
+    
+    function get_nomor_renbut() {
+        $data = $this->m_autocomplete->get_nomor_renbut();
+        die(json_encode($data));
+    }
+    
+    function nomorbkk() {
+        $q = get_safe('q');
+        $data = $this->m_autocomplete->nomorbkk($q)->result();
+        die(json_encode($data));
+    }
 }
