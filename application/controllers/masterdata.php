@@ -650,6 +650,31 @@ class Masterdata extends CI_Controller {
         $this->load->view('masterdata/kode-akun-list',$data);
     }
     
+    function delete_subsubsubsubrekening($id) {
+        $data = $this->db->delete('sub_sub_sub_sub_rekening', array('id' => $id));
+        die(json_encode($data));
+    }
+    
+    function delete_subsubsubrekening($id) {
+        $data = $this->db->delete('sub_sub_sub_rekening', array('id' => $id));
+        die(json_encode($data));
+    }
+    
+    function delete_subsubrekening($id) {
+        $data = $this->db->delete('sub_sub_rekening', array('id' => $id));
+        die(json_encode($data));
+    }
+    
+    function delete_subrekening($id) {
+        $data = $this->db->delete('sub_rekening', array('id' => $id));
+        die(json_encode($data));
+    }
+    
+    function delete_rekening($id) {
+        $data = $this->db->delete('rekening', array('id' => $id));
+        die(json_encode($data));
+    }
+    
     function cetak_proja($id_satker) {
         $data['proja'] = $this->m_masterdata->get_nama_proja($id_satker)->row();
         $data['program'] = $this->m_masterdata->load_all_data_program($id_satker)->result();

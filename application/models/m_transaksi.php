@@ -591,5 +591,9 @@ class M_transaksi extends CI_Model {
         $data['jumlah'] = $queryAll->num_rows();
         return $data;
     }
+    
+    function get_data_kasir_by_id($id) {
+        $sql = "";
+    }
 }
 ?>

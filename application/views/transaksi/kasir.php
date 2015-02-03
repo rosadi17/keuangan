@@ -251,6 +251,37 @@ $(function() {
     });
 });
 
+function edit_kasir(id) {
+    $('#form_kasir').dialog({
+        title: 'Form Kasir BKK / BKM',
+        autoOpen: true,
+        width: 480,
+        autoResize:true,
+        modal: true,
+        hide: 'explode',
+        show: 'blind',
+        position: ['center',47],
+        buttons: {
+            "Cancel": function() {
+                $('#form_kasir').dialog('destroy');
+            }, "Simpan": function() {
+                $('#form').submit();
+            }
+        }, close: function() {
+            $('#form_kasir').dialog('destroy');
+        }, open: function() {
+            $.ajax({
+                url: '<?= base_url('transaksi/get_data_kasir') ?>/'+id,
+                cache: false,
+                dataType: 'json',
+                success: function(data) {
+                    $('#result-kasir').html(data);
+                }
+            });
+        }
+});
+}
+
 function get_list_rekap_kasir(page) {
     $.ajax({
         url: '<?= base_url('transaksi/manage_kasir') ?>/list/'+page,

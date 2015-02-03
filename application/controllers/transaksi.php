@@ -533,5 +533,10 @@ class Transaksi extends CI_Controller {
         $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, null);
         return $data;
     }
+    
+    function get_data_kasir($id) {
+        $data = $this->m_transaksi->get_data_kasir_by_id($id)->row();
+        die(json_encode($data));
+    }
 }
 ?>

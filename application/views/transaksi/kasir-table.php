@@ -7,7 +7,7 @@
         <th width="10%" class="left">Penanggungjawab</th>
         <th width="10%" class="right">Jml Pembayaran</th>
         <th width="5%" class="left">Status</th>
-        <th width="5%"></th>
+        <th width="8%"></th>
     </tr>
     <?php foreach ($list_data as $key => $data) { 
         $status = "";
@@ -29,7 +29,11 @@
         <td><?= $data->penyetor ?></td>
         <td align="right"><?= rupiah($data->pemasukkan) ?></td>
         <td style="white-space: nowrap;"><?= $status ?></td>
-        <td align="right"><a class='printing' onclick="print_kasir('<?= $data->id ?>', '<?= $data->kode_trans ?>');" title="Klik untuk print">&nbsp;</a></td>
+        <td align="right">
+            <a class='printing' onclick="print_kasir('<?= $data->id ?>', '<?= $data->kode_trans ?>');" title="Klik untuk print">&nbsp;</a>
+            <a class='edition' onclick="edit_kasir('<?= $data->id ?>');" title="Klik untuk edit">&nbsp;</a>
+            <a class='deletion' onclick="delete_kasir('<?= $data->id ?>', '<?= $page ?>');" title="Klik untuk hapus">&nbsp;</a>
+        </td>
     </tr>
     <?php } ?>
 </table>

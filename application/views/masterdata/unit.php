@@ -137,4 +137,5 @@ function delete_unit(id, page) {
 
             </div>
         </div>
+    </div>
 </div>

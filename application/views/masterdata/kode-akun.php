@@ -4,12 +4,13 @@
 <script type="text/javascript">
 $(function() {
     get_list_rekening();
+    $('#tabs').tabs();
     $('#add-rekening').button({
         icons: {
             secondary: 'ui-icon-newwin'
         }
     }).click(function() {
-        dialog_rekening();
+        dialog_rekening('Tambah Rekening');
         get_last_code('rekening', 'id', null,'#kode_rek');
     });;
     $('#reset').button({
@@ -31,7 +32,14 @@ function get_list_rekening(page, search) {
 }
 </script>
 <div class="kegiatan">
-    <button id="add-rekening">Tambah Rekening</button>
-    <button id="reset">Reset</button>
-    <div id="list_rekening"></div>
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-1">Kode Rekening</a></li>
+        </ul>
+        <div id="tabs-1">
+            <button id="add-rekening">Tambah Rekening</button>
+            <button id="reset">Reset</button>
+            <div id="list_rekening"></div>
+            </div>
+        </div>
 </div>

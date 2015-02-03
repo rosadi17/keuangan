@@ -104,8 +104,8 @@ function dialog_s4_rekening() {
     $('#dialogx').dialog({
         autoOpen: true,
         title :'Tambah Rekening',
-        height: 180,
-        width: 400,
+        autoResize: true,
+        width: 450,
         modal: true,
         close: function() {
             $(this).dialog().remove(); 
@@ -156,7 +156,7 @@ function dialog_s4_rekening() {
     });
 }
 $('.edit_rek').click(function() {
-    dialog_rekening();
+    dialog_rekening('Edit Rekening');
     var id = $(this).attr('id');
     var arr = id.split('#');
     $('#kode_rek, #kode_rek_id').val(arr[0]);
@@ -167,7 +167,7 @@ $('.edit_rek').click(function() {
 $('.edit_sub_rek').click(function() {
     var id = $(this).attr('id');
     var arr = id.split('#');
-    dialog_subrekening(arr[0]);
+    dialog_subrekening(arr[0], 'Edit Rekening');
     $('#kode_sub_rek_id,#kode_sub_rek').val(arr[1]);
     $('#rekening_id').val(arr[0]);
     $('#nama_sub').val(arr[2]);
@@ -184,22 +184,33 @@ $('#rekening').live('change', function() {
     });
 });
 $('.delete').click(function() {
-    var ok = confirm('Apakah anda yakin akan menghapus data ini ?');
-    if (ok) {
-        $.ajax({
-            url: $(this).attr('href'),
-            cache: false,
-            success: function(data) {
-                alert_delete();
-                get_list_rekening(1, null);
+    $("<div id='dialogq'>Anda yakin akan menghapus data ini ?</div>").dialog({
+        title: 'Konfirmasi Penghapusan',
+        modal: true,
+        buttons: {
+            "OK": function() {
+                $(this).dialog().remove();
+                var parent = el.parentNode.parentNode;
+                parent.parentNode.removeChild(parent);
+                $.ajax({
+                    url: $(this).attr('id'),
+                    cache: false,
+                    success: function(data) {
+                        alert_delete();
+                        get_list_rekening(1, null);
+                    }
+                });
+            },
+            "Batal": function() {
+                $(this).dialog().remove();
             }
-        });
-    }
+        }
+    });
     return false;
 });
 
 /*Rekening Manage*/
-function dialog_rekening() {
+function dialog_rekening(titled) {
     var str = '<div class=inputan id=dialogx><form action="" id=form_rekening>'+
         '<table width=100% cellspacing=0 cellpadding=0 class=inputan>'+
             '<tr><td width=25%>Kode.:</td><td><?= form_input('kode_rek',NULL,'id=kode_rek') ?><input type=hidden name=kode_rek_id id=kode_rek_id /></td></tr>'+
@@ -211,9 +222,9 @@ function dialog_rekening() {
     $('#dialog_form').append(str);
     $('#dialogx').dialog({
         autoOpen: true,
-        title :'Tambah Rekening',
-        height: 190,
-        width: 400,
+        title : titled,
+        autoResize: true,
+        width: 450,
         modal: true,
         close: function() {
             $(this).dialog().remove(); 
@@ -233,17 +244,17 @@ function dialog_rekening() {
     });
 }
 function save_rekening() {
-    if ($('#kode_rek').val() == '') {
+    if ($('#kode_rek').val() === '') {
         custom_message('Peringatan','Kode rekening tidak boleh kosong !');
         $('#kode_rek').focus();
         return false;
     }
-    if ($('#nama_rekeningx').val() == '') {
+    if ($('#nama_rekeningx').val() === '') {
         custom_message('Peringatan','Nama rekening tidak boleh kosong !');
         $('#nama_rekeningx').focus();
         return false;
     }
-    if ($('#kode_rek_id').val() == '') {
+    if ($('#kode_rek_id').val() === '') {
         var url = '<?= base_url('masterdata/manage_rekening') ?>/add/';
     } else {
         var url = '<?= base_url('masterdata/manage_rekening') ?>/edit_rek/';
@@ -254,7 +265,7 @@ function save_rekening() {
         data: $('#form_rekening').serialize(),
         success: function(data) {
             $('#dialogx').dialog().remove(); 
-            if ($('#kode_rek_id').val() == '') {
+            if ($('#kode_rek_id').val() === '') {
                 alert_tambah();
             } else {
                 alert_edit();
@@ -270,11 +281,11 @@ function save_rekening() {
 /*Sub Rekening Manage*/
 $('.add_subrekening').click(function() {
     var value = $(this).attr('id');
-    dialog_subrekening(value);
+    dialog_subrekening(value, 'Tambah Rekening');
     get_last_code('sub_rekening', 'id', value, '#kode_sub_rek');
     return false;
 });
-function dialog_subrekening(id_rek) {
+function dialog_subrekening(id_rek, titled) {
     var str = '<div class="inputan" id="dialogy">'+
     '<form action="" id=form_subrekening>'+
     '<table width=100% cellspacing=0 cellpadding=0 class=inputan>'+
@@ -288,9 +299,9 @@ function dialog_subrekening(id_rek) {
     $('#rekening_id').val(id_rek);
     $('#dialogy').dialog({
         autoOpen: true,
-        title :'Tambah Sub Rekening',
-        height: 200,
-        width: 400,
+        title : titled,
+        autoResize: true,
+        width: 450,
         modal: true,
         close: function() {
             $(this).dialog().remove(); 
@@ -389,7 +400,7 @@ function dialog_sub_sub_rekening(id_sub_rekening) {
         autoOpen: true,
         title: 'Sub Sub Rekening',
         width: 400,
-        height: 220,
+        autoResize: true,
         modal: true,
         open: function() {
             $('#nama_sub_sub').focus();
@@ -476,8 +487,8 @@ function dialog_sub_sub_sub_rekening(id_sub_sub) {
     $('#dialogq').dialog({
         autoOpen: true,
         title: 'Sub Sub Sub Rekening',
-        width: 400,
-        height: 180,
+        width: 450,
+        autoResize: true,
         modal: true,
         open: function() {
             $('#nama_sss').focus();
@@ -574,7 +585,7 @@ function delete_sss(el, id) {
     });
     return false;
 }
-$('.edit_ssss').live('click', function() {
+$('.edit_ssss').click(function() {
     var arr = $(this).attr('id').split('#');
     dialog_s4_rekening();
     $('#id_sub_sub_sub_sub_reks').val(arr[0]);
@@ -620,7 +631,9 @@ $('.edit_sub_sub').click(function() {
             <td><?= anchor('', $data->id, 'class=edit_rek id="'.$data->id.'#'.$data->nama.'#'.$data->posisi.'"') ?></td>
             <td><?= $data->rekening ?></td>
             <td><?= $data->posisi ?></td>
-            <td><?= anchor('masterdata/delete_rekening/'.$data->id, 'Hapus', 'class=delete') ?>  <?= anchor('masterdata/tambah_sub_rekening/'.$data->id, 'Tambah Sub', 'class=add_subrekening id='.$data->id) ?></td>
+            <td>
+                <button type="button" class="btn btn-default btn-xs delete" id="<?= base_url('masterdata/delete_rekening/'.$data->id) ?>"><i class="fa fa-minus-circle"></i> Hapus</button>
+                <button type="button" class="btn btn-default btn-xs add_subrekening" id="<?= $data->id ?>"><i class="fa fa-plus-circle"></i> Tambah Sub</button>
         </tr>
         <?php 
             // Sub Rekening
@@ -637,7 +650,10 @@ $('.edit_sub_sub').click(function() {
                     <td><?= anchor('', $rows->id, 'class=edit_sub_rek id="'.$data->id.'#'.$rows->id.'#'.$rows->nama.'"') ?></td>
                     <td style="padding-left: 15px;"><?= $rows->nama ?></td>
                     <td><?= $data->posisi ?></td>
-                    <td style="padding-left: 15px;"><?= anchor('masterdata/delete_subrekening/'.$rows->id, 'Hapus', 'class=delete') ?>  <?= anchor('masterdata/tambah_sub_subrekening/'.$rows->id, 'Tambah Sub', 'class=add_subsubrekening id="'.$rows->id.'#'.$rows->nama.'#'.$data->nama.'#'.$data->id.'" title="'.$rows->id.'#'.$rows->nama.'#'.$data->nama.'#'.$data->id.'"') ?></td>
+                    <td style="padding-left: 15px;">
+                        <button type="button" class="btn btn-default btn-xs delete" id="<?= base_url('masterdata/delete_subrekening/'.$rows->id) ?>"><i class="fa fa-minus-circle"></i> Hapus</button>
+                        <button type="button" class="btn btn-default btn-xs add_subsubrekening" title="<?= $rows->id.'#'.$rows->nama.'#'.$data->nama.'#'.$data->id ?>" id="<?= $rows->id.'#'.$rows->nama.'#'.$data->nama.'#'.$data->id ?>"><i class="fa fa-plus-circle"></i> Tambah Sub</button>
+                    </td>
                 </tr>
                     <?php 
                     $sub_sub_rekening = $this->m_masterdata->data_subsubrekening_load_data(isset($id_sub_sub)?$id_sub_sub:NULL, $rows->id)->result();
@@ -646,7 +662,10 @@ $('.edit_sub_sub').click(function() {
                             <td><?= anchor('', $rowx->id, 'class=edit_sub_sub id="'.$rowx->id.'#'.$rows->nama.'#'.$rowx->id_subrekening.'#'.$rowx->nama.'"') ?></td>
                             <td style="padding-left: 30px;"><?= $rowx->nama ?></td>
                             <td><?= $data->posisi ?></td>
-                            <td style="padding-left: 30px;"><?= anchor('masterdata/delete_subsubrekening/'.$rowx->id, 'Hapus', 'class=delete') ?> <?= anchor('masterdata/tambah_sub_sub_subrekening/'.$rowx->id, 'Tambah Sub', 'class=add_subsubsubrekening id="'.$rowx->id.'#'.$rowx->nama.'"') ?></td>
+                            <td style="padding-left: 30px;">
+                                <button type="button" class="btn btn-default btn-xs delete" id="<?= base_url('masterdata/delete_subsubrekening/'.$rowx->id) ?>"><i class="fa fa-minus-circle"></i> Hapus</button>
+                                <button type="button" class="btn btn-default btn-xs add_subsubsubrekening" id="<?= $rowx->id.'#'.$rowx->nama ?>"><i class="fa fa-plus-circle"></i> Tambah Sub</button>
+                            </td>
                         </tr>
                         <?php
                         $sub_sub_sub_rekening = $this->m_masterdata->data_subsubsub_rekening_load_data(isset($id_sub_sub_sub)?$id_sub_sub_sub:NULL, $rowx->id)->result();
@@ -657,7 +676,10 @@ $('.edit_sub_sub').click(function() {
                                 <td><?= anchor('',$rowy->id,'class=edit_sss id="'.$str_s4.'"') ?></td>
                                 <td style="padding-left: 45px;"><?= $rowy->nama ?></td>
                                 <td><?= $data->posisi ?></td>
-                                <td style="padding-left: 45px;"><a onclick="delete_sss(this, <?= $rowy->id ?>)">Hapus</a> <?= anchor('', 'Tambah Sub', 'class=add_subsubsubsubrekening id="'.$rowy->id_sub_sub_sub_rekening.'#'.$rowy->nama.'"') ?></td>
+                                <td style="padding-left: 45px;">
+                                    <button type="button" class="btn btn-default btn-xs delete" onclick="delete_sss(this, <?= $rowy->id ?>)"><i class="fa fa-minus-circle"></i> Hapus</button>
+                                    <button type="button" class="btn btn-default btn-xs add_subsubsubsubrekening" id="<?= $rowy->id_sub_sub_sub_rekening.'#'.$rowy->nama ?>"><i class="fa fa-plus-circle"></i> Tambah Sub</button>
+                                </td>
                             </tr>
                         <?php
                             $sub_sub_sub_sub_rekening = $this->m_masterdata->data_subsubsubsub_rekening_load_data(isset($id_sub_sub_sub_sub)?$id_sub_sub_sub_sub:NULL, $rowy->id)->result();
@@ -668,7 +690,9 @@ $('.edit_sub_sub').click(function() {
                                     <td><?= anchor('',$rowz->id,'class=edit_ssss id="'.$str_s5.'"') ?></td>
                                     <td style="padding-left: 60px;"><?= $rowz->sub_sub_sub_sub_rekening ?></td>
                                     <td><?= $data->posisi ?></td>
-                                    <td style="padding-left: 60px;"><a onclick="delete_ssss(this, '<?= $rowz->id ?>')">Hapus</a></td>
+                                    <td style="padding-left: 60px;">
+                                        <button type="button" class="btn btn-default btn-xs delete" onclick="delete_ssss(this, '<?= $rowz->id ?>')"><i class="fa fa-minus-circle"></i> Hapus</button>
+                                    </td>
                                 </tr>
                             <?php
                             }
