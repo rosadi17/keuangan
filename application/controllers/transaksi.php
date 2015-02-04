@@ -107,13 +107,14 @@ class Transaksi extends CI_Controller {
                 die(json_encode($data));
                 break;
             case 'approve': 
-                $id =   $_GET['id'];
-                $status = $_GET['status'];
-                $data = $this->m_transaksi->approve_dropping($id, $status);
+                $param['id']     = post_safe('id');
+                $param['status'] = post_safe('status');
+                $param['jumlah'] = post_safe('jumlah');
+                $data = $this->m_transaksi->approve_dropping($param);
                 die(json_encode($data));
                 break;
             case 'delete': 
-                $this->m_transaksi->delete_dropping($_GET['id']);
+                $this->m_transaksi->delete_dropping(get_safe('id'));
                 break;
             
         }
@@ -444,6 +445,16 @@ class Transaksi extends CI_Controller {
                 $search['id']  = '';
                 $data = $this->get_list_data_kasir($limit, $page, $search);
                 $this->load->view('transaksi/kasir-table', $data);
+                break;
+            case 'delete':
+                $id    = get_safe('id');
+                $kode  = get_safe('kode');
+                if ($kode === 'BKK') {
+                    $this->db->delete('pengeluaran', array('id' => $id));
+                }
+                if ($kode === 'BKM') {
+                    $this->db->delete('penerimaan', array('id' => $id));
+                }
                 break;
         }
     }

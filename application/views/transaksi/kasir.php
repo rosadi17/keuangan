@@ -64,11 +64,12 @@ $(function() {
     $('#jenis').change(function() {
         var nilai = $(this).val();
         if (nilai === 'bkk') {
-            $('.hidden').show();
+            $('#perwabku').removeAttr('disabled');
         }
         if (nilai === 'bkm') {
             $('.hidden').hide();
             $('#kode_renbut, #id_renbut').val('');
+            $('#perwabku, #kode_renbut').attr('disabled','disabled');
         }
     });
     $('#cari_rekap_button').button({
@@ -93,6 +94,8 @@ $(function() {
                 }
             }, close: function() {
                 $('#form_kasir').dialog('destroy');
+            }, open: function() {
+                reset_form();
             }
         });
     });
@@ -251,6 +254,12 @@ $(function() {
     });
 });
 
+function reset_form() {
+    $('input[type=text], input[type=hidden], select, textarea').val('');
+    $('#s2id_supplier_auto a .select2-chosen').html('');
+    $('#tanggal').val('<?= date("d/m/Y") ?>');
+}
+
 function edit_kasir(id) {
     $('#form_kasir').dialog({
         title: 'Form Kasir BKK / BKM',
@@ -280,6 +289,30 @@ function edit_kasir(id) {
             });
         }
 });
+}
+
+function delete_kasir(id, page, kode) {
+    $('<div id=alert>Anda yakin akan menghapus data ini?</div>').dialog({
+        title: 'Konfirmasi Penghapusan',
+        autoOpen: true,
+        modal: true,
+        buttons: {
+            "OK": function() {
+                
+                $.ajax({
+                    url: '<?= base_url('transaksi/manage_kasir/delete') ?>?id='+id+'&kode='+kode,
+                    cache: false,
+                    success: function() {
+                        get_list_rekap_kasir(page);
+                        $('#alert').dialog().remove();
+                    }
+                });
+            },
+            "Cancel": function() {
+                $(this).dialog().remove();
+            }
+        }
+    });
 }
 
 function get_list_rekap_kasir(page) {
@@ -313,18 +346,18 @@ function paging(p) {
     <div id="form_kasir" class="nodisplay">
         <?= form_open('', 'id=form') ?>
         <table class="inputan" width="100%">
-            <tr><td>Jenis Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Pilih ...', 'bkk' => 'Kas Keluar', 'bkm' => 'Kas Masuk'), NULL, 'id=jenis') ?></td></tr>
+            <tr><td>Jenis Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Pilih ...', 'bkk' => 'Kas Keluar', 'bkm' => 'Kas Masuk'), NULL, 'id=jenis style="width: 294px;"') ?></td></tr>
             <tr><td>Tanggal:</td><td><?= form_input('tanggal', date("d/m/Y"), 'size=15 id=tanggal') ?></td></tr>
             <tr><td>No.</td><td><?= form_input('no', NULL, 'id=no') ?></td></tr>
-            <tr><td>Sumber Dana:</td><td><?= form_dropdown('sumberdana', array('Kas' => 'Kas', 'Bank' => 'Bank'), NULL, 'id=sumberdana') ?></td></tr>
+            <tr><td>Sumber Dana:</td><td><?= form_dropdown('sumberdana', array('' => 'Pilih ...', 'Kas' => 'Kas', 'Bank' => 'Bank'), NULL, 'id=sumberdana style="width: 294px;"') ?></td></tr>
             <tr><td>Kode Perkiraan:</td><td><?= form_input('kode_perkiraan', NULL, 'id=kode_perkiraan size=60') ?></td></tr>
-            <tr class="hidden"><td>Nomor Renbut:</td><td><?= form_input('kode_renbut', NULL, 'id=kode_renbut size=60') ?><?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?></td></tr>
+            <tr><td>Nomor Renbut:</td><td><?= form_input('kode_renbut', NULL, 'id=kode_renbut size=60') ?><?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?></td></tr>
             <tr><td>Kode MA/Proja:</td><td><?= form_input('kode', NULL, 'id=kode') ?><?= form_hidden('id_kode', NULL, 'id=id_kode') ?></td></tr>
             <tr><td>Pengguna Anggaran:</td><td><?= form_input('pengguna', NULL, 'id=pengguna') ?></td></tr>
             <tr><td valign="top">Uraian:</td><td><?= form_textarea('uraian', NULL, 'id=uraian rows=4 style="width: 294px;"') ?></td></tr>
             <tr><td>Jumlah Biaya:</td><td><?= form_input('jumlah', NULL, 'id=jumlah onkeyup="FormNum(this);"') ?></td></tr>
             <tr><td><?= form_dropdown('user', array('Penerima' => 'Penerima', 'Penyetor' => 'Penyetor'), NULL, 'id=user style="width: 120px;"') ?></td><td><?= form_input('nama_user', NULL, 'id=nama_user') ?></td></tr>
-            <tr class="hidden"><td>Perwabku:</td><td><?= form_dropdown('perwabku', array('Default' => 'Default', 'Belum' => 'Belum (DP)', 'Sudah' => 'Sudah (Pusat Biaya)'), NULL, 'id=perwabku') ?></td></tr>
+            <tr><td>Perwabku:</td><td><?= form_dropdown('perwabku', array('Default' => 'Default', 'Belum' => 'Belum (DP)', 'Sudah' => 'Sudah (Pusat Biaya)'), NULL, 'id=perwabku') ?></td></tr>
             <!--<tr><td></td><td><?= form_button('Simpan', 'id=simpan') ?> <?= form_button('Reset', 'id=reset') ?></td></tr>-->
         </table>
         <?= form_close() ?>

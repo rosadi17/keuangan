@@ -5,7 +5,7 @@
         <th width="38%" rowspan="2">Kegiatan</th>
         <th width="5%" rowspan="2">Unit</th>
         <th width="5%" rowspan="2">MA<br/>Proja</th>
-        <th width="5%" colspan="3">Jumlah</th>
+        <th width="5%" colspan="4">Jumlah</th>
         <th width="10%" rowspan="2">Penerima /<br/> Penanggungjawab</th>
         <th width="5%" rowspan="2">Status</th>
         <th width="2%" rowspan="2">Aksi</th>
@@ -13,27 +13,32 @@
     <tr>
         <th width="7%" style="border-top: 1px solid #6eb7ff;">Nominal</th>
         <th width="7%" style="border-top: 1px solid #6eb7ff;">Cash Bon</th>
-        <th width="7%" style="border-top: 1px solid #6eb7ff;">Jml Renbut</th>
+        <th width="7%" style="border-top: 1px solid #6eb7ff;">Renbut</th>
+        <th width="7%" style="border-top: 1px solid #6eb7ff;">Dropping</th>
     </tr>
     <?php foreach ($list_data as $key => $data) { 
-        $alert = "";
+        $alert = "<i class='blinker'>".$data->status."</i>";
         if ($data->status === 'Disetujui') {
-            //$alert = "style='background:green;color:#fff;'";
+            $alert = '<span class="label label-success"><i class="fa fa-thumbs-up"></i> '.$data->status.'</span>';
+        }
+        else if ($data->status === 'Ditolak') {
+            $alert = '<span class="label label-warning"><i class="fa fa-ban"></i> '.$data->status.'</span>';
         }
         ?>
-    <tr class="<?= ($key%2==1)?'even':'odd' ?>" <?= $alert ?>>
+    <tr class="<?= ($key%2==1)?'even':'odd' ?>">
         <td align="center"><?= $auto++ ?></td>
         <td align="center"><?= datefmysql($data->tanggal) ?></td>
         <td><?= $data->keterangan ?></td>
-        <td><?= $data->satker ?></td>
+        <td class="nowrap"><?= $data->satker ?></td>
         <td align="center"><?= $data->ma_proja ?></td>
         <td align="right"><?= rupiah($data->nominal) ?></td>
         <td align="right"><?= rupiah($data->cashbon) ?></td>
         <td align="right"><?= rupiah($data->jml_renbut) ?></td>
+        <td align="right"><?= rupiah($data->jml_dropping) ?></td>
         <td><?= $data->penerima ?></td>
-        <td align="center"><?= $data->status ?></td>
+        <td align="center"><?= $alert ?></td>
         <td class="aksi" align="center">
-            <a class='process' onclick="edit_dropping('<?= $data->id_renbut ?>');" title="Klik untuk persetujuan">&nbsp;</a>
+            <button type="button" class="btn btn-default btn-xs" onclick="edit_dropping('<?= $data->id_renbut ?>','<?= $data->jml_renbut ?>');" title="Klik untuk persetujuan"><i class="fa fa-gear"></i></button>
         </td>
     </tr>
     <?php } ?>

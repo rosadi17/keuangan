@@ -3,11 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/wamp/www/keuangan/application/models/m_transaksi.php</file>
-            <file>file:/C:/wamp/www/keuangan/application/views/transaksi/kasir.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/masterdata/unit.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/transaksi/jurnal.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/transaksi/kasir-table.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/transaksi/renbut.php</file>
             <file>file:/C:/wamp/www/keuangan/application/controllers/transaksi.php</file>
+            <file>file:/C:/wamp/www/keuangan/assets/css/base.css</file>
             <file>file:/C:/wamp/www/keuangan/application/views/transaksi/renbut-table.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/transaksi/dropping-table.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/transaksi/kasir.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/models/m_transaksi.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/masterdata/kode-akun-list.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/layout.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/transaksi/dropping.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/controllers/masterdata.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/masterdata/kode-akun.php</file>
         </group>
     </open-files>
 </project-private>

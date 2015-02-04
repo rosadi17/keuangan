@@ -32,6 +32,7 @@ $(function() {
                 },
                 "Search": function() {
                     get_list_dropping(1);
+                    $('#dialog_dropping').dialog('destroy');
                 } 
             }, close: function() {
                 $('#dialog_dropping').dialog('destroy');
@@ -85,10 +86,11 @@ function get_list_dropping(page, src, id) {
     });
 }
 
-function edit_dropping(id) {
+function edit_dropping(id, nominal) {
     var str = '<div id=alert>'+
             '<table width=100% class=inputan>'+
-                '<tr><td>Status:</td><td><select name=status id=status><option value="Disetujui">Disetujui</option><option value="Ditolak">Ditolak</option></select></td></tr>'+
+                '<tr><td>Status:</td><td><select name=status id=status><option value="">Pilih ...</option><option value="Disetujui">Disetujui</option><option value="Ditolak">Ditolak</option></select></td></tr>'+
+                '<tr><td>Jumlah:</td><td><input type="text" name="jumlah" onblur="FormNum(this);" id="jumlah" value="'+numberToCurrency(nominal)+'" /></td></tr>'+
             '</table>'+
             '</div>';
     $(str).dialog({
@@ -102,8 +104,13 @@ function edit_dropping(id) {
         position: ['center',47],
         buttons: {
             "Save": function() {
+                if ($('#status').val() === '') {
+                    custom_message('Peringatan','Status konfirmasi harus dipilih !','#status'); return false;
+                }
                 $.ajax({
-                    url: '<?= base_url('transaksi/manage_dropping/approve') ?>?id='+id+'&status='+$('#status').val(),
+                    type: 'POST',
+                    url: '<?= base_url('transaksi/manage_dropping/approve') ?>',
+                    data: 'id='+id+'&status='+$('#status').val()+'&jumlah='+$('#jumlah').val(),
                     cache: false,
                     dataType: 'json',
                     success: function(data) {

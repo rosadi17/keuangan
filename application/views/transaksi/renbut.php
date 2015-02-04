@@ -87,7 +87,7 @@ function form_renbut() {
                 '<tr><td width=40%>Tanggal Kegiatan:</td><td><?= form_input('tanggal', date("d/m/Y"), 'id=tanggal size=10') ?></td></tr>'+
                 '<tr><td width=40%>Nomor BKK Cashbon:</td><td><?= form_input('nomorbkk', '', 'id=nomorbkk size=10') ?></td></tr>'+
                 '<tr><td width=40%>MA Proja:</td><td><?= form_input('uraian', NULL, 'id=uraian size=60') ?><?= form_hidden('id_uraian', NULL, 'id=id_uraian') ?></td></tr>'+
-                '<tr><td width=40%>Detail:</td><td id="detail"></td></tr>'+
+                '<tr valign="top"><td width=40%>Detail:</td><td id="detail"></td></tr>'+
                 '<tr><td width=40%>Cashbon:</td><td id="nominalcashbon"></td></tr>'+
                 '<tr><td width=40%>Jumlah Renbut Rp.:</td><td><?= form_input('jml_renbut', NULL, 'id=jml_renbut size=60 onkeyup="FormNum(this);"') ?></td></tr>'+
                 '<tr><td width=40%>Penerima / PngJawab:</td><td><?= form_input('penerima', NULL, 'id=penerima size=60') ?></td></tr>'+

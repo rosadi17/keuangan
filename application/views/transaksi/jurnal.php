@@ -44,16 +44,18 @@ function form_jurnal() {
     $('.dialog').dialog({
         title: 'Jurnal Transaksi',
         autoOpen: true,
-        width: 480,
-        height: 300,
+        width: 520,
+        autoResize: true,
         modal: true,
-        hide: 'clip',
+        hide: 'explode',
         show: 'blind',
+        position: ['center',47],
         buttons: {
+            "Cancel": function() {
+                $(this).dialog('close');
+            },
             "Simpan": function() {
                 save_jurnal();
-            }, "Cancel": function() {
-                $(this).dialog('close');
             }
         }, close: function() {
             $(this).dialog('close');
@@ -61,6 +63,16 @@ function form_jurnal() {
     });
 }
 
+function rek_debet_add_row() {
+    str = '<div class="rows_debet" style="margin-bottom: 3px;"><?= form_input('kode_perkiraan_d[]', NULL, 'id=kode_perkiraan_d style="width: 200px;" placeholder="Kode akun ..."') ?>&nbsp;<?= form_input('jumlah_d[]', NULL, 'id=jumlah onkeyup="FormNum(this);" style="width: 70px;" placeholder="Nominal ..."') ?> <button type="button" class="btn btn-default btn-xs delete" id=""><i class="fa fa-minus-circle"></i></button></div>';
+    $('#rows_debet').append(str);
+}
+
+function rek_kredit_add_row() {
+    str = '<div class="rows_debet" style="margin-bottom: 3px;"><?= form_input('kode_perkiraan_k[]', NULL, 'id=kode_perkiraan_k style="width: 200px;" placeholder="Kode akun ..."') ?>&nbsp;<?= form_input('jumlah_k[]', NULL, 'id=jumlah onkeyup="FormNum(this);" style="width: 70px;" placeholder="Nominal ..."') ?> <button type="button" class="btn btn-default btn-xs delete" id=""><i class="fa fa-minus-circle"></i></button></div>';
+    $('#rows_kredit').append(str);
+}
+//<tr><td>Kode Perkiraan (K):</td><td><?= form_input('kode_perkiraan_k', NULL, 'id=kode_perkiraan_k size=60') ?></td></tr>
 $(function() {
     get_list_jurnal(1);
     $('#tabs').tabs();
@@ -138,11 +150,10 @@ $(function() {
     <table class="inputan" width="100%">
         <tr><td>Tanggal:</td><td><?= date("d F Y") ?></td></tr>
         <tr><td>Kode BKK/BKM:</td><td><?= form_input('kode_transaksi', NULL, 'id=kode_transaksi size=60') ?></td></tr>
-        <tr><td>Kode Perkiraan (D):</td><td><?= form_input('kode_perkiraan_d', NULL, 'id=kode_perkiraan_d size=60') ?></td></tr>
-        <tr><td>Kode Perkiraan (K):</td><td><?= form_input('kode_perkiraan_k', NULL, 'id=kode_perkiraan_k size=60') ?></td></tr>
-        <!--<tr><td>Kode MA/Proja:</td><td><?= form_input('kode', NULL, 'id=kode') ?><?= form_hidden('id_kode', NULL, 'id=id_kode') ?></td></tr>-->
-        <tr><td valign="top">Uraian:</td><td><?= form_textarea('uraian', NULL, 'id=uraian rows=4') ?></td></tr>
-        <tr><td>Nominal Rp.:</td><td><?= form_input('jumlah', NULL, 'id=jumlah onkeyup="FormNum(this);"') ?></td></tr>
+        <tr><td></td><td><button type="button" class="btn btn-default btn-xs delete" onclick="rek_debet_add_row();"><i class="fa fa-plus-circle"></i> Tambah Kode (D)</button> <button type="button" class="btn btn-default btn-xs delete" onclick="rek_kredit_add_row();"><i class="fa fa-plus-circle"></i> Tambah Kode (K)</button></td></tr>
+        <tr><td valign="top">Kode Akun (D):</td><td id="rows_debet"></td></tr>
+        <tr><td valign="top">Kode Akun (K):</td><td id="rows_kredit"></td></tr>
+        <tr><td valign="top">Uraian:</td><td><?= form_textarea('uraian', NULL, 'id=uraian rows=4 style="width: 294px;"') ?></td></tr>
     </table>
     <?= form_close() ?>
 </div>

@@ -177,7 +177,7 @@ class M_autocomplete extends CI_Model {
     
     function get_last_code_kasir($trans) {
         if ($trans === 'bkm') {
-            $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from penerimaan order by id desc limit 1";
+            $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from penerimaan where tanggal like '".date("Y-m")."%' order by id desc limit 1";
             $data= $this->db->query($sql)->row();
             if (isset($data->kode)) {
                 $auto = $data->kode;
@@ -187,7 +187,7 @@ class M_autocomplete extends CI_Model {
             $result['no'] = 'BKM'.date("ym").pad($auto+1, 4);
         }
         if ($trans === 'bkk') {
-            $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from pengeluaran order by id desc limit 1";
+            $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from pengeluaran where tanggal like '".date("Y-m")."%' order by id desc limit 1";
             $data= $this->db->query($sql)->row();
             if (isset($data->kode)) {
                 $auto = $data->kode;
@@ -262,7 +262,7 @@ class M_autocomplete extends CI_Model {
     }
     
     function get_nomor_renbut() {
-        $row = $this->db->query("select substr(kode,8,4) as kode from rencana_kebutuhan where kode != '' order by id_renbut desc limit 1")->row();
+        $row = $this->db->query("select substr(kode,8,4) as kode from rencana_kebutuhan where kode != '' and tanggal like '".date("Y-m")."%' order by id_renbut desc limit 1")->row();
         if (!isset($row->kode)) {
             $nomor = 0;
         } else {

@@ -151,10 +151,10 @@ class M_transaksi extends CI_Model {
         return $result;
     }
     
-    function approve_dropping($id, $status) {
-        $this->db->where('id_renbut', $id);
-        $this->db->update('rencana_kebutuhan', array('verificator' => $this->session->userdata('id_user'), 'status' => $status, 'date_verify' => date("Y-m-d")));
-        return array('status' => $status);
+    function approve_dropping($param) {
+        $this->db->where('id_renbut', $param['id']);
+        $this->db->update('rencana_kebutuhan', array('verificator' => $this->session->userdata('id_user'), 'status' => $param['status'], 'date_verify' => date("Y-m-d"), 'jml_dropping' => currencyToNumber($param['jumlah'])));
+        return array('status' => $param['status']);
     }
     
     function delete_dropping($id) {
@@ -436,7 +436,7 @@ class M_transaksi extends CI_Model {
                     'sumberdana' => $sumber,
                     'tanggal' => $tanggal,
                     'id_rekening' => $kd_perkiraan,
-                    'id_renbut' => ($id_renbut === '')?$id_renbut:NULL,
+                    'id_renbut' => ($id_renbut !== '')?$id_renbut:NULL,
                     'id_uraian' => $maproja,
                     'pengeluaran' => $jumlah,
                     'penerima' => $penyetor,

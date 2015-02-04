@@ -18,7 +18,7 @@
             $status = "<i>Kas Masuk</i>";
         }
         else if ($data->renbut !== '' and $data->kode_trans === 'BKK') {
-            $status = "<i>Renbut</i>";
+            $status = "<i class='fa fa-check-square-o'></i> Renbut";
         }
         ?>
     <tr class="<?= ($key%2==1)?'even':'odd' ?>">
@@ -30,9 +30,9 @@
         <td align="right"><?= rupiah($data->pemasukkan) ?></td>
         <td style="white-space: nowrap;"><?= $status ?></td>
         <td align="right">
-            <a class='printing' onclick="print_kasir('<?= $data->id ?>', '<?= $data->kode_trans ?>');" title="Klik untuk print">&nbsp;</a>
-            <a class='edition' onclick="edit_kasir('<?= $data->id ?>');" title="Klik untuk edit">&nbsp;</a>
-            <a class='deletion' onclick="delete_kasir('<?= $data->id ?>', '<?= $page ?>');" title="Klik untuk hapus">&nbsp;</a>
+            <button type="button" class="btn btn-default btn-xs" onclick="print_kasir('<?= $data->id ?>', '<?= $data->kode_trans ?>');" title="Klik untuk print"><i class="fa fa-print"></i></button>
+            <button type="button" class="btn btn-default btn-xs" onclick="edit_kasir('<?= $data->id ?>');" title="Klik untuk edit"><i class="fa fa-pencil"></i></button>
+            <button type="button" class="btn btn-default btn-xs" onclick="delete_kasir('<?= $data->id ?>', '<?= $page ?>','<?= $data->kode_trans ?>');" title="Klik untuk delete"><i class="fa fa-trash-o"></i></button>
         </td>
     </tr>
     <?php } ?>

@@ -15,6 +15,7 @@
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/jquery.contextmenu.css') ?>" media="all" />
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/jquery.treetable.css') ?>" media="all" />
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/jquery.treetable.theme.default.css') ?>" media="all" />
+        <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap.css') ?>" media="all" />
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/font-awesome/css/font-awesome.min.css') ?>" media="all" />
         
         <script type="text/javascript" src="<?= base_url('assets/js/jquery-1.8.3.js') ?>"></script>
