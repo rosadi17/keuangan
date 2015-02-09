@@ -90,8 +90,16 @@ class Autocomplete extends CI_Controller {
     }
     
     function kode_perkiraan() {
-        $q = $_GET['q'];
-        $data = $this->m_autocomplete->get_kode_perkiraan($q)->result();
+        $param['q']    = get_safe('q');
+        $param['kategori']   = get_safe('kategori');
+        $data = $this->m_autocomplete->get_kode_perkiraan($param)->result();
+        die(json_encode($data));
+    }
+    
+    function kode_perkiraan_pwk() {
+        $param['q']    = get_safe('q');
+        $param['kategori']   = get_safe('perwabku');
+        $data = $this->m_autocomplete->get_kode_perkiraan_pwk($param)->result();
         die(json_encode($data));
     }
     

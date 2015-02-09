@@ -18,10 +18,10 @@ $(function() {
             secondary: 'ui-icon-refresh'
         }
     }).click(function() {
-        get_list_rekening();
+        get_list_rekening(1);
     });
 });
-function get_list_rekening(page, search) {
+function get_list_rekening(page) {
     $.ajax({
         url: '<?= base_url('masterdata/manage_rekening') ?>/list/'+page,
         cache: false,
@@ -38,7 +38,7 @@ function get_list_rekening(page, search) {
         </ul>
         <div id="tabs-1">
             <button id="add-rekening">Tambah Rekening</button>
-            <button id="reset">Reset</button>
+            <button id="reset">Reload Data</button>
             <div id="list_rekening"></div>
             </div>
         </div>

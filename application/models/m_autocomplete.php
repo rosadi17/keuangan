@@ -128,13 +128,39 @@ class M_autocomplete extends CI_Model {
         return $this->db->query($sql);
     }
     
-    function get_kode_perkiraan($q) {
-        $sql = "select r.*, s4r.id as id_akun, CONCAT_WS(' - ',r.nama,sr.nama,s2r.nama,s3r.nama,s4r.nama) as akun from sub_sub_sub_sub_rekening s4r
+    function get_kode_perkiraan($param) {
+        $q = NULL;
+        if ($param['kategori'] === 'Kas') {
+            $q.=" and s4r.id_sub_sub_sub_rekening = '111100'";
+        }
+        if ($param['kategori'] === 'Bank') {
+            $q.=" and s4r.id_sub_sub_sub_rekening = '111200'";
+        }
+        $sql = "select r.*, s4r.id as id_akun, CONCAT_WS(' - ',r.nama,sr.nama,s2r.nama,s3r.nama,s4r.nama) as akun 
+            from sub_sub_sub_sub_rekening s4r
             join sub_sub_sub_rekening s3r on (s4r.id_sub_sub_sub_rekening = s3r.id)
             join sub_sub_rekening s2r on (s3r.id_sub_sub_rekening = s2r.id)
             join sub_rekening sr on (s2r.id_sub_rekening = sr.id)
             join rekening r on (sr.id_rekening = r.id)
-            where s4r.id is not NULL having akun like ('%$q%') or id_akun like ('%$q%')";
+            where s4r.id is not NULL $q having akun like ('".$param['q']."%') or id_akun like ('".$param['q']."%')";
+        return $this->db->query($sql);
+    }
+    
+    function get_kode_perkiraan_pwk($param) {
+        $q = NULL;
+        if ($param['kategori'] === 'Belum') {
+            $q.=" and s4r.id_sub_sub_sub_rekening = '521100'";
+        }
+        if ($param['kategori'] === 'Sudah') {
+            $q.=" and s4r.id_sub_sub_sub_rekening = '511100'";
+        }
+        $sql = "select r.*, s4r.id as id_akun, CONCAT_WS(' - ',r.nama,sr.nama,s2r.nama,s3r.nama,s4r.nama) as akun 
+            from sub_sub_sub_sub_rekening s4r
+            join sub_sub_sub_rekening s3r on (s4r.id_sub_sub_sub_rekening = s3r.id)
+            join sub_sub_rekening s2r on (s3r.id_sub_sub_rekening = s2r.id)
+            join sub_rekening sr on (s2r.id_sub_rekening = sr.id)
+            join rekening r on (sr.id_rekening = r.id)
+            where s4r.id is not NULL $q having akun like ('".$param['q']."%') or id_akun like ('".$param['q']."%')";
         return $this->db->query($sql);
     }
             

@@ -184,20 +184,20 @@ $('#rekening').live('change', function() {
     });
 });
 $('.delete').click(function() {
+    var url = $(this).attr('id');
     $("<div id='dialogq'>Anda yakin akan menghapus data ini ?</div>").dialog({
         title: 'Konfirmasi Penghapusan',
         modal: true,
         buttons: {
             "OK": function() {
                 $(this).dialog().remove();
-                var parent = el.parentNode.parentNode;
-                parent.parentNode.removeChild(parent);
                 $.ajax({
-                    url: $(this).attr('id'),
+                    url: url,
                     cache: false,
                     success: function(data) {
                         alert_delete();
-                        get_list_rekening(1, null);
+                        get_list_rekening(1);
+                        return false;
                     }
                 });
             },
@@ -206,7 +206,6 @@ $('.delete').click(function() {
             }
         }
     });
-    return false;
 });
 
 /*Rekening Manage*/
@@ -557,6 +556,35 @@ function delete_ssss(el, id) {
     return false;
 }
 
+function deleteMe(el, url) {
+    $("<div id='dialogq'>Anda yakin akan menghapus data ini ?</div>").dialog({
+        title: 'Konfirmasi Penghapusan',
+        modal: true,
+        buttons: {
+            "OK": function() {
+                $(this).dialog().remove();
+                var parent = el.parentNode.parentNode;
+                parent.parentNode.removeChild(parent);
+                $.ajax({
+                    url: url,
+                    cache: false,
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status === true) {
+                            alert_delete();
+                            $('#loaddata').load('<?= base_url('masterdata/rekening') ?>');
+                        }
+                    }
+                });
+            },
+            "Batal": function() {
+                $(this).dialog().remove();
+            }
+        }
+    });
+    return false;
+}
+
 function delete_sss(el, id) {
     $("<div id='dialogq'>Anda yakin akan menghapus data ini ?</div>").dialog({
         title: 'Konfirmasi Penghapusan',
@@ -632,7 +660,7 @@ $('.edit_sub_sub').click(function() {
             <td><?= $data->rekening ?></td>
             <td><?= $data->posisi ?></td>
             <td>
-                <button type="button" class="btn btn-default btn-xs delete" id="<?= base_url('masterdata/delete_rekening/'.$data->id) ?>"><i class="fa fa-minus-circle"></i> Hapus</button>
+                <button type="button" class="btn btn-default btn-xs" onclick="deleteMe(this, '<?= base_url('masterdata/delete_rekening/'.$data->id) ?>')"><i class="fa fa-minus-circle"></i> Hapus</button>
                 <button type="button" class="btn btn-default btn-xs add_subrekening" id="<?= $data->id ?>"><i class="fa fa-plus-circle"></i> Tambah Sub</button>
         </tr>
         <?php 
@@ -651,7 +679,7 @@ $('.edit_sub_sub').click(function() {
                     <td style="padding-left: 15px;"><?= $rows->nama ?></td>
                     <td><?= $data->posisi ?></td>
                     <td style="padding-left: 15px;">
-                        <button type="button" class="btn btn-default btn-xs delete" id="<?= base_url('masterdata/delete_subrekening/'.$rows->id) ?>"><i class="fa fa-minus-circle"></i> Hapus</button>
+                        <button type="button" class="btn btn-default btn-xs" onclick="deleteMe(this, '<?= base_url('masterdata/delete_subrekening/'.$rows->id) ?>')"><i class="fa fa-minus-circle"></i> Hapus</button>
                         <button type="button" class="btn btn-default btn-xs add_subsubrekening" title="<?= $rows->id.'#'.$rows->nama.'#'.$data->nama.'#'.$data->id ?>" id="<?= $rows->id.'#'.$rows->nama.'#'.$data->nama.'#'.$data->id ?>"><i class="fa fa-plus-circle"></i> Tambah Sub</button>
                     </td>
                 </tr>
@@ -663,7 +691,7 @@ $('.edit_sub_sub').click(function() {
                             <td style="padding-left: 30px;"><?= $rowx->nama ?></td>
                             <td><?= $data->posisi ?></td>
                             <td style="padding-left: 30px;">
-                                <button type="button" class="btn btn-default btn-xs delete" id="<?= base_url('masterdata/delete_subsubrekening/'.$rowx->id) ?>"><i class="fa fa-minus-circle"></i> Hapus</button>
+                                <button type="button" class="btn btn-default btn-xs" onclick="deleteMe(this, '<?= base_url('masterdata/delete_subsubrekening/'.$rowx->id) ?>')"><i class="fa fa-minus-circle"></i> Hapus</button>
                                 <button type="button" class="btn btn-default btn-xs add_subsubsubrekening" id="<?= $rowx->id.'#'.$rowx->nama ?>"><i class="fa fa-plus-circle"></i> Tambah Sub</button>
                             </td>
                         </tr>
@@ -677,7 +705,7 @@ $('.edit_sub_sub').click(function() {
                                 <td style="padding-left: 45px;"><?= $rowy->nama ?></td>
                                 <td><?= $data->posisi ?></td>
                                 <td style="padding-left: 45px;">
-                                    <button type="button" class="btn btn-default btn-xs delete" onclick="delete_sss(this, <?= $rowy->id ?>)"><i class="fa fa-minus-circle"></i> Hapus</button>
+                                    <button type="button" class="btn btn-default btn-xs delete" onclick="deleteMe(this, '<?= base_url('masterdata/delete_subsubsubrekening/'.$rowy->id) ?>')"><i class="fa fa-minus-circle"></i> Hapus</button>
                                     <button type="button" class="btn btn-default btn-xs add_subsubsubsubrekening" id="<?= $rowy->id_sub_sub_sub_rekening.'#'.$rowy->nama ?>"><i class="fa fa-plus-circle"></i> Tambah Sub</button>
                                 </td>
                             </tr>
@@ -691,7 +719,7 @@ $('.edit_sub_sub').click(function() {
                                     <td style="padding-left: 60px;"><?= $rowz->sub_sub_sub_sub_rekening ?></td>
                                     <td><?= $data->posisi ?></td>
                                     <td style="padding-left: 60px;">
-                                        <button type="button" class="btn btn-default btn-xs delete" onclick="delete_ssss(this, '<?= $rowz->id ?>')"><i class="fa fa-minus-circle"></i> Hapus</button>
+                                        <button type="button" class="btn btn-default btn-xs delete" onclick="deleteMe(this, '<?= base_url('masterdata/delete_subsubsubsubrekening/'.$rowz->id) ?>')"><i class="fa fa-minus-circle"></i> Hapus</button>
                                     </td>
                                 </tr>
                             <?php

@@ -252,6 +252,47 @@ $(function() {
     function(event,data,formated){
         $(this).val(data.id_akun);
     });
+    
+    $('#kode_perkiraan').setOptions({
+        extraParams:{
+            kategori: function(){
+                return $('#sumberdana').val();
+            }
+        }
+   });
+   
+   $('#kode_perkiraan_pwk').autocomplete("<?= base_url('autocomplete/kode_perkiraan_pwk') ?>",
+    {
+        parse: function(data){
+            var parsed = [];
+            for (var i=0; i < data.length; i++) {
+                parsed[i] = {
+                    data: data[i],
+                    value: data[i].id_akun // nama field yang dicari
+                };
+            }
+            return parsed;
+        },
+        formatItem: function(data,i,max){
+            var str = '<div class=result>'+data.id_akun+' <br/> '+data.akun+'</div>';
+            return str;
+        },
+        width: 400, // panjang tampilan pencarian autocomplete yang akan muncul di bawah textbox pencarian
+        dataType: 'json', // tipe data yang diterima oleh library ini disetup sebagai JSON
+        cacheLength: 0,
+        max: 100
+    }).result(
+    function(event,data,formated){
+        $(this).val(data.id_akun);
+    });
+    
+    $('#kode_perkiraan_pwk').setOptions({
+        extraParams:{
+            perwabku: function(){
+                return $('#perwabku').val();
+            }
+        }
+   });
 });
 
 function reset_form() {
@@ -346,10 +387,10 @@ function paging(p) {
     <div id="form_kasir" class="nodisplay">
         <?= form_open('', 'id=form') ?>
         <table class="inputan" width="100%">
-            <tr><td>Jenis Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Pilih ...', 'bkk' => 'Kas Keluar', 'bkm' => 'Kas Masuk'), NULL, 'id=jenis style="width: 294px;"') ?></td></tr>
+            <tr><td>Jenis Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Pilih ...', 'bkk' => 'Kas Keluar', 'bkm' => 'Kas Masuk'), NULL, 'id=jenis style="width: 300px;"') ?></td></tr>
             <tr><td>Tanggal:</td><td><?= form_input('tanggal', date("d/m/Y"), 'size=15 id=tanggal') ?></td></tr>
             <tr><td>No.</td><td><?= form_input('no', NULL, 'id=no') ?></td></tr>
-            <tr><td>Sumber Dana:</td><td><?= form_dropdown('sumberdana', array('' => 'Pilih ...', 'Kas' => 'Kas', 'Bank' => 'Bank'), NULL, 'id=sumberdana style="width: 294px;"') ?></td></tr>
+            <tr><td>Sumber Dana:</td><td><?= form_dropdown('sumberdana', array('' => 'Pilih ...', 'Kas' => 'Kas', 'Bank' => 'Bank'), NULL, 'id="sumberdana" style="width: 300px;"') ?></td></tr>
             <tr><td>Kode Perkiraan:</td><td><?= form_input('kode_perkiraan', NULL, 'id=kode_perkiraan size=60') ?></td></tr>
             <tr><td>Nomor Renbut:</td><td><?= form_input('kode_renbut', NULL, 'id=kode_renbut size=60') ?><?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?></td></tr>
             <tr><td>Kode MA/Proja:</td><td><?= form_input('kode', NULL, 'id=kode') ?><?= form_hidden('id_kode', NULL, 'id=id_kode') ?></td></tr>
@@ -358,6 +399,7 @@ function paging(p) {
             <tr><td>Jumlah Biaya:</td><td><?= form_input('jumlah', NULL, 'id=jumlah onkeyup="FormNum(this);"') ?></td></tr>
             <tr><td><?= form_dropdown('user', array('Penerima' => 'Penerima', 'Penyetor' => 'Penyetor'), NULL, 'id=user style="width: 120px;"') ?></td><td><?= form_input('nama_user', NULL, 'id=nama_user') ?></td></tr>
             <tr><td>Perwabku:</td><td><?= form_dropdown('perwabku', array('Default' => 'Default', 'Belum' => 'Belum (DP)', 'Sudah' => 'Sudah (Pusat Biaya)'), NULL, 'id=perwabku') ?></td></tr>
+            <tr><td>Kode Perkiraan Pwk*:</td><td><?= form_input('kode_perkiraan_pwk', NULL, 'id=kode_perkiraan_pwk size=60') ?></td></tr>
             <!--<tr><td></td><td><?= form_button('Simpan', 'id=simpan') ?> <?= form_button('Reset', 'id=reset') ?></td></tr>-->
         </table>
         <?= form_close() ?>
