@@ -328,6 +328,7 @@ class M_masterdata extends CI_Model {
         $vol_hari   = (post_safe('haribulan') !== '')?post_safe('haribulan'):'1';
         $hrg_satuan = currencyToNumber(post_safe('harga'));
         $subtotal   = $vol_hari*$vol_orang*$hrg_satuan;
+        $tahun      = post_safe('tahun');
         
         $kode = $this->db->query("select IFNULL(max(kode),0)+1 as kode from sub_uraian where id_uraian = '$id_uraian'")->row();
         
@@ -335,10 +336,11 @@ class M_masterdata extends CI_Model {
             $data   = array(
                 'kode' => $kode->kode,
                 'id_uraian' => $id_uraian,
+                'tahun' => $tahun,
                 'keterangan' => $keterangan,
-                'data_kuat_org' => $kuat,
-                'vol_orang' => $vol_orang,
-                'vol_hari_perbulan' => $vol_hari,
+//                'data_kuat_org' => $kuat,
+//                'vol_orang' => $vol_orang,
+//                'vol_hari_perbulan' => $vol_hari,
                 'harga_satuan' => $hrg_satuan,
                 'sub_total' => $subtotal
             );
@@ -347,10 +349,11 @@ class M_masterdata extends CI_Model {
         } else {
             $data   = array(
                 'id_uraian' => $id_uraian,
+                'tahun' => $tahun,
                 'keterangan' => $keterangan,
-                'data_kuat_org' => $kuat,
-                'vol_orang' => $vol_orang,
-                'vol_hari_perbulan' => $vol_hari,
+//                'data_kuat_org' => $kuat,
+//                'vol_orang' => $vol_orang,
+//                'vol_hari_perbulan' => $vol_hari,
                 'harga_satuan' => $hrg_satuan,
                 'sub_total' => $subtotal
             );

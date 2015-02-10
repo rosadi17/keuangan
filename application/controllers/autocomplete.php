@@ -114,7 +114,8 @@ class Autocomplete extends CI_Controller {
     }
     
     function get_nomor_renbut() {
-        $data = $this->m_autocomplete->get_nomor_renbut();
+        $tanggal = substr(date2mysql(get_safe('tanggal')),0,7);
+        $data = $this->m_autocomplete->get_nomor_renbut($tanggal);
         die(json_encode($data));
     }
     

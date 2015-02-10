@@ -17,6 +17,7 @@ $(function() {
     }).click(function() {
         get_list_sub_uraian();
     });
+    
 });
 
 function get_list_sub_uraian(page, src, id) {
@@ -35,12 +36,13 @@ function form_sub_uraian() {
             '<?= form_hidden('id_sub_uraian', NULL, 'id=id_sub_uraian') ?>'+
             '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
                 '<tr><td width=30%>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>'+
+                '<tr><td>Tahun:</td><td><?= form_input('tahun', NULL, 'id=tahun size=60') ?></td></tr>'+
                 '<tr><td>Status:</td><td><select name=status id=status><option value="SPP">SPP</option><option value="NON SPP">NON SPP</option></select></td></tr>'+
                 '<tr><td>Kode / Nama Uraian:</td><td><?= form_input('uraian', NULL, 'id=uraian size=60') ?><?= form_hidden('id_uraian', NULL, 'id=id_uraian') ?></td></tr>'+
                 '<tr><td>Sub uraian:</td><td><?= form_input('sub_uraian', NULL, 'id=sub_uraian size=60') ?></td></tr>'+
-                '<tr><td>Data Kuat Organisasi:</td><td><?= form_input('kuat', NULL, 'id=kuat size=60') ?></td></tr>'+
-                '<tr><td>&Sigma; Orang:</td><td><?= form_input('vol_orang', NULL, 'id=vol_orang size=60') ?></td></tr>'+
-                '<tr><td>&Sigma; Hari/Bulan:</td><td><?= form_input('haribulan', NULL, 'id=haribulan size=60') ?></td></tr>'+
+//                '<tr><td>Data Kuat Organisasi:</td><td><?= form_input('kuat', NULL, 'id=kuat size=60') ?></td></tr>'+
+//                '<tr><td>&Sigma; Orang:</td><td><?= form_input('vol_orang', NULL, 'id=vol_orang size=60') ?></td></tr>'+
+//                '<tr><td>&Sigma; Hari/Bulan:</td><td><?= form_input('haribulan', NULL, 'id=haribulan size=60') ?></td></tr>'+
                 '<tr><td>Harga Satuan:</td><td><?= form_input('harga', NULL, 'id=harga onkeyup="FormNum(this);" size=60') ?></td></tr>'+
             '</table>'+
             '</form></div>';
@@ -64,6 +66,19 @@ function form_sub_uraian() {
         }, close: function() {
             $(this).dialog().remove();
         }
+    });
+    $('#tahun').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        dateFormat: 'yy',
+        onClose: function(dateText, inst) { 
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year, 1));
+        }
+    });
+    $("#tahun").focus(function () {
+        $(".ui-datepicker-month").hide();
     });
     $('#id_satker').change(function() {
         var id = $(this).val();

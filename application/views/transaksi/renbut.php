@@ -72,6 +72,7 @@ function get_nominal_renbut(id) {
 function get_nomor_renbut() {
     $.ajax({
         url: '<?= base_url('autocomplete/get_nomor_renbut') ?>',
+        data: 'tanggal='+$('#tanggal').val(),
         dataType: 'json',
         success: function(data) {
            $('#nomor').val(data);
@@ -83,15 +84,16 @@ function form_renbut() {
     var str = '<div id="dialog_renbut"><form action="" id="save_renbut">'+
             '<?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?>'+
             '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
-                '<tr><td width=40%>Nomor:</td><td><?= form_input('nomor', 'RBT'.date("ym"), 'id=nomor size=60') ?></td></tr>'+
+                '<tr><td width=40%>Nomor:</td><td><?= form_input('nomor', NULL, 'id=nomor size=60') ?></td></tr>'+
                 '<tr><td width=40%>Tanggal Kegiatan:</td><td><?= form_input('tanggal', date("d/m/Y"), 'id=tanggal size=10') ?></td></tr>'+
-                '<tr><td width=40%>Nomor BKK Cashbon:</td><td><?= form_input('nomorbkk', '', 'id=nomorbkk size=10') ?></td></tr>'+
+                '<tr><td width=40%>Nomor BKK Cashbon *:</td><td><?= form_input('nomorbkk', '', 'id=nomorbkk size=10') ?></td></tr>'+
                 '<tr><td width=40%>MA Proja:</td><td><?= form_input('uraian', NULL, 'id=uraian size=60') ?><?= form_hidden('id_uraian', NULL, 'id=id_uraian') ?></td></tr>'+
                 '<tr valign="top"><td width=40%>Detail:</td><td id="detail"></td></tr>'+
                 '<tr><td width=40%>Cashbon:</td><td id="nominalcashbon"></td></tr>'+
                 '<tr><td width=40%>Jumlah Renbut Rp.:</td><td><?= form_input('jml_renbut', NULL, 'id=jml_renbut size=60 onkeyup="FormNum(this);"') ?></td></tr>'+
                 '<tr><td width=40%>Penerima / PngJawab:</td><td><?= form_input('penerima', NULL, 'id=penerima size=60') ?></td></tr>'+
                 '<tr><td width=40% valign="top">Keterangan:</td><td><?= form_textarea('keterangan', NULL, 'id=keterangan rows="10" style="width: 294px;"') ?></td></tr>'+
+                '<tr><td colspan="2">* No. BKK Cashbon diisikan jika Renbut berasal dari cashbon</td></tr>'+
                 /*'<tr><td width=40%>Nominal Rp.:</td><td><?= form_input('nominal', NULL, 'id=nominal size=60 onkeyup="FormNum(this);"') ?></td></tr>'+
                 '<tr><td width=40%>Cash bon Rp.:</td><td><?= form_input('cashbon', NULL, 'id=cashbon size=60 onkeyup="FormNum(this);"') ?></td></tr>'+                
                 '<tr><td width=40%>Penerima / PngJawab:</td><td><?= form_input('penerima', NULL, 'id=penerima size=60') ?></td></tr>'+*/
@@ -122,7 +124,10 @@ function form_renbut() {
     });
     $('#tanggal').datepicker({
         changeYear: true,
-        changeMonth: true
+        changeMonth: true,
+        onSelect: function() {
+            get_nomor_renbut();
+        }
     });
     $('#nomorbkk').autocomplete("<?= base_url('autocomplete/nomorbkk') ?>",
     {

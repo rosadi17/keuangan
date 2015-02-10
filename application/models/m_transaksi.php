@@ -416,6 +416,7 @@ class M_transaksi extends CI_Model {
         $perwabku= post_safe('perwabku');
         $id_renbut = post_safe('id_renbut');
         $uraian = post_safe('uraian');
+        $id_rek_pwk = post_safe('id_rekening_pwk');
         if ($jenis === 'bkm') {
             $data = array(
                 'tanggal' => $tanggal,
@@ -440,7 +441,8 @@ class M_transaksi extends CI_Model {
                     'id_uraian' => $maproja,
                     'pengeluaran' => $jumlah,
                     'penerima' => $penyetor,
-                    'perwabku' => $perwabku
+                    'perwabku' => $perwabku,
+                    'id_rekening_pwk' => ($id_rek_pwk !== '')?$id_rek_pwk:NULL
                 );
                 $this->db->insert('pengeluaran', $data);
             } else {
@@ -578,9 +580,9 @@ class M_transaksi extends CI_Model {
     
     function get_data_kasir($limit, $start, $search) {
         $q = NULL;
-        $sql = "select * from (select pn.*, substr(pn.kode,1,3) as kode_trans, u.uraian as keterangan, IFNULL(pn.id_renbut,'') as renbut from penerimaan pn
+        $sql = "select * from (select pn.id, pn.kode, pn.sumberdana, pn.tanggal, pn.id_rekening, pn.id_renbut, pn.id_uraian, pn.pemasukkan, pn.penyetor, pn.perwabku, substr(pn.kode,1,3) as kode_trans, u.uraian as keterangan, IFNULL(pn.id_renbut,'') as renbut from penerimaan pn
                 join uraian u on (pn.id_uraian = u.id)
-                UNION ALL select pg.*, substr(pg.kode,1,3) as kode_trans, u.uraian as keterangan, IFNULL(pg.id_renbut,'') as renbut from pengeluaran pg
+                UNION ALL select pg.id, pg.kode, pg.sumberdana, pg.tanggal, pg.id_rekening, pg.id_renbut, pg.id_uraian, pg.pengeluaran, pg.penerima, pg.perwabku, substr(pg.kode,1,3) as kode_trans, u.uraian as keterangan, IFNULL(pg.id_renbut,'') as renbut from pengeluaran pg
                 join uraian u on (pg.id_uraian = u.id)) a order by tanggal desc";
         $limitation = null;
         $limitation.=" limit $start , $limit";
