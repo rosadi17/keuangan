@@ -3,9 +3,10 @@
 <div class="titling"><h1><?= $title ?></h1></div>
 <script type="text/javascript">
     
-function get_last_code_kasir(trans) {
+function get_last_code_kasir(trans, tanggal) {
     $.ajax({
         url: '<?= base_url('autocomplete/get_last_code_kasir') ?>/'+trans,
+        data: 'tanggal='+tanggal,
         dataType: 'json',
         success: function(data) {
             $('#no').val(data.no);
@@ -13,9 +14,10 @@ function get_last_code_kasir(trans) {
     });
 }
 
-function get_nominal_renbut(id) {
+function get_nominal_renbut(id, tanggal) {
     $.ajax({
         url: '<?= base_url('autocomplete/get_nominal_renbut') ?>/'+id,
+        data: 'tanggal='+tanggal,
         dataType: 'json',
         success: function(data) {
            $('#jumlah').val(numberToCurrency(data.total));
@@ -108,14 +110,24 @@ $(function() {
     });
     $('#jenis').change(function() {
         var jenis = $(this).val();
+        var tanggal = $('#tanggal').val();
         if (jenis === 'bkm') {
             $('#user').val('Penyetor');
+            get_last_code_kasir(jenis, tanggal);
         } else {
             $('#user').val('Penerima');
+            get_last_code_kasir(jenis, tanggal);
         }
-        get_last_code_kasir(jenis);
     });
-    $('#tanggal').datepicker();
+    $('#tanggal').datepicker({
+        changeYear: true,
+        changeMonth: true,
+        onSelect: function() {
+            var jenis = $('#jenis').val();
+            get_last_code_kasir(jenis, $(this).val());
+            get_nominal_renbut($('#id_kode').val(), $(this).val());
+        }
+    });
     $('#form').submit(function() {
         if ($('#jenis').val() === '') {
             custom_message('Peringatan', 'Jenis transaksi harus dipilih', '#jenis'); return false;
@@ -133,7 +145,7 @@ $(function() {
             custom_message('Peringatan', 'Jumlah tidak boleh kosong', '#jumlah'); return false;
         }
         $('<div id=alert>Anda yakin akan menyimpan transaksi ini ?</div>').dialog({
-            title: 'Konfirmasi Penghapusan',
+            title: 'Konfirmasi',
             autoOpen: true,
             modal: true,
             buttons: {
@@ -226,7 +238,7 @@ $(function() {
         $('#uraian').val(data.keterangan);
         $('#pengguna').val(data.satker);
         $('#keterangan').val(data.uraian);
-        //get_nominal_renbut(data.id);
+        get_nominal_renbut(data.id, $('#tanggal').val());
     });
     $('#kode_perkiraan').autocomplete("<?= base_url('autocomplete/kode_perkiraan') ?>",
     {
@@ -303,7 +315,7 @@ function reset_form() {
     $('#tanggal').val('<?= date("d/m/Y") ?>');
 }
 
-function edit_kasir(id) {
+function edit_kasir(id, transaksi) {
     $('#form_kasir').dialog({
         title: 'Form Kasir BKK / BKM',
         autoOpen: true,
@@ -323,11 +335,27 @@ function edit_kasir(id) {
             $('#form_kasir').dialog('destroy');
         }, open: function() {
             $.ajax({
-                url: '<?= base_url('transaksi/get_data_kasir') ?>/'+id,
+                url: '<?= base_url('transaksi/get_data_kasir') ?>/'+id+'/'+transaksi,
                 cache: false,
                 dataType: 'json',
                 success: function(data) {
-                    $('#result-kasir').html(data);
+                    //$('#result-kasir').html(data);
+                    $('#id_kasir').val(data.id);
+                    $('#jenis').val(data.kode_trans.toLowerCase());
+                    $('#tanggal').val(datefmysql(data.tanggal));
+                    $('#no').val(data.kode);
+                    $('#sumberdana').val(data.sumberdana);
+                    $('#kode_perkiraan').val(data.id_rekening+' '+data.rekening);
+                    $('#hide_kode_perkiraan').val(data.id_rekening);
+                    $('#kode').val(data.kode_uraian+' '+data.keterangan_ma);
+                    $('#id_kode').val(data.id_uraian);
+                    $('#pengguna').val(data.satker);
+                    $('#uraian').val(data.keterangan);
+                    $('#jumlah').val(numberToCurrency(data.pengeluaran));
+                    $('#nama_user').val(data.penerima);
+                    $('#perwabku').val(data.perwabku);
+                    $('#kode_perkiraan_pwk').val(data.id_rekening_pwk+''+data.rekening_pwk);
+                    $('#hide_kode_perkiraan_pwk').val(data.id_rekening_pwk);
                 }
             });
         }
@@ -388,6 +416,7 @@ function paging(p) {
     </div>
     <div id="form_kasir" class="nodisplay">
         <?= form_open('', 'id=form') ?>
+        <input type="hidden" name="id_kasir" id="id_kasir" />
         <table class="inputan" width="100%">
             <tr><td>Jenis Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Pilih ...', 'bkk' => 'Kas Keluar', 'bkm' => 'Kas Masuk'), NULL, 'id=jenis style="width: 300px;"') ?></td></tr>
             <tr><td>Tanggal:</td><td><?= form_input('tanggal', date("d/m/Y"), 'size=15 id=tanggal') ?></td></tr>

@@ -131,6 +131,30 @@ function edit_dropping(id, nominal) {
     });
 }
 
+function delete_dropping(id, page) {
+    $('<div id=alert>Anda yakin akan menghapus data ini?</div>').dialog({
+        title: 'Konfirmasi Penghapusan',
+        autoOpen: true,
+        modal: true,
+        buttons: {
+            "OK": function() {
+                
+                $.ajax({
+                    url: '<?= base_url('transaksi/manage_renbut/delete') ?>?id='+id,
+                    cache: false,
+                    success: function() {
+                        get_list_dropping(page);
+                        $('#alert').dialog().remove();
+                    }
+                });
+            },
+            "Cancel": function() {
+                $(this).dialog().remove();
+            }
+        }
+    });
+}
+
 function paging(page, tab, search) {
     get_list_dropping(page, search);
 }
@@ -139,7 +163,7 @@ function paging(page, tab, search) {
 <div class="kegiatan">
     <div id="tabs">
         <ul>
-            <li><a href="#tabs-1">Entri Dropping</a></li>
+            <li><a href="#tabs-1">Data Dropping</a></li>
         </ul>
         <div id="tabs-1">
             <button id="cari_button">Cari Data</button>

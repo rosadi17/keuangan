@@ -221,7 +221,7 @@ class M_laporan extends CI_Model {
             $limitation =" limit $start , $limit";
         }
         $query = $this->db->query($sql . $q . $limitation);
-        echo $sql . $q . $limitation;
+        //echo $sql . $q . $limitation;
         $queryAll = $this->db->query($sql . $q);
         $data['data'] = $query->result();
         $data['jumlah'] = $queryAll->num_rows();

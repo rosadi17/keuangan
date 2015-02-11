@@ -20,7 +20,7 @@
         ?>
     <tr class="<?= ($key%2==1)?'even':'odd' ?>">
         <td align="center"><?= $auto++ ?></td>
-        <td align="center"><?= datefmysql($data->tanggal) ?></td>
+        <td align="center"><?= datefmysql($data->tanggal_kegiatan) ?></td>
         <td align="center"><?= $data->kode ?></td>
         <td><?= $data->keterangan ?></td>
         <td align="center"><?= $data->satker ?></td>
@@ -30,9 +30,9 @@
         <td align="right"><?= rupiah($data->jml_renbut) ?></td>
         <td><?= $data->penerima ?></td>
         <td class="aksi" align="center">
-            <a class='printing' onclick="print_renbut('<?= $data->id_renbut ?>');" title="Klik untuk print">&nbsp;</a>
-            <a class='edition' onclick="edit_renbut('<?= $str ?>');" title="Klik untuk edit">&nbsp;</a>
-            <a class='deletion' onclick="delete_renbut('<?= $data->id_renbut ?>', '<?= $page ?>');" title="Klik untuk hapus">&nbsp;</a>
+            <button type="button" class="btn btn-default btn-xs" onclick="print_renbut('<?= $data->id_renbut ?>');" title="Klik untuk print"><i class="fa fa-print"></i></button>
+            <button type="button" class="btn btn-default btn-xs" onclick="edit_renbut('<?= $str ?>');" title="Klik untuk edit"><i class="fa fa-pencil"></i></button>
+            <button type="button" class="btn btn-default btn-xs" onclick="delete_renbut('<?= $data->id_renbut ?>', '<?= $page ?>');" title="Klik untuk hapus"><i class="fa fa-trash-o"></i></button>
         </td>
     </tr>
     <?php } ?>

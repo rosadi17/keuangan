@@ -62,9 +62,14 @@ function get_list_renbut(page, src, id) {
 function get_nominal_renbut(id) {
     $.ajax({
         url: '<?= base_url('autocomplete/get_nominal_renbut') ?>/'+id,
+        data: 'tanggal='+$('#tanggal').val(),
         dataType: 'json',
         success: function(data) {
-           //$('#jml_renbut').val(numberToCurrency(data.total));
+            if (data.total === null) {
+                custom_message('Warning','Belum ada data di master kegiatan','#maproja'); return false;
+            } else {
+                $('#jml_renbut').val(numberToCurrency(data.total));
+            }
         }
     });
 }

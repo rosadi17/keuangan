@@ -18,8 +18,10 @@
     </tr>
     <?php foreach ($list_data as $key => $data) { 
         $alert = "<i class='blinker'>".$data->status."</i>";
+        $button= "";
         if ($data->status === 'Disetujui') {
             $alert = '<span class="label label-success"><i class="fa fa-thumbs-up"></i> '.$data->status.'</span>';
+            $button= 'disabled';
         }
         else if ($data->status === 'Ditolak') {
             $alert = '<span class="label label-warning"><i class="fa fa-ban"></i> '.$data->status.'</span>';
@@ -38,7 +40,8 @@
         <td><?= $data->penerima ?></td>
         <td align="center"><?= $alert ?></td>
         <td class="aksi" align="center">
-            <button type="button" class="btn btn-default btn-xs" onclick="edit_dropping('<?= $data->id_renbut ?>','<?= $data->jml_renbut ?>');" title="Klik untuk persetujuan"><i class="fa fa-gear"></i></button>
+            <button type="button" <?= $button ?> class="btn btn-default btn-xs" onclick="edit_dropping('<?= $data->id_renbut ?>','<?= $data->jml_renbut ?>');" title="Klik untuk persetujuan"><i class="fa fa-gear"></i></button>
+            <button type="button" class="btn btn-default btn-xs" onclick="delete_dropping('<?= $data->id_renbut ?>', '<?= $page ?>');" title="Klik untuk hapus"><i class="fa fa-trash-o"></i></button>
         </td>
     </tr>
     <?php } ?>

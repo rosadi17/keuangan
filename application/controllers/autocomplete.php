@@ -60,7 +60,8 @@ class Autocomplete extends CI_Controller {
     }
     
     function get_last_code_kasir($trans) {
-        $data = $this->m_autocomplete->get_last_code_kasir($trans);
+        $tanggal = date2mysql(get_safe('tanggal'));
+        $data = $this->m_autocomplete->get_last_code_kasir($trans, $tanggal);
         die(json_encode($data));
     }
     
@@ -104,7 +105,8 @@ class Autocomplete extends CI_Controller {
     }
     
     function get_nominal_renbut($id_uraian) {
-        $data = $this->m_autocomplete->get_nominal_renbut($id_uraian)->row();
+        $tanggal = get_safe('tanggal');
+        $data = $this->m_autocomplete->get_nominal_renbut($id_uraian, $tanggal)->row();
         die(json_encode($data));
     }
     

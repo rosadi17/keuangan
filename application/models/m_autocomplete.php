@@ -150,7 +150,7 @@ class M_autocomplete extends CI_Model {
     function get_kode_perkiraan_pwk($param) {
         $q = NULL;
         if ($param['kategori'] === 'Belum') {
-            $q.=" and s4r.id_sub_sub_sub_rekening = '521100'";
+            $q.=" and s4r.id_sub_sub_sub_rekening = '115100'";
         }
         if ($param['kategori'] === 'Sudah') {
             $q.=" and s4r.id_sub_sub_sub_rekening = '511100'";
@@ -203,26 +203,31 @@ class M_autocomplete extends CI_Model {
         return $this->db->query($sql);
     }
     
-    function get_last_code_kasir($trans) {
+    function get_last_code_kasir($trans, $tanggal) {
+        $bulan = substr($tanggal, 0, 7);
         if ($trans === 'bkm') {
-            $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from penerimaan where tanggal like '".date("Y-m")."%' order by id desc limit 1";
+            $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from penerimaan where tanggal like '".$bulan."%' order by id desc limit 1";
             $data= $this->db->query($sql)->row();
             if (isset($data->kode)) {
                 $auto = $data->kode;
             } else {
                 $auto = 0;
             }
-            $result['no'] = 'BKM'.date("ym").pad($auto+1, 4);
+            $thn = substr($bulan, 2, 2);
+            $bln = substr($bulan, 5, 2);
+            $result['no'] = 'BKM'.$thn.$bln.pad($auto+1, 4);
         }
         if ($trans === 'bkk') {
-            $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from pengeluaran where tanggal like '".date("Y-m")."%' order by id desc limit 1";
+            $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from pengeluaran where tanggal like '".$bulan."%' order by id desc limit 1";
             $data= $this->db->query($sql)->row();
             if (isset($data->kode)) {
                 $auto = $data->kode;
             } else {
                 $auto = 0;
             }
-            $result['no'] = 'BKK'.date("ym").pad($auto+1, 4);
+            $thn = substr($bulan, 2, 2);
+            $bln = substr($bulan, 5, 2);
+            $result['no'] = 'BKK'.$thn.$bln.pad($auto+1, 4);
         }
         return $result;
     }
@@ -277,7 +282,8 @@ class M_autocomplete extends CI_Model {
         return $this->db->query($sql);
     }
     
-    function get_nominal_renbut($id_uraian) {
+    function get_nominal_renbut($id_uraian, $tanggal) {
+        $tahun = substr($tanggal, 6, 4);
         $sql = "select IFNULL(sum(ssu.sub_total), sum(su.sub_total)) as total from 
         sub_sub_uraian ssu    
         right join sub_uraian su on (ssu.id_sub_uraian = su.id)
@@ -285,12 +291,13 @@ class M_autocomplete extends CI_Model {
         join sub_kegiatan sk on (sk.id = u.id_sub_kegiatan)
         join kegiatan k on (sk.id_kegiatan = k.id)
         join program p on (k.id_program = p.id)
-        join satker s on (p.id_satker = s.id) where u.id = '$id_uraian'";
+        join satker s on (p.id_satker = s.id) where u.id = '$id_uraian' and su.tahun = '$tahun'";
+        //echo $sql;
         return $this->db->query($sql);
     }
     
     function get_nomor_renbut($tanggal) {
-        $row = $this->db->query("select substr(kode,8,4) as kode from rencana_kebutuhan where kode != '' and tanggal like '".$tanggal."%' order by id_renbut desc limit 1")->row();
+        $row = $this->db->query("select substr(kode,10,4) as kode from rencana_kebutuhan where kode != '' and tanggal like '".$tanggal."%' order by id_renbut desc limit 1")->row();
         if (!isset($row->kode)) {
             $nomor = 0;
         } else {
