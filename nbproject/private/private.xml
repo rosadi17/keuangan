@@ -29,6 +29,13 @@
             <file>file:/C:/wamp/www/keuangan/application/views/masterdata/sub-uraian.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/masterdata/sub-uraian-table.php</file>
             <file>file:/C:/wamp/www/keuangan/application/helpers/functions_helper.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/controllers/laporan.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/laporan/rekap-renbut-table.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/laporan/rekap-renbut.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/models/m_laporan.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/laporan/excel-rekap-renbut.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/transaksi/perwabku.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/transaksi/perwabku-table.php</file>
         </group>
     </open-files>
 </project-private>

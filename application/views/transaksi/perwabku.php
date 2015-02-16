@@ -79,19 +79,55 @@ function get_nomor_perwabku() {
     });
 }
 
+function removeEl(el) {
+    
+}
+
+function bkk_add_row() {
+    var jml = $('.rows_bkk').length+1;
+    str = '<div class="rows_bkk" style="margin-bottom: 3px;"><input type="text" name="nomorbkk" id="nomorbkk'+jml+'" /> <input type="hidden" name="id_nomorbkk" id="id_nomorbkk" /> <button type="button" class="btn btn-default btn-xs" onclick="removeEl(this);" id=""><i class="fa fa-times"></i></button></div>';
+    $('#nobkk').append(str);
+    $('#nomorbkk'+jml).autocomplete("<?= base_url('autocomplete/nomorbkk') ?>",
+    {
+        parse: function(data){
+            var parsed = [];
+            for (var i=0; i < data.length; i++) {
+                parsed[i] = {
+                    data: data[i],
+                    value: data[i].kode // nama field yang dicari
+                };
+            }
+            return parsed;
+        },
+        formatItem: function(data,i,max){
+            var str = '<div class=result>'+data.kode+' '+data.keterangan+'<br/>Rp. '+numberToCurrency(data.pengeluaran)+'</div>';
+            return str;
+        },
+        width: 300, // panjang tampilan pencarian autocomplete yang akan muncul di bawah textbox pencarian
+        dataType: 'json', // tipe data yang diterima oleh library ini disetup sebagai JSON
+        cacheLength: 0,
+        max: 100
+    }).result(
+    function(event,data,formated){
+        $(this).val(data.kode+' '+data.keterangan+' Rp. '+numberToCurrency(data.pengeluaran));
+        $('#id_nomorbkk'+jml).val(data.id);
+    });
+}
+
 function form_perwabku() {
     var str = '<div id="dialog_perwabku"><form action="" id="save_perwabku">'+
             '<?= form_hidden('id_perwabku', NULL, 'id=id_perwabku') ?>'+
             '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
                 '<tr><td width=40%>Nomor:</td><td><?= form_input('nomor', 'RBT'.date("ym"), 'id=nomor size=60') ?></td></tr>'+
                 '<tr><td width=40%>Tanggal Perwabku:</td><td><?= form_input('tanggal', date("d/m/Y"), 'id=tanggal size=10') ?></td></tr>'+
-                '<tr><td width=40%>Nomor BKK (DP):</td><td><?= form_input('nomorbkk', '', 'id=nomorbkk size=10') ?></td></tr>'+
+                '<tr><td></td><td><button type="button" class="btn btn-default btn-xs delete" onclick="bkk_add_row();"><i class="fa fa-plus-circle"></i> Tambah Kode BKK</button></td></tr>'+
+                '<tr><td width=40% valign="top">Nomor BKK (DP):</td><td id="nobkk"></td></tr>'+
             '</table>'+
             '</form></div>';
     $(str).dialog({
         title: 'Tambah Perwabku',
         autoOpen: true,
-        width: 480,
+        width: 520,
         autoResize:true,
         modal: true,
         hide: 'explode',
@@ -108,72 +144,12 @@ function form_perwabku() {
             $(this).dialog().remove();
         }, open: function() {
             $('#nomor').focus();
-            get_nomor_perwabku();
+            bkk_add_row();
         }
     });
     $('#tanggal').datepicker({
         changeYear: true,
         changeMonth: true
-    });
-    $('#nomorbkk').autocomplete("<?= base_url('autocomplete/nomorbkk') ?>",
-    {
-        parse: function(data){
-            var parsed = [];
-            for (var i=0; i < data.length; i++) {
-                parsed[i] = {
-                    data: data[i],
-                    value: data[i].nama_sub_kegiatan // nama field yang dicari
-                };
-            }
-            return parsed;
-        },
-        formatItem: function(data,i,max){
-            var str = '<div class=result>'+data.kode_cashbon+'</div>';
-            return str;
-        },
-        width: 300, // panjang tampilan pencarian autocomplete yang akan muncul di bawah textbox pencarian
-        dataType: 'json', // tipe data yang diterima oleh library ini disetup sebagai JSON
-        cacheLength: 0,
-        max: 100
-    }).result(
-    function(event,data,formated){
-        $(this).val(data.kode_cashbon);
-        $('#uraian').val(data.kode);
-        $('#id_uraian').val(data.id_uraian);
-        $('#detail').html(data.keterangan);
-        $('#jml_perwabku').val('');
-        $('#nominalcashbon').html(numberToCurrency(data.cashbon));
-        $('#penerima').val(data.penanggungjawab);
-        $('#id_perwabku').val(data.id_perwabku);
-        
-    });
-    $('#uraian').autocomplete("<?= base_url('autocomplete/ma_proja') ?>",
-    {
-        parse: function(data){
-            var parsed = [];
-            for (var i=0; i < data.length; i++) {
-                parsed[i] = {
-                    data: data[i],
-                    value: data[i].nama_sub_kegiatan // nama field yang dicari
-                };
-            }
-            return parsed;
-        },
-        formatItem: function(data,i,max){
-            var str = '<div class=result>'+pad(data.ma_proja,5)+' / '+data.uraian+' &Rightarrow; <i>'+data.keterangan+'</i></div>';
-            return str;
-        },
-        width: 400, // panjang tampilan pencarian autocomplete yang akan muncul di bawah textbox pencarian
-        dataType: 'json', // tipe data yang diterima oleh library ini disetup sebagai JSON
-        cacheLength: 0,
-        max: 100
-    }).result(
-    function(event,data,formated){
-        $(this).val(pad(data.ma_proja,5));
-        $('#id_uraian').val(data.id);
-        $('#detail').html(data.uraian+' / '+data.keterangan);
-        get_nominal_perwabku(data.id);
-        $('#penerima').focus();
     });
     $('#save_perwabku').submit(function() {
         if ($('#nomor').val().length < 8) {
