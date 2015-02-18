@@ -50,6 +50,7 @@ class M_transaksi extends CI_Model {
         $keterangan = post_safe('keterangan');
         $jml_renbut = currencyToNumber(post_safe('jml_renbut'));
         $kode       = post_safe('nomor');
+        $id_out     = post_safe('id_pengeluaran');
 //        $cashbon    = post_safe('cashbon');
 //        $nominal    = post_safe('nominal');
         $penerima   = post_safe('penerima');
@@ -81,6 +82,8 @@ class M_transaksi extends CI_Model {
             $this->db->update('rencana_kebutuhan', $data);
             $id_renbut = $id;
         }
+        $this->db->where('id', $id_out);
+        $this->db->update('pengeluaran', array('id_renbut' => $id_renbut));
         $result['status'] = TRUE;
         $result['id_renbut']= $id_renbut;
         return $result;
@@ -434,6 +437,19 @@ class M_transaksi extends CI_Model {
             $result['act'] = 'bkm';
         } else {
             if ($idkasir === '') {
+                if ($id_renbut === '') {
+                    $data_renbut = array(
+                        'tanggal' => date("Y-m-d"),
+                        'kode_cashbon' => $no,
+                        'tanggal_kegiatan' => $tanggal,
+                        'id_uraian' => $maproja,
+                        'keterangan' => $uraian,
+                        'cashbon' => $jumlah,
+                        'penerima' => $penyetor
+                    );
+                    $this->db->insert('rencana_kebutuhan', $data_renbut);
+                    $id_rencana = $this->db->insert_id();
+                }
                 $data = array(
                     'kode' => $no,
                     'sumberdana' => $sumber,
@@ -447,6 +463,9 @@ class M_transaksi extends CI_Model {
                     'id_rekening_pwk' => ($id_rek_pwk !== '')?$id_rek_pwk:NULL
                 );
                 $this->db->insert('pengeluaran', $data);
+                
+            } else {
+                $this->db->delete('rencana_kebutuhan', array('id_renbut' => $id_renbut));
                 if ($id_renbut === '') {
                     $data_renbut = array(
                         'tanggal' => date("Y-m-d"),
@@ -458,9 +477,8 @@ class M_transaksi extends CI_Model {
                         'penerima' => $penyetor
                     );
                     $this->db->insert('rencana_kebutuhan', $data_renbut);
+                    $id_rencana = $this->db->insert_id();
                 }
-            } else {
-                $this->db->delete('dc_renbut', array('id_renbut' => $id_renbut));
                 $data = array(
                     'kode' => $no,
                     'sumberdana' => $sumber,
@@ -475,20 +493,8 @@ class M_transaksi extends CI_Model {
                 );
                 $this->db->where('id', $idkasir);
                 $this->db->update('pengeluaran', $data);
-                if ($id_renbut === '') {
-                    $data_renbut = array(
-                        'tanggal' => date("Y-m-d"),
-                        'kode_cashbon' => $no,
-                        'tanggal_kegiatan' => $tanggal,
-                        'id_uraian' => $maproja,
-                        'keterangan' => $uraian,
-                        'cashbon' => $jumlah,
-                        'penerima' => $penyetor
-                    );
-                    $this->db->insert('rencana_kebutuhan', $data_renbut);
-                }
             }
-            $id = $this->db->insert_id();
+            
             $data_cair  = array(
                 'nominal'  => $jumlah,
                 'tanggal_cair' => $tanggal,
@@ -497,7 +503,7 @@ class M_transaksi extends CI_Model {
             $this->db->where(array('id_uraian' => $maproja, 'YEAR(tanggal)' => date("Y")));
             $this->db->update('rencana_kebutuhan', $data_cair);
             $get = $this->db->query("select id_renbut from rencana_kebutuhan where id_uraian = '$maproja' and YEAR(tanggal) = '".date("Y")."'")->row();
-            $result['id'] = $id;
+            $result['id'] = $id_rencana;
             $result['act'] = 'bkk';
         }
         $result['status'] = TRUE;

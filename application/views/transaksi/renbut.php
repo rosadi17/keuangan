@@ -91,7 +91,7 @@ function form_renbut() {
             '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
                 '<tr><td width=40%>Nomor:</td><td><?= form_input('nomor', NULL, 'id=nomor size=60') ?></td></tr>'+
                 '<tr><td width=40%>Tanggal Kegiatan:</td><td><?= form_input('tanggal', date("d/m/Y"), 'id=tanggal size=10') ?></td></tr>'+
-                '<tr><td width=40%>Nomor BKK Cashbon *:</td><td><?= form_input('nomorbkk', '', 'id=nomorbkk size=10') ?></td></tr>'+
+                '<tr><td width=40%>Nomor BKK Cashbon *:</td><td><?= form_input('nomorbkk', '', 'id=nomorbkk size=10') ?><?= form_hidden('id_pengeluaran', NULL, 'id=id_pengeluaran') ?></td></tr>'+
                 '<tr><td width=40%>MA Proja:</td><td><?= form_input('uraian', NULL, 'id=uraian size=60') ?><?= form_hidden('id_uraian', NULL, 'id=id_uraian') ?></td></tr>'+
                 '<tr valign="top"><td width=40%>Detail:</td><td id="detail"></td></tr>'+
                 '<tr><td width=40%>Cashbon:</td><td id="nominalcashbon"></td></tr>'+
@@ -147,7 +147,7 @@ function form_renbut() {
             return parsed;
         },
         formatItem: function(data,i,max){
-            var str = '<div class=result>'+data.kode_cashbon+'</div>';
+            var str = '<div class=result>'+data.kode+'</div>';
             return str;
         },
         width: 300, // panjang tampilan pencarian autocomplete yang akan muncul di bawah textbox pencarian
@@ -156,13 +156,14 @@ function form_renbut() {
         max: 100
     }).result(
     function(event,data,formated){
-        $(this).val(data.kode_cashbon);
-        $('#uraian').val(data.kode);
+        $(this).val(data.kode);
+        $('#uraian').val(data.kode_ma);
         $('#id_uraian').val(data.id_uraian);
         $('#detail').html(data.keterangan);
         $('#jml_renbut').val('');
         $('#nominalcashbon').html(numberToCurrency(data.cashbon));
-        $('#penerima').val(data.penanggungjawab);
+        $('#penerima').val(data.penerima);
+        $('#id_pengeluaran').val(data.id);
         $('#id_renbut').val(data.id_renbut);
         
     });
