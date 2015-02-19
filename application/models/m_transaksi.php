@@ -558,7 +558,7 @@ class M_transaksi extends CI_Model {
     
     function get_data_jurnal($limit, $start, $search) {
         $q = NULL;
-        $sql = "select * from jurnal order by id desc";
+        $sql = "select * from jurnal order by id";
         $limitation = null;
         $limitation.=" limit $start , $limit";
         $query = $this->db->query($sql . $q . $limitation);
@@ -570,27 +570,46 @@ class M_transaksi extends CI_Model {
     }
     
     function save_jurnal_transaksi() {
+        
         $this->db->trans_begin();
-        $data = array(
-            'kode_nota' => post_safe('kode_transaksi'),
-            'tanggal' => date("Y-m-d H:i:s"),
-            'id_rekening' => post_safe('kode_perkiraan_d'),
-            'kredit' => currencyToNumber(post_safe('jumlah')),
-            'keterangan' => post_safe('uraian')
-        );
-        $this->db->insert('jurnal', $data);
-        if ($this->db->trans_status() === FALSE) {
-            $this->db->trans_rollback();
-            $result['status'] = FALSE;
+        $kode_debet = post_safe('kode_perkiraan_d'); // array
+        $jumlah_d   = post_safe('jumlah_d'); // array
+        $kode_kredit= post_safe('kode_perkiraan_k'); // array
+        $jumlah_k   = post_safe('jumlah_k'); // array
+        
+        $kode_trans = post_safe('kode_transaksi');
+        $tanggal    = date2mysql(post_safe('tanggal'));
+        $keterangan = post_safe('uraian');
+        
+        foreach ($kode_debet as $key => $kode_d) {
+            $data2 = array(
+                'kode_nota' => $kode_trans,
+                'tanggal' => $tanggal,
+                'id_rekening' => $kode_d,
+                'debet' => currencyToNumber($jumlah_d[$key]),
+                'keterangan' => $keterangan
+            );
+            $this->db->insert('jurnal', $data2);
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $result['status'] = FALSE;
+            }
         }
-        $data2 = array(
-            'kode_nota' => post_safe('kode_transaksi'),
-            'tanggal' => date("Y-m-d H:i:s"),
-            'id_rekening' => post_safe('kode_perkiraan_d'),
-            'debet' => currencyToNumber(post_safe('jumlah')),
-            'keterangan' => post_safe('uraian')
-        );
-        $this->db->insert('jurnal', $data2);
+        
+        foreach ($kode_kredit as $key => $kode_k) {
+            $data = array(
+                'kode_nota' => $kode_trans,
+                'tanggal' => $tanggal,
+                'id_rekening' => $kode_k,
+                'kredit' => currencyToNumber($jumlah_k[$key]),
+                'keterangan' => $keterangan
+            );
+            $this->db->insert('jurnal', $data);
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $result['status'] = FALSE;
+            }
+        }
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
             $result['status'] = FALSE;
@@ -600,6 +619,10 @@ class M_transaksi extends CI_Model {
         }
         
         return $result;
+    }
+    
+    function delete_jurnal($id) {
+        $this->db->delete('jurnal', array('id' => $id));
     }
     
     function get_data_kasir($limit, $start, $search) {
@@ -651,21 +674,22 @@ class M_transaksi extends CI_Model {
     function get_data_perwabku($limit = null, $start = null, $search = null) {
         $q = null;
         if ($search['bulan'] !== '') {
-            $q.=" and rk.tanggal like ('".$search['bulan']."%')";
+            //$q.=" and rk.tanggal like ('".$search['bulan']."%')";
         }
         if ($search['satker'] !== '') {
-            $q.=" and s.id = '".$search['satker']."'";
+            //$q.=" and s.id = '".$search['satker']."'";
         }
-        $q.=" order by rk.tanggal asc";
-        $sql = "select rk.*, s.nama as satker, u.kode as ma_proja, p.status as status_pengeluaran,
-            CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as detail
-            from rencana_kebutuhan rk
-            join uraian u on (rk.id_uraian = u.id)
+        
+        $sql = "select pw.*, pg.tanggal as tanggal_pengeluaran, pg.pengeluaran as dana, 
+            pg.penerima, pg.kode, YEAR(pg.tanggal) as thn_anggaran
+            from perwabku pw
+            join detail_perwabku dp on (dp.id_perwabku = pw.id)
+            join pengeluaran pg on (dp.id_pengeluaran = pg.id)
+            join uraian u on (pg.id_uraian = u.id)
             join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
             join kegiatan k on (sk.id_kegiatan = k.id)
             join program p on (k.id_program = p.id)
-            join satker s on (p.id_satker = s.id)
-            where rk.kode != ''";
+            join satker s on (p.id_satker = s.id) ";
         $limitation = null;
         $limitation.=" limit $start , $limit";
         $query = $this->db->query($sql . $q . $limitation);
@@ -674,6 +698,39 @@ class M_transaksi extends CI_Model {
         $data['data'] = $query->result();
         $data['jumlah'] = $queryAll->num_rows();
         return $data;
+    }
+    
+    function save_perwabku() {
+        $this->db->trans_begin();
+        $id_pengeluaran = post_safe('id_nomorbkk');
+        $tanggal        = date2mysql(post_safe('tanggal'));
+        $kode_pwk       = post_safe('nomor');
+        
+        $data = array(
+            'kode' => $kode_pwk,
+            'tanggal' => $tanggal,
+            'id_user' => $this->session->userdata('id_user')
+        );
+        $this->db->insert('perwabku', $data);
+        $id_perwabku = $this->db->insert_id();
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $result['status'] = FALSE;
+        }
+        
+        $data_detail = array(
+            'id_perwabku' => $id_perwabku,
+            'id_pengeluaran' => $id_pengeluaran
+        );
+        $this->db->insert('detail_perwabku', $data_detail);
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $result['status'] = FALSE;
+        } else {
+            $this->db->trans_commit();
+            $result['status'] = TRUE;
+        }
+        return $result;
     }
 }
 ?>

@@ -126,4 +126,16 @@ class Autocomplete extends CI_Controller {
         $data = $this->m_autocomplete->nomorbkk($q)->result();
         die(json_encode($data));
     }
+    
+    function nomorbkkdp() {
+        $q = get_safe('q');
+        $data = $this->m_autocomplete->nomorbkkdp($q)->result();
+        die(json_encode($data));
+    }
+    
+    function get_nomor_perwabku() {
+        $tanggal = substr(date2mysql(get_safe('tanggal')),0,7);
+        $data = $this->m_autocomplete->get_nomor_perwabku($tanggal);
+        die(json_encode($data));
+    }
 }

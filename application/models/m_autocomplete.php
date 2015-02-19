@@ -316,4 +316,27 @@ class M_autocomplete extends CI_Model {
         //echo $sql;
         return $this->db->query($sql);
     }
+    
+    function nomorbkkdp($q) {
+        $sql = "select p.*, u.uraian as keterangan, p.kode, p.pengeluaran as cashbon, u.kode as kode_ma, r.id_renbut
+            from pengeluaran p
+            left join rencana_kebutuhan r on (p.kode = r.kode_cashbon)
+            join uraian u on (p.id_uraian = u.id)
+            where p.perwabku = 'Belum' and p.kode like ('".$q."%')";
+        //echo $sql;
+        return $this->db->query($sql);
+    }
+    
+    function get_nomor_perwabku($tanggal) {
+        $row = $this->db->query("select substr(kode,10,4) as kode from perwabku where tanggal like '".$tanggal."%' order by id desc limit 1")->row();
+        //echo "select substr(kode,10,4) as kode from perwabku where tanggal like '".$tanggal."%' order by id desc limit 1";
+        if (!isset($row->kode)) {
+            $nomor = 0;
+        } else {
+            $nomor = $row->kode;
+        }
+        $thn = substr($tanggal, 2, 2);
+        $bln = substr($tanggal, 5, 2);
+        return 'PWK'.$thn.$bln.pad($nomor+1,4);
+    }
 }

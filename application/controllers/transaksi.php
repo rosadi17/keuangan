@@ -409,7 +409,7 @@ class Transaksi extends CI_Controller {
                 die(json_encode($data));
                 break;
             case 'delete': 
-                $this->m_transaksi->delete_jurnal($_GET['id']);
+                $this->m_transaksi->delete_jurnal(get_safe('id'));
                 break;
             
         }

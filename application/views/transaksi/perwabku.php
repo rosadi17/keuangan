@@ -85,9 +85,10 @@ function removeEl(el) {
 
 function bkk_add_row() {
     var jml = $('.rows_bkk').length+1;
-    str = '<div class="rows_bkk" style="margin-bottom: 3px;"><input type="text" name="nomorbkk" id="nomorbkk'+jml+'" /> <input type="hidden" name="id_nomorbkk" id="id_nomorbkk" /> <button type="button" class="btn btn-default btn-xs" onclick="removeEl(this);" id=""><i class="fa fa-times"></i></button></div>';
+    str = '<div class="rows_bkk" style="margin-bottom: 3px;"><input type="text" name="nomorbkk" id="nomorbkk" /> <input type="hidden" name="id_nomorbkk" id="id_nomorbkk" /></div>';
+            //'<button type="button" class="btn btn-default btn-xs" onclick="removeEl(this);" id=""><i class="fa fa-times"></i></button>';
     $('#nobkk').append(str);
-    $('#nomorbkk'+jml).autocomplete("<?= base_url('autocomplete/nomorbkk') ?>",
+    $('#nomorbkk').autocomplete("<?= base_url('autocomplete/nomorbkkdp') ?>",
     {
         parse: function(data){
             var parsed = [];
@@ -109,8 +110,22 @@ function bkk_add_row() {
         max: 100
     }).result(
     function(event,data,formated){
-        $(this).val(data.kode+' '+data.keterangan+' Rp. '+numberToCurrency(data.pengeluaran));
-        $('#id_nomorbkk'+jml).val(data.id);
+        $(this).val(data.kode);
+        $('#id_nomorbkk').val(data.id);
+        $('#keterangan').html(data.keterangan);
+        $('#nominal').html('Rp. '+numberToCurrency(data.pengeluaran));
+        $('#penerima').html(data.penerima);
+    });
+}
+
+function get_nomor_perwabku() {
+    $.ajax({
+        url: '<?= base_url('autocomplete/get_nomor_perwabku') ?>',
+        data: 'tanggal='+$('#tanggal').val(),
+        dataType: 'json',
+        success: function(data) {
+           $('#nomor').val(data);
+        }
     });
 }
 
@@ -118,16 +133,19 @@ function form_perwabku() {
     var str = '<div id="dialog_perwabku"><form action="" id="save_perwabku">'+
             '<?= form_hidden('id_perwabku', NULL, 'id=id_perwabku') ?>'+
             '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
-                '<tr><td width=40%>Nomor:</td><td><?= form_input('nomor', 'RBT'.date("ym"), 'id=nomor size=60') ?></td></tr>'+
+                '<tr><td width=40%>Nomor:</td><td><?= form_input('nomor', '', 'id=nomor size=60') ?></td></tr>'+
                 '<tr><td width=40%>Tanggal Perwabku:</td><td><?= form_input('tanggal', date("d/m/Y"), 'id=tanggal size=10') ?></td></tr>'+
-                '<tr><td></td><td><button type="button" class="btn btn-default btn-xs delete" onclick="bkk_add_row();"><i class="fa fa-plus-circle"></i> Tambah Kode BKK</button></td></tr>'+
+                //'<tr><td></td><td><button type="button" class="btn btn-default btn-xs delete" onclick="bkk_add_row();"><i class="fa fa-plus-circle"></i> Tambah Kode BKK</button></td></tr>'+
                 '<tr><td width=40% valign="top">Nomor BKK (DP):</td><td id="nobkk"></td></tr>'+
+                '<tr><td width=40% valign="top">Keterangan:</td><td id="keterangan"></td></tr>'+
+                '<tr><td width=40% valign="top">Nominal:</td><td id="nominal"></td></tr>'+
+                '<tr><td width=40% valign="top">Penerima:</td><td id="penerima"></td></tr>'+
             '</table>'+
             '</form></div>';
     $(str).dialog({
         title: 'Tambah Perwabku',
         autoOpen: true,
-        width: 520,
+        width: 480,
         autoResize:true,
         modal: true,
         hide: 'explode',
@@ -145,30 +163,21 @@ function form_perwabku() {
         }, open: function() {
             $('#nomor').focus();
             bkk_add_row();
+            get_nomor_perwabku();
         }
     });
     $('#tanggal').datepicker({
         changeYear: true,
-        changeMonth: true
+        changeMonth: true,
+        onSelect: function() {
+            get_nomor_perwabku();
+        }
     });
     $('#save_perwabku').submit(function() {
-        if ($('#nomor').val().length < 8) {
-            custom_message('Peringatan', 'Nomor yang anda masukkan harus dengan format yymmxxxx misal: 15010001 !', '#nomor');
+        if ($('#nomorbkk').val() === '') {
+            custom_message('Peringatan', 'Nomor BKK harus dipilih', '#nomorbkk');
             return false;
         }
-        if ($('#id_uraian').val() === '') {
-            custom_message('Peringatan', 'Kode MA proja belum dipilih !', '#uraian');
-            return false;
-        }
-        if ($('#jml_perwabku').val() === '') {
-            custom_message('Peringatan', 'Jumlah perwabku harus diisi !', '#jml_perwabku');
-            return false;
-        }
-        if ($('#penerima').val() === '') {
-            custom_message('Peringatan', 'Penerima / penanggung jawab harus diisi !', '#uraian');
-            return false;
-        }
-        var cek_id = $('#id_perwabku').val();
         $.ajax({
             url: '<?= base_url('transaksi/manage_perwabku/save') ?>',
             type: 'POST',
@@ -178,35 +187,13 @@ function form_perwabku() {
             success: function(data) {
                 if (data.status === true) {
                     $('#dialog_perwabku').dialog().remove();
-                    if (cek_id === '') {
-                        alert_tambah();
-                        $('input').val('');
-                        get_list_perwabku('1','',data.id_perwabku);
-                    } else {
-                        alert_edit();
-                        $('#form_add').dialog().remove();
-                        get_list_perwabku($('.noblock').html(),'');
-                    }
+                    alert_tambah();
+                    get_list_perwabku(1);
                 }
             }
         });
         return false;
     });
-}
-
-function edit_perwabku(str) {
-    var arr = str.split('#');
-    form_perwabku();
-    $('#id_perwabku').val(arr[0]);
-    $('#uraian').val(arr[1]);
-    $('#keterangan').val(arr[2]);
-    $('#jml_perwabku').val(arr[3]);
-    $('#penerima').val(arr[4]);
-    $('#id_uraian').val(arr[5]);
-    $('#tanggal').val(arr[6]);
-    $('#detail').html(arr[7]);
-    $('#nomor').val(arr[8]);
-    $('#dialog_perwabku').dialog({ title: 'Edit perwabku satuan kerja' });
 }
 
 function print_perwabku(id) {
