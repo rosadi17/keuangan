@@ -16,14 +16,14 @@
         <th width="7%" style="border-top: 1px solid #6eb7ff;">Jml Renbut</th>
     </tr>
     <?php foreach ($list_data as $key => $data) { 
-        $str = $data->id_renbut.'#'.$data->ma_proja.'#'.$data->keterangan.'#'.$data->jml_renbut.'#'.$data->penerima.'#'.$data->id_uraian.'#'.datefmysql($data->tanggal_kegiatan).'#'.$data->detail.'#'.$data->kode;
+        $str = $data->id_renbut.'#'.$data->ma_proja.'#'.$data->keterangan.'#'.$data->jml_renbut.'#'.$data->penerima.'#'.$data->id_uraian.'#'.datefmysql($data->tanggal_kegiatan).'#'.$data->detail.'#'.$data->kode.'#'.$data->kode_cashbon.'#'.$data->id_pengeluaran;
         ?>
     <tr class="<?= ($key%2==1)?'even':'odd' ?>">
         <td align="center"><?= $auto++ ?></td>
         <td align="center"><?= datefmysql($data->tanggal_kegiatan) ?></td>
         <td align="center"><?= $data->kode ?></td>
         <td><?= $data->keterangan ?></td>
-        <td align="center"><?= $data->satker ?></td>
+        <td class="nowrap"><?= $data->satker ?></td>
         <td align="center"><?= $data->ma_proja ?></td>
         <td align="right"><?= rupiah($data->nominal) ?></td>
         <td align="right"><?= rupiah($data->cashbon) ?></td>

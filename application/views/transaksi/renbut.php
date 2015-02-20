@@ -11,6 +11,7 @@ $(function() {
         }
     }).click(function() {
         form_renbut();
+        get_nomor_renbut();
     });
     $('#cari_button').button({
         icons: {
@@ -124,7 +125,6 @@ function form_renbut() {
             $(this).dialog().remove();
         }, open: function() {
             $('#nomor').focus();
-            get_nomor_renbut();
         }
     });
     $('#tanggal').datepicker({
@@ -250,6 +250,8 @@ function edit_renbut(str) {
     $('#tanggal').val(arr[6]);
     $('#detail').html(arr[7]);
     $('#nomor').val(arr[8]);
+    $('#nomorbkk').val(arr[9]);
+    $('#id_pengeluaran').val(arr[10]);
     $('#dialog_renbut').dialog({ title: 'Edit renbut satuan kerja' });
 }
 

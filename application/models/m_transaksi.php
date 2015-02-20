@@ -10,10 +10,11 @@ class M_transaksi extends CI_Model {
         if ($search['satker'] !== '') {
             $q.=" and s.id = '".$search['satker']."'";
         }
-        $q.=" order by rk.tanggal asc";
+        $q.=" order by rk.kode asc";
         $sql = "select rk.*, s.nama as satker, u.kode as ma_proja, p.status as status_pengeluaran,
-            CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as detail
+            CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as detail, IFNULL(pg.id,'') as id_pengeluaran
             from rencana_kebutuhan rk
+            left join pengeluaran pg on (rk.kode_cashbon = pg.kode)
             join uraian u on (rk.id_uraian = u.id)
             join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
             join kegiatan k on (sk.id_kegiatan = k.id)
