@@ -515,14 +515,15 @@ class Transaksi extends CI_Controller {
                 $data = $this->m_transaksi->save_perwabku();
                 die(json_encode($data));
                 break;
-            case 'approve': 
-                $id =   $_GET['id'];
-                $status = $_GET['status'];
-                $data = $this->m_transaksi->approve_perwabku($id, $status);
-                die(json_encode($data));
+            case 'print': 
+                $param['id']   = get_safe('id');
+                $param['bulan']= '';
+                $param['satker'] = '';
+                $data = $this->get_list_data_perwabku(NULL, NULL, $param);
+                $this->load->view('transaksi/print-perwabku', $data);
                 break;
             case 'delete': 
-                $this->m_transaksi->delete_perwabku($_GET['id']);
+                $this->m_transaksi->delete_perwabku(get_safe('id'));
                 break;
             
         }

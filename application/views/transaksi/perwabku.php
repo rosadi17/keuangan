@@ -241,7 +241,7 @@ function delete_perwabku(id, page) {
         </ul>
         <div id="tabs-1">
             <button id="add_perwabku">Tambah Data</button>
-            <button id="cari_button">Cari Data</button>
+            <!--<button id="cari_button">Cari Data</button>-->
             <button id="reload_perwabku">Refresh</button>
             <div id="result">
 

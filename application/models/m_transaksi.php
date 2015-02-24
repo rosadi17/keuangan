@@ -674,6 +674,9 @@ class M_transaksi extends CI_Model {
     
     function get_data_perwabku($limit = null, $start = null, $search = null) {
         $q = null;
+        if ($search['id'] !== '') {
+            $q.=" and pw.id = '".$search['id']."'";
+        }
         if ($search['bulan'] !== '') {
             //$q.=" and rk.tanggal like ('".$search['bulan']."%')";
         }
@@ -682,7 +685,9 @@ class M_transaksi extends CI_Model {
         }
         
         $sql = "select pw.*, pg.tanggal as tanggal_pengeluaran, pg.pengeluaran as dana, 
-            pg.penerima, pg.kode, YEAR(pg.tanggal) as thn_anggaran
+            pg.penerima, pg.kode, YEAR(pg.tanggal) as thn_anggaran, s.nama as satker,
+            u.kode as kode_ma, s.kode as kode_satker,
+            p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan, u.uraian
             from perwabku pw
             join detail_perwabku dp on (dp.id_perwabku = pw.id)
             join pengeluaran pg on (dp.id_pengeluaran = pg.id)
@@ -692,7 +697,9 @@ class M_transaksi extends CI_Model {
             join program p on (k.id_program = p.id)
             join satker s on (p.id_satker = s.id) ";
         $limitation = null;
-        $limitation.=" limit $start , $limit";
+        if ($limit !== NULL) {
+            $limitation =" limit $start , $limit";
+        }
         $query = $this->db->query($sql . $q . $limitation);
         //echo $sql . $q . $limitation;
         $queryAll = $this->db->query($sql . $q);
@@ -732,6 +739,10 @@ class M_transaksi extends CI_Model {
             $result['status'] = TRUE;
         }
         return $result;
+    }
+    
+    function delete_perwabku($id) {
+        $this->db->delete('perwabku', array('id' => $id));
     }
 }
 ?>
