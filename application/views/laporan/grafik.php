@@ -2,7 +2,8 @@
 <div class="titling"><h1><?= $title ?></h1></div>
 <script type="text/javascript">
     $(function() {
-        get_data_series();
+        $('#tabs').tabs();
+        //get_data_series();
         $('#cari_button_cashbon').button({
             icons: {
                 secondary: 'ui-icon-search'
@@ -74,15 +75,23 @@
    }
 </script>
 <div class="kegiatan">
-    <div class="inputan">
-        <table width="100%" cellspacing="0">
-            <tr><td width=10%>Tahun:</td><td><select name="year" id="year" style="width: 72px;"><option value="">Select Year ....</option><?php for($i = 2010; $i <= date("Y"); $i++) { ?> <option value="<?= $i ?>" <?php if ($i == date("Y")) echo "selected"; else echo ""; ?>><?= $i ?></option><?php } ?></select></td></tr>
-            <tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>" <?= ($data->id == 1)?'selected':NULL ?>><?= $data->nama ?></option><?php } ?></select></td></tr>
-            <tr><td></td><td>
-                <button id="cari_button_cashbon">Tampilkan Grafik</button>
-                <button id="reload_cashbon">Refresh</button>
-            </td></tr>
-        </table>
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-1">Entri Rencana Kebutuhan</a></li>
+        </ul>
+        <div id="tabs-1">
+
+        <div class="inputan">
+            <table width="100%" cellspacing="0">
+                <tr><td width=10%>Tahun:</td><td><select name="year" id="year" style="width: 72px;"><option value="">Select Year ....</option><?php for($i = 2010; $i <= date("Y"); $i++) { ?> <option value="<?= $i ?>" <?php if ($i == date("Y")) echo "selected"; else echo ""; ?>><?= $i ?></option><?php } ?></select></td></tr>
+                <tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>" <?= ($data->id == 1)?'selected':NULL ?>><?= $data->nama ?></option><?php } ?></select></td></tr>
+                <tr><td></td><td>
+                    <button id="cari_button_cashbon">Tampilkan Grafik</button>
+                    <button id="reload_cashbon">Refresh</button>
+                </td></tr>
+            </table>
+        </div><br/><br/>
+        <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        </div>
     </div>
-    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 </div>

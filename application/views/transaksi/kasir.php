@@ -211,6 +211,13 @@ $(function() {
         $('#jumlah').val(numberToCurrency(data.jml_renbut));
         $('#nama_user').val(data.penerima);
     });
+    $('#kode_renbut').setOptions({
+        extraParams:{
+            tanggal: function(){
+                return $('#tanggal').val();
+            }
+        }
+   });
     $('#kode').autocomplete("<?= base_url('autocomplete/ma_proja') ?>",
     {
         parse: function(data){
@@ -419,11 +426,11 @@ function paging(p) {
         <input type="hidden" name="id_kasir" id="id_kasir" />
         <table class="inputan" width="100%">
             <tr><td>Jenis Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Pilih ...', 'bkk' => 'Kas Keluar', 'bkm' => 'Kas Masuk'), NULL, 'id=jenis style="width: 300px;"') ?></td></tr>
-            <tr><td>Tanggal:</td><td><?= form_input('tanggal', date("d/m/Y"), 'size=15 id=tanggal') ?></td></tr>
+            <tr><td>Tanggal Kegiatan:</td><td><?= form_input('tanggal', date("d/m/Y"), 'size=15 id=tanggal') ?></td></tr>
             <tr><td>No.</td><td><?= form_input('no', NULL, 'id=no') ?></td></tr>
             <tr><td>Sumber Dana:</td><td><?= form_dropdown('sumberdana', array('' => 'Pilih ...', 'Kas' => 'Kas', 'Bank' => 'Bank'), NULL, 'id="sumberdana" style="width: 300px;"') ?></td></tr>
             <tr><td>Kode Perkiraan:</td><td><?= form_input('', NULL, 'id=kode_perkiraan size=60') ?><?= form_hidden('kode_perkiraan', NULL, 'id=hide_kode_perkiraan') ?></td></tr>
-            <tr><td>Nomor Renbut:</td><td><?= form_input('kode_renbut', NULL, 'id=kode_renbut size=60') ?><?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?></td></tr>
+            <tr><td>Nomor Renbut:</td><td><?= form_input('kode_renbut', NULL, 'id=kode_renbut size=60') ?><small style="font-style: italic;">Mengacu ke bulan kegiatan</small><?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?></td></tr>
             <tr><td>Kode MA/Proja:</td><td><?= form_input('kode', NULL, 'id=kode') ?><?= form_hidden('id_kode', NULL, 'id=id_kode') ?></td></tr>
             <tr><td>Pengguna Anggaran:</td><td><?= form_input('pengguna', NULL, 'id=pengguna') ?></td></tr>
             <tr><td valign="top">Uraian:</td><td><?= form_textarea('uraian', NULL, 'id=uraian rows=4 style="width: 294px;"') ?></td></tr>

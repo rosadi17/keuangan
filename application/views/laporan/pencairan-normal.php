@@ -15,20 +15,20 @@ $(function() {
             secondary: 'ui-icon-search'
         }
     }).click(function() {
-        form_cari();
+        form_searching();
     });
     $('#reload_normal').button({
         icons: {
             secondary: 'ui-icon-refresh'
         }
     }).click(function() {
-        get_list_normal();
+        get_list_normal(1);
     });
 });
 function get_list_normal(page, src, id) {
     $.ajax({
         url: '<?= base_url('laporan/manage_pencairan_normal') ?>/list/'+page,
-        data: 'search='+src+'&id='+id+'&bulan='+$('#year').val()+'-'+$('#bln').val()+'&id_satker='+$('#id_satker').val()+'&proja='+$('#uraian').val()+'&pjawab='+$('#png_jawab').val(),
+        data: $('#searching_dropping').serialize(),
         cache: false,
         success: function(data) {
             $('#result').html(data);
@@ -36,32 +36,25 @@ function get_list_normal(page, src, id) {
     });
 }
 
-function form_cari() {
-    var str = '<div id="dialog_dropping"><form action="" id="save_dropping">'+
-            '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
-                '<tr><td width=25%>Bulan Tahun:</td><td><select name=bln id=bln style="width: 74px;"><?php foreach ($bulan as $bln) { ?> <option value="<?= $bln[0] ?>" <?= (($bln[0] == date("m"))?'selected':NULL) ?>><?= $bln[1] ?></option><?php } ?></select><select name="year" id="year" style="width: 72px;"><option value="">Select Year ....</option><?php for($i = 2010; $i <= date("Y"); $i++) { ?> <option value="<?= $i ?>" <?php if ($i == date("Y")) echo "selected"; else echo ""; ?>><?= $i ?></option><?php } ?></select></td></tr>'+
-                '<tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>'+
-                '<tr><td width=40%>MA Proja:</td><td><?= form_input('uraian', NULL, 'id=uraian size=60') ?><?= form_hidden('id_uraian', NULL, 'id=id_uraian') ?></td></tr>'+
-                '<tr><td width=40%>Keterangan:</td><td><?= form_input('keterangan', NULL, 'id=keterangan size=60') ?></td></tr>'+
-                '<tr><td>Penanggung Jawab:</td><td><?= form_input('png_jawab', NULL, 'id=png_jawab size=60') ?></td></tr>'+
-            '</table>'+
-            '</form></div>';
-    $(str).dialog({
+function form_searching() {
+    //var str = '';
+    $('#dialog_dropping').dialog({
         title: 'Cari dropping',
         autoOpen: true,
         width: 480,
-        height: 220,
-        modal: true,
-        hide: 'clip',
+        autoResize:true,
+        hide: 'explode',
         show: 'blind',
+        position: ['center',47],
         buttons: {
-            "Search": function() {
-                get_list_normal();
-            }, "Cancel": function() {
-                $(this).dialog().remove();
+            "Cancel": function() {
+                $(this).dialog('close')
+            },
+            "Cari": function() {
+                get_list_normal(1);
             }
         }, close: function() {
-            $(this).dialog().remove();
+            $(this).dialog('close')
         }, open: function() {
             $('#uraian').focus();
         }
@@ -127,4 +120,15 @@ function paging(page, tab, search) {
     <div id="result" style="overflow-x: auto;">
 
     </div>
+</div>
+<div id="dialog_dropping" class="nodisplay">
+    <form action="" id="searching_dropping">
+    <table width=100% cellpadding=0 cellspacing=0 class=inputan>
+        <tr><td width=25%>Tanggal Kegiatan:</td><td><select name=bln id=bln style="width: 74px;"><?php foreach ($bulan as $bln) { ?> <option value="<?= $bln[0] ?>" <?= (($bln[0] == date("m"))?'selected':NULL) ?>><?= $bln[1] ?></option><?php } ?></select><select name="year" id="year" style="width: 72px;"><option value="">Select Year ....</option><?php for($i = 2010; $i <= date("Y"); $i++) { ?> <option value="<?= $i ?>" <?php if ($i == date("Y")) echo "selected"; else echo ""; ?>><?= $i ?></option><?php } ?></select></td></tr>
+        <tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Semua Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>
+        <tr><td width=40%>MA Proja:</td><td><?= form_input('uraian', NULL, 'id=uraian size=60') ?><?= form_hidden('id_uraian', NULL, 'id=id_uraian') ?></td></tr>
+        <tr><td width=40%>Keterangan:</td><td><?= form_input('keterangan', NULL, 'id=keterangan size=60') ?></td></tr>
+        <tr><td>Penanggung Jawab:</td><td><?= form_input('png_jawab', NULL, 'id=png_jawab size=60') ?></td></tr>
+    </table>
+    </form>
 </div>

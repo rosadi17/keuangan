@@ -33,8 +33,6 @@
         <script type="text/javascript" src="<?= base_url('assets/js/jquery.treetable.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/jquery.contextmenu.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/highchart/highcharts.js') ?>"></script>
-        <script type="text/javascript" src="<?= base_url('assets/highchart/themes/grid.js') ?>"></script>
-        <script type="text/javascript" src="<?= base_url('assets/highchart/modules/exporting.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/mousetrap.min.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/jquery.nicescroll.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/jquery.cookies.js') ?>"></script>

@@ -66,12 +66,10 @@ class Laporan extends CI_Controller {
         $limit = 100;
         switch ($action) {
             case 'list':
-                $search['key'] = $_GET['search'];
-                $search['id']  = $_GET['id'];
-                $search['bulan'] = $_GET['bulan'];
-                $search['satker']= $_GET['id_satker'];
-                $search['proja'] = $_GET['proja'];
-                $search['pjawab']= $_GET['pjawab'];
+                $search['bulan'] = get_safe('year').'-'.get_safe('bln');
+                $search['satker']= get_safe('id_satker');
+                $search['proja'] = get_safe('uraian');
+                $search['pjawab']= get_safe('png_jawab');
                 $data = $this->get_list_data_pencairan_normal($limit, $page, $search);
                 $this->load->view('laporan/pencairan-normal-table', $data);
                 break;

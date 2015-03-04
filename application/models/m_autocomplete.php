@@ -113,7 +113,11 @@ class M_autocomplete extends CI_Model {
         return $this->db->query($sql);
     }
     
-    function get_kode_renbut($q) {
+    function get_kode_renbut($q, $tanggal = NULL) {
+        $param = NULL;
+        if ($tanggal !== NULL) {
+            $param = "and rk.tanggal_kegiatan like ('".$tanggal."%')";
+        }
         $sql = "select u.*, s.nama as satker, rk.id_renbut as id_rk, rk.kode as kode_rk, rk.jml_renbut, rk.penerima, 
             u.kode as ma_proja, u.uraian,
             CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as keterangan
@@ -124,7 +128,7 @@ class M_autocomplete extends CI_Model {
             join satker s on (p.id_satker = s.id) 
             join rencana_kebutuhan rk on (rk.id_uraian = u.id)
             where u.id is not NULL 
-            and rk.kode like ('$q%')";
+            and rk.kode like ('$q%') $param";
         return $this->db->query($sql);
     }
     

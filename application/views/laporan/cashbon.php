@@ -50,15 +50,16 @@ function form_cari() {
         title: 'Cari dropping',
         autoOpen: true,
         width: 480,
-        height: 220,
-        modal: true,
-        hide: 'clip',
+        autoResize:true,
+        hide: 'explode',
         show: 'blind',
+        position: ['center',47],
         buttons: {
-            "Search": function() {
-                get_list_cashbon();
-            }, "Cancel": function() {
+            "Cancel": function() {
                 $(this).dialog().remove();
+            },
+            "Cari": function() {
+                get_list_cashbon(1);
             }
         }, close: function() {
             $(this).dialog().remove();

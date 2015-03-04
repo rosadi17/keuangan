@@ -16,24 +16,27 @@
     </tr>
     <?php foreach ($list_data as $key => $data) {
         $str = $data->id_renbut.'#'.$data->ma_proja.'#'.$data->keterangan.'#'.rupiah($data->jml_renbut).'#'.$data->penerima;
-        $status = $data->status;
-        if (($data->status === 'Disetujui') and ($data->tanggal_cair !== NULL)) {
-            $status = "&checkmark;";
-        } else if (($data->status === 'Disetujui') and ($data->tanggal_cair === NULL)) {
-            $status = $data->status;
+        $alert = "<i class='blinker'>".$data->status."</i>";
+        $button= "";
+        if ($data->status === 'Disetujui') {
+            $alert = '<span class="label label-success"><i class="fa fa-thumbs-up"></i> '.$data->status.'</span>';
+            $button= 'disabled';
+        }
+        else if ($data->status === 'Ditolak') {
+            $alert = '<span class="label label-warning"><i class="fa fa-ban"></i> '.$data->status.'</span>';
         }
         ?>
     <tr class="<?= ($key%2==1)?'even':'odd' ?> <?= ($data->nominal > $data->jml_renbut)?'warning':NULL ?>">
         <td align="center"><?= $auto++ ?></td>
         <td align="center"><?= datefmysql($data->tanggal) ?></td>
         <td><?= $data->keterangan ?></td>
-        <td align="center"><?= $data->satker ?></td>
+        <td class="nowrap"><?= $data->satker ?></td>
         <td align="center"><?= $data->ma_proja ?></td>
         <td align="right"><?= rupiah($data->nominal) ?></td>
         <td align="right"><?= rupiah($data->cashbon) ?></td>
         <td align="right"><?= rupiah($data->jml_renbut) ?></td>
-        <td><?= $data->penerima ?></td>
-        <td align="center"><?= ($status === 'Disetujui')?'<i style="color: blue">'.$status.'</i>':$status ?></td>
+        <td class="nowrap"><?= $data->penerima ?></td>
+        <td align="center"><?= $alert ?></td>
         
     </tr>
     <?php } ?>

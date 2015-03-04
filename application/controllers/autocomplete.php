@@ -111,7 +111,8 @@ class Autocomplete extends CI_Controller {
     }
     
     function kode_renbut() {
-        $data = $this->m_autocomplete->get_kode_renbut(get_safe('q'))->result();
+        $tanggal = substr(date2mysql(get_safe('tanggal')),0,7);
+        $data = $this->m_autocomplete->get_kode_renbut(get_safe('q'), $tanggal)->result();
         die(json_encode($data));
     }
     

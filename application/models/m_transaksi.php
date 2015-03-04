@@ -5,7 +5,7 @@ class M_transaksi extends CI_Model {
     function get_data_renbut($limit = null, $start = null, $search = null) {
         $q = null;
         if ($search['bulan'] !== '') {
-            $q.=" and rk.tanggal like ('".$search['bulan']."%')";
+            $q.=" and rk.tanggal_kegiatan like ('".$search['bulan']."%')";
         }
         if ($search['satker'] !== '') {
             $q.=" and s.id = '".$search['satker']."'";

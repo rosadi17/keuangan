@@ -69,22 +69,16 @@ class M_laporan extends CI_Model {
     
     function get_data_pencairan_normal($limit, $start, $search) {
         $q = null;
-        if ($search['key'] !== 'undefined') {
-            $q.=" and rk.keterangan like '%".$search['key']."%'";
-        }
-        if ($search['id'] !== 'undefined') {
-            $q.=" and rk.id_renbut = '".$search['id']."'";
-        }
-        if (($search['bulan'] !== '') and ($search['bulan'] !== 'undefined-undefined')) {
+        if ($search['bulan'] !== '') {
             $q.=" and rk.tanggal like ('%".$search['bulan']."%')";
         }
-        if (($search['satker'] !== '') and ($search['satker'] !== 'undefined')) {
+        if ($search['satker'] !== '') {
             $q.=" and s.id = '".$search['satker']."'";
         }
-        if (($search['proja'] !== '') and ($search['proja'] !== 'undefined')) {
-            $q.=" having ma_proja like ('%".$search['proja']."%')";
+        if ($search['proja'] !== '') {
+            $q.=" and u.kode = '".$search['proja']."'";
         }
-        if (($search['pjawab'] !== '') and ($search['pjawab'] !== 'undefined')) {
+        if ($search['pjawab'] !== '') {
             $q.=" and rk.penerima like ('%".$search['pjawab']."%')";
         }
         $q.=" order by rk.tanggal asc";
@@ -171,14 +165,14 @@ class M_laporan extends CI_Model {
         if ($rekening !== NULL) {
             $q=" and s.nama like ('%$rekening%')";
         }
-        $sql = "select SUBSTR(p.kode,1,3) as kode_ket,SUBSTR(p.kode,5,4) as kode_auto, p.*, u.uraian,
+        $sql = "select SUBSTR(p.kode,1,3) as kode_ket,SUBSTR(p.kode,5,4) as kode_auto, p.id, u.uraian,
             p.penyetor as user, p.pemasukkan, 0 as pengeluaran 
             from penerimaan p
             left join sub_sub_sub_sub_rekening s on (p.id_rekening = s.id)
             join uraian u on (p.id_uraian = u.id) 
             where p.tanggal like ('%$bulan%') $q
             UNION
-            select SUBSTR(p.kode,1,3) as kode_ket,SUBSTR(p.kode,5,4) as kode_auto, p.*, u.uraian, 
+            select SUBSTR(p.kode,1,3) as kode_ket,SUBSTR(p.kode,5,4) as kode_auto, p.id, u.uraian, 
             p.penerima as user, 0 as pemasukkan, p.pengeluaran 
             from pengeluaran p
             left join sub_sub_sub_sub_rekening s on (p.id_rekening = s.id)
@@ -200,7 +194,7 @@ class M_laporan extends CI_Model {
     function get_data_renbut($limit = null, $start = null, $search = null) {
         $q = null;
         if ($search['bulan'] !== '') {
-            $q.=" and rk.tanggal like ('%".$search['bulan']."%')";
+            $q.=" and rk.tanggal_kegiatan like ('%".$search['bulan']."%')";
         }
         if (($search['satker'] !== '') and ($search['satker'] !== 'undefined')) {
             $q.=" and s.id = '".$search['satker']."'";
