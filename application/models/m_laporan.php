@@ -221,5 +221,11 @@ class M_laporan extends CI_Model {
         $data['jumlah'] = $queryAll->num_rows();
         return $data;
     }
+    
+    function load_data_grafik_pengeluaran($perwabku) {
+        $sql = "select sum(pengeluaran) as pengeluaran, perwabku from pengeluaran where perwabku = '$perwabku' and tanggal like ('".date("Y-m")."%')";
+        //echo $sql;
+        return $this->db->query($sql)->row();
+    }
 }
 ?>

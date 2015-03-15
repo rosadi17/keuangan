@@ -312,11 +312,11 @@ class M_autocomplete extends CI_Model {
     }
     
     function nomorbkk($q) {
-        $sql = "select p.*, u.uraian as keterangan, p.kode, p.pengeluaran as cashbon, u.kode as kode_ma, r.id_renbut
+        $sql = "select p.*, u.uraian as keterangan, CONCAT_WS(' ',p.kode,'Rp. ',p.pengeluaran,'<br/>',u.uraian) as kode, p.pengeluaran as cashbon, u.kode as kode_ma, r.id_renbut
             from pengeluaran p
             left join rencana_kebutuhan r on (p.kode = r.kode_cashbon)
             join uraian u on (p.id_uraian = u.id)
-            where p.perwabku = 'Default' and p.id_renbut is NULL and p.kode like ('".$q."%')";
+            where p.id_renbut is NULL and p.kode like ('".$q."%')";
         //echo $sql;
         return $this->db->query($sql);
     }

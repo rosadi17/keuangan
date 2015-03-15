@@ -124,8 +124,10 @@ $(function() {
         changeMonth: true,
         onSelect: function() {
             var jenis = $('#jenis').val();
-            get_last_code_kasir(jenis, $(this).val());
-            get_nominal_renbut($('#id_kode').val(), $(this).val());
+            if ($('#id_kasir').val() === '') {
+                get_last_code_kasir(jenis, $(this).val());
+                get_nominal_renbut($('#id_kode').val(), $(this).val());
+            }
         }
     });
     $('#form').submit(function() {

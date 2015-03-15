@@ -10,7 +10,7 @@ class M_transaksi extends CI_Model {
         if ($search['satker'] !== '') {
             $q.=" and s.id = '".$search['satker']."'";
         }
-        $q.=" order by rk.kode asc";
+        $q.=" order by rk.kode desc";
         $sql = "select rk.*, s.nama as satker, u.kode as ma_proja, p.status as status_pengeluaran,
             CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as detail, IFNULL(pg.id,'') as id_pengeluaran
             from rencana_kebutuhan rk
@@ -631,7 +631,7 @@ class M_transaksi extends CI_Model {
         $sql = "select * from (select pn.id, pn.kode, pn.sumberdana, pn.tanggal, pn.id_rekening, pn.id_renbut, pn.id_uraian, pn.pemasukkan, pn.penyetor, pn.perwabku, substr(pn.kode,1,3) as kode_trans, u.uraian as keterangan, IFNULL(pn.id_renbut,'') as renbut from penerimaan pn
                 join uraian u on (pn.id_uraian = u.id)
                 UNION ALL select pg.id, pg.kode, pg.sumberdana, pg.tanggal, pg.id_rekening, pg.id_renbut, pg.id_uraian, pg.pengeluaran, pg.penerima, pg.perwabku, substr(pg.kode,1,3) as kode_trans, u.uraian as keterangan, IFNULL(pg.id_renbut,'') as renbut from pengeluaran pg
-                join uraian u on (pg.id_uraian = u.id)) a order by tanggal desc";
+                join uraian u on (pg.id_uraian = u.id)) a order by kode desc";
         $limitation = null;
         $limitation.=" limit $start , $limit";
         $query = $this->db->query($sql . $q . $limitation);

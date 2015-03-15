@@ -583,6 +583,11 @@ function paging_ajax($jmldata, $dataPerPage, $klik, $tab = NULL, $search) {
     return $buffer;
 }
 
+function page_summary($total_data, $halaman, $dataperpage) {
+    $total_page = ceil($total_data/$dataperpage);
+    return '<div class="page_summary">Page '.$halaman.' of '.$total_page.' Total '.$total_data.' Data(s)</div>';
+}
+
 function range_year_start_from_one_year_ago() {
     $x = mktime(0, 0, 0, date("m"), date("d"), date("Y") - 1);
     return date("Y-m-d", $x);

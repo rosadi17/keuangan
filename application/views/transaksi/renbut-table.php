@@ -37,4 +37,6 @@
     </tr>
     <?php } ?>
 </table>
-<?= $paging ?><br/><br/>
+<?= $paging ?>
+<?= $infopage ?>
+<br/><br/>

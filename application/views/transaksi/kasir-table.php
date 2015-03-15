@@ -26,7 +26,7 @@
         <td align="center"><?= datefmysql($data->tanggal) ?></td>
         <td><?= $data->kode ?></td>
         <td><?= $data->keterangan ?></td>
-        <td><?= $data->penyetor ?></td>
+        <td class="nowrap"><?= $data->penyetor ?></td>
         <td align="right"><?= rupiah($data->pemasukkan) ?></td>
         <td style="white-space: nowrap;"><?= $status ?></td>
         <td align="right">
@@ -37,4 +37,6 @@
     </tr>
     <?php } ?>
 </table>
-<?= $paging ?><br/><br/>
+<?= $paging ?>
+<?= $infopage ?>
+<br/><br/>

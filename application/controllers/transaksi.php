@@ -64,6 +64,7 @@ class Transaksi extends CI_Controller {
         $data['jumlah'] = $query['jumlah'];
         
         $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, null);
+        $data['infopage'] = page_summary($data['jumlah'], $page, $limit);
         return $data;
     }
     
@@ -134,6 +135,7 @@ class Transaksi extends CI_Controller {
         $data['jumlah'] = $query['jumlah'];
         
         $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, null);
+        $data['infopage'] = page_summary($data['jumlah'], $page, $limit);
         return $data;
     }
     
@@ -473,6 +475,7 @@ class Transaksi extends CI_Controller {
         $data['jumlah'] = $query['jumlah'];
         
         $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, $search['key']);
+        $data['infopage'] = page_summary($data['jumlah'], $page, $limit);
         return $data;
     }
     

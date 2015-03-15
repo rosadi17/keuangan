@@ -183,6 +183,28 @@ class Laporan extends CI_Controller {
         die(json_encode(array('satker' => $data, 'realisasi' => $realisasi, 'bulan' => $bln, 'ratarata' => $rata)));
     }
     
+    function grafik_home() {
+        $agama = array(
+            'Pusat Biaya' => 'Sudah',
+            'Down Payment' => 'Belum',
+            'Default' => 'Default'
+        );
+        $data = array();
+
+        $total = 0;
+
+        foreach ($agama as $key => $row) {
+            //$db = "select B_07 as nama,count(*) as jml from MASTFIP08 where `B_07` = '$row' and A_01<>'99' $q and (B_07<>'' or B_07 is not null)";
+            $query = $this->m_laporan->load_data_grafik_pengeluaran($row);
+            //echo $db;
+            $data[] = array($row, (int)$query->pengeluaran);
+            $total += (int)$query->pengeluaran;
+        }
+        //return array('data' => $data, 'total' => $total);
+        $title = strtoupper("Rekap Pengeluaran Kasir Berdasarkan Perwabku");
+        die(json_encode(array('data' => $data, 'total' => $total, 'title' => $title)));
+    }
+    
     function kasbank() {
         $data['title'] = 'Catatan Kas & Bank';
         $data['bulan'] = array(

@@ -39,6 +39,13 @@
             <file>file:/C:/wamp/www/keuangan/application/views/transaksi/jurnal-table.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/transaksi/print-renbut.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/transaksi/print-perwabku.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/laporan/pengeluaran.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/laporan/pencairan-normal.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/laporan/cashbon.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/laporan/grafik.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/laporan/pencairan-normal-table.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/registrasi.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/laporan/grafik-table.php</file>
         </group>
     </open-files>
 </project-private>
