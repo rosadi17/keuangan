@@ -363,8 +363,15 @@ function edit_kasir(id, transaksi) {
                     $('#jumlah').val(numberToCurrency(data.pengeluaran));
                     $('#nama_user').val(data.penerima);
                     $('#perwabku').val(data.perwabku);
-                    $('#kode_perkiraan_pwk').val(data.id_rekening_pwk+''+data.rekening_pwk);
-                    $('#hide_kode_perkiraan_pwk').val(data.id_rekening_pwk);
+                    $('#user').val('Penyetor');
+                    var kd_pwk = ''; var id_kd_pwk = '';
+                    if (transaksi === 'BKK') {
+                        $('#user').val('Penerima');
+                        kd_pwk = data.id_rekening_pwk+' '+data.rekening_pwk;
+                        id_kd_pwk = data.id_rekening_pwk;
+                    }
+                    $('#kode_perkiraan_pwk').val(kd_pwk);
+                    $('#hide_kode_perkiraan_pwk').val(id_kd_pwk);
                 }
             });
         }

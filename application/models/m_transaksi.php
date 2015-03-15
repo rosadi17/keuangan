@@ -658,7 +658,9 @@ class M_transaksi extends CI_Model {
                 left join sub_sub_sub_sub_rekening s4r2 on (pg.id_rekening_pwk = s4r2.id)
                 where pg.id = '$id'";
         } else {
-            $sql = "select pn.*, IFNULL(pn.id_rekening,'') as id_rekening, substr(pn.kode,1,3) as kode_trans, u.uraian as keterangan, IFNULL(pn.id_renbut,'') as renbut,
+            $sql = "select pn.*, pn.penyetor as penerima, pn.pemasukkan as pengeluaran, IFNULL(pn.id_rekening,'') as id_rekening, substr(pn.kode,1,3) as kode_trans, 
+                u.kode as kode_uraian, u.uraian as keterangan_ma, IFNULL(pn.id_renbut,'') as renbut, 
+                CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as keterangan,
                 s4r.nama as rekening, s.nama as satker
                 from penerimaan pn
                 join uraian u on (pn.id_uraian = u.id)
@@ -667,7 +669,7 @@ class M_transaksi extends CI_Model {
                 join program p on (k.id_program = p.id)
                 join satker s on (p.id_satker = s.id) 
                 left join sub_sub_sub_sub_rekening s4r on (pn.id_rekening = s4r.id)
-                where pn.id = '$id";
+                where pn.id = '$id'";
         }
         return $this->db->query($sql);
     }
