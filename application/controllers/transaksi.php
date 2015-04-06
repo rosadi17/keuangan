@@ -460,13 +460,7 @@ class Transaksi extends CI_Controller {
                 break;
             case 'delete':
                 $id    = get_safe('id');
-                $kode  = get_safe('kode');
-                if ($kode === 'BKK') {
-                    $this->db->delete('pengeluaran', array('id' => $id));
-                }
-                if ($kode === 'BKM') {
-                    $this->db->delete('penerimaan', array('id' => $id));
-                }
+                $this->db->delete('kasir', array('id' => $id));
                 break;
         }
     }

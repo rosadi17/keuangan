@@ -427,7 +427,6 @@ class M_transaksi extends CI_Model {
     }
     
     function kasir_save() {
-        die;
         $idkasir= post_safe('id_kasir');
         $tanggal= date2mysql(post_safe('tanggal'));
         $jenis  = post_safe('jenis');
@@ -455,6 +454,16 @@ class M_transaksi extends CI_Model {
                 $this->db->insert('rencana_kebutuhan', $data_renbut);
                 $id_rencana = $this->db->insert_id();
             }
+            $jns = NULL;
+            if ($jenis === 'bkk') {
+                $jns = 'BKK';
+            }
+            if ($jenis === 'bkm') {
+                $jns = 'BKM';
+            }
+            if ($jenis === 'mutasi') {
+                $jns = 'MTS';
+            }
             $data = array(
                 'kode' => $no,
                 'sumberdana' => $sumber,
@@ -464,14 +473,16 @@ class M_transaksi extends CI_Model {
                 'id_uraian' => $maproja,
                 'pengeluaran' => $jumlah,
                 'penerima' => $penyetor,
-                'perwabku' => $perwabku,
+                'perwabku' => !empty($perwabku)?$perwabku:NULL,
+                'jenis' => $jns,
                 'id_rekening_pwk' => ($id_rek_pwk !== '')?$id_rek_pwk:NULL
             );
             $this->db->insert('kasir', $data);
+            $id = $this->db->insert_id();
 
         } else {
             $this->db->delete('rencana_kebutuhan', array('id_renbut' => $id_renbut));
-            if ($id_renbut === '') {
+            if ($jenis === 'bkk' and $id_renbut === '') {
                 $data_renbut = array(
                     'tanggal' => date("Y-m-d"),
                     'kode_cashbon' => $no,
@@ -493,11 +504,12 @@ class M_transaksi extends CI_Model {
                 'id_uraian' => $maproja,
                 'pengeluaran' => $jumlah,
                 'penerima' => $penyetor,
-                'perwabku' => $perwabku,
+                'perwabku' => !empty($perwabku)?$perwabku:NULL,
                 'id_rekening_pwk' => ($id_rek_pwk !== '')?$id_rek_pwk:NULL
             );
             $this->db->where('id', $idkasir);
             $this->db->update('kasir', $data);
+            $id = $idkasir;
         }
 
         $data_cair  = array(
@@ -507,8 +519,8 @@ class M_transaksi extends CI_Model {
         );
         $this->db->where(array('id_uraian' => $maproja, 'YEAR(tanggal)' => date("Y")));
         $this->db->update('rencana_kebutuhan', $data_cair);
-        $get = $this->db->query("select id_renbut from rencana_kebutuhan where id_uraian = '$maproja' and YEAR(tanggal) = '".date("Y")."'")->row();
-        $result['id'] = $id_rencana;
+        //$get = $this->db->query("select id_renbut from rencana_kebutuhan where id_uraian = '$maproja' and YEAR(tanggal) = '".date("Y")."'")->row();
+        $result['id'] = $id;
         $result['act'] = 'bkk';
 
         $result['status'] = TRUE;
@@ -661,34 +673,19 @@ class M_transaksi extends CI_Model {
     }
     
     function get_data_kasir_by_id($id, $transaksi) {
-        if ($transaksi === 'BKK') {
-            $sql = "select pg.*, IFNULL(pg.id_rekening,'') as id_rekening, substr(pg.kode,1,3) as kode_trans, 
-                u.kode as kode_uraian, u.uraian as keterangan_ma, IFNULL(pg.id_renbut,'') as renbut, s4r.nama as rekening, s.nama as satker,
-                CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as keterangan,
-                IFNULL(pg.id_rekening_pwk,'') as id_rekening_pwk, IFNULL(s4r2.nama,'') as rekening_pwk
-                from kasir pg
-                join uraian u on (pg.id_uraian = u.id)
-                join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
-                join kegiatan k on (sk.id_kegiatan = k.id)
-                join program p on (k.id_program = p.id)
-                join satker s on (p.id_satker = s.id) 
-                left join sub_sub_sub_sub_rekening s4r on (pg.id_rekening = s4r.id)
-                left join sub_sub_sub_sub_rekening s4r2 on (pg.id_rekening_pwk = s4r2.id)
-                where pg.id = '$id'";
-        } else {
-            $sql = "select pn.*, pn.penyetor as penerima, pn.pemasukkan as pengeluaran, IFNULL(pn.id_rekening,'') as id_rekening, substr(pn.kode,1,3) as kode_trans, 
-                u.kode as kode_uraian, u.uraian as keterangan_ma, IFNULL(pn.id_renbut,'') as renbut, 
-                CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as keterangan,
-                s4r.nama as rekening, s.nama as satker
-                from penerimaan pn
-                join uraian u on (pn.id_uraian = u.id)
-                join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
-                join kegiatan k on (sk.id_kegiatan = k.id)
-                join program p on (k.id_program = p.id)
-                join satker s on (p.id_satker = s.id) 
-                left join sub_sub_sub_sub_rekening s4r on (pn.id_rekening = s4r.id)
-                where pn.id = '$id'";
-        }
+        $sql = "select pg.*, IFNULL(pg.id_rekening,'') as id_rekening, substr(pg.kode,1,3) as kode_trans, 
+            u.kode as kode_uraian, u.uraian as keterangan_ma, IFNULL(pg.id_renbut,'') as renbut, s4r.nama as rekening, s.nama as satker,
+            CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as keterangan,
+            IFNULL(pg.id_rekening_pwk,'') as id_rekening_pwk, IFNULL(s4r2.nama,'') as rekening_pwk
+            from kasir pg
+            join uraian u on (pg.id_uraian = u.id)
+            join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
+            join kegiatan k on (sk.id_kegiatan = k.id)
+            join program p on (k.id_program = p.id)
+            join satker s on (p.id_satker = s.id) 
+            left join sub_sub_sub_sub_rekening s4r on (pg.id_rekening = s4r.id)
+            left join sub_sub_sub_sub_rekening s4r2 on (pg.id_rekening_pwk = s4r2.id)
+            where pg.id = '$id'";
         return $this->db->query($sql);
     }
     

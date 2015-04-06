@@ -134,6 +134,7 @@ class M_autocomplete extends CI_Model {
             join rencana_kebutuhan rk on (rk.id_uraian = u.id)
             where u.id is not NULL 
             and rk.kode like ('$q%') $param";
+        //echo $sql;
         return $this->db->query($sql);
     }
     

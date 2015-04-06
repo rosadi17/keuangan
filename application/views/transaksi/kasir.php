@@ -14,9 +14,9 @@ function get_last_code_kasir(trans, tanggal) {
     });
 }
 
-function get_nominal_kasir(id, tahun) {
+function get_nominal_renbut(id, tahun) {
     $.ajax({
-        url: '<?= base_url('autocomplete/get_nominal_kasir') ?>/'+id,
+        url: '<?= base_url('autocomplete/get_nominal_renbut') ?>/'+id,
         data: 'tahun='+tahun,
         dataType: 'json',
         success: function(data) {
@@ -32,7 +32,7 @@ function cetak_bukti_kas(id, jenis) {
     var dHeight= wHeight * 1;
     var x = screen.width/2 - dWidth/2;
     var y = screen.height/2 - dHeight/2;
-    window.open('<?= base_url('transaksi/print_bukti_kas') ?>?id='+id+'&jenis='+jenis, 'kasir Cetak', 'width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
+    window.open('<?= base_url('transaksi/print_bukti_kas') ?>?id='+id+'&jenis='+jenis, 'Renbut Cetak', 'width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
 }
 
 function cetak_bukti_kas_masuk(id) {
@@ -42,7 +42,7 @@ function cetak_bukti_kas_masuk(id) {
     var dHeight= wHeight * 1;
     var x = screen.width/2 - dWidth/2;
     var y = screen.height/2 - dHeight/2;
-    window.open('<?= base_url('transaksi/manage_pemasukkan') ?>/print_bukti_kas?id='+id, 'kasir Cetak', 'width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
+    window.open('<?= base_url('transaksi/manage_pemasukkan') ?>/print_bukti_kas?id='+id, 'Renbut Cetak', 'width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
 }
 
 function print_kasir(id, jenis) {
@@ -73,8 +73,8 @@ $(function() {
         }
         if (nilai === 'bkm') {
             $('.hidden').hide();
-            $('#kode_kasir, #id_kasir').val('');
-            $('#perwabku, #kode_kasir').attr('disabled','disabled');
+            $('#kode_renbut, #id_renbut').val('');
+            $('#perwabku, #kode_renbut').attr('disabled','disabled');
             $('#kdatas').html('Kode Perkiraan (D)*:');
             $('#kdbawah').html('Kode Perkiraan Lawan (K)*:');
             $('#pngjwb').html('Penyetor:');
@@ -171,7 +171,7 @@ $(function() {
             var jenis = $('#jenis').val();
             if ($('#id_kasir').val() === '') {
                 get_last_code_kasir(jenis, $(this).val());
-                get_nominal_kasir($('#id_kode').val(), $('#tahun').val());
+                get_nominal_renbut($('#id_kode').val(), $('#tahun').val());
             }
         }
     });
@@ -179,8 +179,8 @@ $(function() {
         if ($('#jenis').val() === '') {
             custom_message('Peringatan', 'Jenis transaksi harus dipilih', '#jenis'); return false;
         }
-//        if ($('#id_kasir').val() === '') {
-//            custom_message('Peringatan', 'Nomor kasir harus dipilih', '#kode_kasir'); return false;
+//        if ($('#id_renbut').val() === '') {
+//            custom_message('Peringatan', 'Nomor renbut harus dipilih', '#kode_renbut'); return false;
 //        }
         if ($('#kode').val() === '') {
             custom_message('Peringatan', 'Kode MA / Proja harus dipilih', '#kode'); return false;
@@ -229,7 +229,7 @@ $(function() {
         });
         return false;
     });
-    $('#kode_kasir').autocomplete("<?= base_url('autocomplete/kode_kasir') ?>",
+    $('#kode_renbut').autocomplete("<?= base_url('autocomplete/kode_renbut') ?>",
     {
         parse: function(data){
             var parsed = [];
@@ -251,17 +251,17 @@ $(function() {
         max: 100
     }).result(
     function(event,data,formated){
-        $('#id_kasir').val(data.id_rk);
+        $('#id_renbut').val(data.id_rk);
         $(this).val(data.kode_rk);
         $('#kode').val(pad(data.ma_proja,5));
         $('#id_kode').val(data.id);
         $('#uraian').val(data.keterangan);
         $('#pengguna').val(data.satker);
         $('#keterangan').val(data.uraian);
-        $('#jumlah').val(numberToCurrency(data.jml_kasir));
+        $('#jumlah').val(numberToCurrency(data.jml_renbut));
         $('#nama_user').val(data.penerima);
     });
-    $('#kode_kasir').setOptions({
+    $('#kode_renbut').setOptions({
         extraParams:{
             tanggal: function(){
                 return $('#tanggal').val();
@@ -300,7 +300,7 @@ $(function() {
         $('#uraian').val(data.keterangan);
         $('#pengguna').val(data.satker);
         $('#keterangan').val(data.uraian);
-        get_nominal_kasir(data.id, $('#tahun').val());
+        get_nominal_renbut(data.id, $('#tahun').val());
     });
     $('#kode_perkiraan').autocomplete("<?= base_url('autocomplete/kode_perkiraan') ?>",
     {
@@ -419,12 +419,22 @@ function edit_kasir(id, transaksi) {
                     $('#nama_user').val(data.penerima);
                     $('#perwabku').val(data.perwabku);
                     $('#user').val('Penyetor');
-                    var kd_pwk = ''; var id_kd_pwk = '';
-                    if (transaksi === 'BKK') {
-                        $('#user').val('Penerima');
-                        kd_pwk = data.id_rekening_pwk+' '+data.rekening_pwk;
-                        id_kd_pwk = data.id_rekening_pwk;
+                    if (data.jenis === 'BKK') {
+                        $('#pngjwb').html('Penerima:');
+                        $('#kode_renbut').removeAttr('disabled');
                     }
+                    if (data.jenis === 'BKM') {
+                        $('#pngjwb').html('Penyetor:');
+                        $('#kode_renbut').attr('disabled','disabled');
+                    }
+                    if (data.jenis === 'MTS') {
+                        $('#pngjwb').html('-');
+                        $('#kode_renbut').removeAttr('disabled');
+                    }
+                    $('#user').val('Penerima');
+                    var kd_pwk = data.id_rekening_pwk+' '+data.rekening_pwk;
+                    var id_kd_pwk = data.id_rekening_pwk;
+                    
                     $('#kode_perkiraan_pwk').val(kd_pwk);
                     $('#hide_kode_perkiraan_pwk').val(id_kd_pwk);
                 }
@@ -495,7 +505,7 @@ function paging(p) {
             <tr><td>No.</td><td><?= form_input('no', NULL, 'id=no') ?></td></tr>
             <tr><td>Sumber Dana:</td><td><?= form_dropdown('sumberdana', array('' => 'Pilih ...', 'Kas' => 'Kas', 'Bank' => 'Bank'), NULL, 'id="sumberdana" style="width: 300px;"') ?></td></tr>
             <tr><td id="kdatas">Kode Perkiraan (D)*:</td><td><?= form_input('', NULL, 'id=kode_perkiraan size=60') ?><?= form_hidden('kode_perkiraan', NULL, 'id=hide_kode_perkiraan') ?></td></tr>
-            <tr><td>Nomor Renbut:</td><td><?= form_input('kode_kasir', NULL, 'id=kode_kasir size=60') ?><small style="font-style: italic;">Mengacu ke bulan kegiatan</small><?= form_hidden('id_kasir', NULL, 'id=id_kasir') ?></td></tr>
+            <tr><td>Nomor Renbut:</td><td><?= form_input('kode_renbut', NULL, 'id=kode_renbut size=60') ?><small style="font-style: italic;">Mengacu ke bulan kegiatan</small><?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?></td></tr>
             <tr><td>Tahun Anggaran</td><td>
                 <select name="tahun" id="tahun">
                 <?php for ($i = date("Y"); $i >=2014 ; $i--) { ?>

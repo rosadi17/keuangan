@@ -12,13 +12,16 @@
     <?php foreach ($list_data as $key => $data) { 
         $status = "";
         if ($data->renbut === '' and $data->kode_trans === 'BKK') {
-            $status = "<i>Cashbon</i>";
+            $status = "<i class='fa fa-sign-out'></i> Cashbon";
         }
         else if ($data->renbut === '' and $data->kode_trans === 'BKM') {
-            $status = "<i>Kas Masuk</i>";
+            $status = "<i class='fa fa-sign-in'></i> Kas Masuk";
         }
         else if ($data->renbut !== '' and $data->kode_trans === 'BKK') {
             $status = "<i class='fa fa-check-square-o'></i> Renbut";
+        }
+        else {
+            $status = "<i class='fa fa-retweet'></i> Mutasi";
         }
         ?>
     <tr class="<?= ($key%2==1)?'even':'odd' ?>">
