@@ -1,10 +1,10 @@
 <table cellspacing="0" width="100%" class="list-data">
     <tr>
         <th width="3%" rowspan="2">No.</th>
-        <th width="5%" rowspan="2">Tanggal</th>
+        <th width="5%" rowspan="2">Tanggal <br/>Renbut</th>
         <th width="5%" rowspan="2">No. Renbut</th>
-        <th width="40%" rowspan="2">Kegiatan</th>
-        <th width="5%" rowspan="2">Unit</th>
+        <th width="30%" rowspan="2">Kegiatan</th>
+        <th width="15%" rowspan="2">Unit</th>
         <th width="5%" rowspan="2">MA<br/>Proja</th>
         <th width="5%" colspan="3">Jumlah</th>
         <th width="10%" rowspan="2">Penerima /<br/> Penanggungjawab</th>
@@ -19,10 +19,10 @@
         ?>
     <tr class="<?= ($key%2==1)?'even':'odd' ?>">
         <td align="center"><?= $auto++ ?></td>
-        <td align="center"><?= datefmysql($data->tanggal_kegiatan) ?></td>
+        <td align="center"><?= datefmysql($data->tanggal_renbut) ?></td>
         <td align="center"><?= $data->kode ?></td>
         <td><?= $data->keterangan ?></td>
-        <td align="center"><?= $data->satker ?></td>
+        <td><?= $data->satker ?></td>
         <td align="center"><?= $data->ma_proja ?></td>
         <td align="right"><?= rupiah($data->nominal) ?></td>
         <td align="right"><?= rupiah($data->cashbon) ?></td>

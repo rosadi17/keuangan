@@ -270,8 +270,9 @@ class Masterdata extends CI_Controller {
         $limit = 15;
         switch ($action) {
             case 'list':
-                $search['key'] = $_GET['search'];
-                $search['id']  = $_GET['id'];
+                $search['tahun'] = get_safe('year');
+                $search['satker']  = get_safe('id_satker');
+                $search['suburaian'] = get_safe('suburaian');
                 $data = $this->get_list_data_sub_uraian($limit, $page, $search);
                 $this->load->view('masterdata/sub-uraian-table', $data);
                 break;

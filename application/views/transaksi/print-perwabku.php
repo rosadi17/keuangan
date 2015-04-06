@@ -32,7 +32,7 @@
     <table width="100%" style="float: left;">
         <tr><td width="50%"><b>Pemeriksa I</b></td><td width="50%" align="right"><b>Penerima</b></td></tr>
         <tr><td style="height: 50px;">&nbsp;</td><td align="right" style="height: 50px;">&nbsp;</td></tr>
-        <tr><td>Ali Rasyidi</td><td align="right"><?= $data->penerima ?></td></tr>
+        <tr><td>( Ni Luh Ketut NI )</td><td align="right">( <?= $data->penerima ?> )</td></tr>
     </table>
     </div>
 </body>

@@ -3,54 +3,55 @@
 class Autocomplete extends CI_Controller {
   
     function satker() {
-        $q = $_GET['q'];
+        $q = get_safe('q');
         $data = $this->m_autocomplete->get_satker($q)->result();
         die(json_encode($data));
     }
     
     function program() {
-        $q = $_GET['q'];
-        $id_satker = $_GET['id_satker'];
-        $status    = $_GET['status'];
+        $q = get_safe('q');
+        $id_satker = get_safe('id_satker');
+        $status    = get_safe('status');
         $data = $this->m_autocomplete->get_program($q, $id_satker, $status)->result();
         die(json_encode($data));
     }
     
     function kegiatan() {
-        $q = $_GET['q'];
-        $id_satker = $_GET['id_satker'];
-        $status    = $_GET['status'];
+        $q = get_safe('q');
+        $id_satker = get_safe('id_satker');
+        $status    = get_safe('status');
         $data = $this->m_autocomplete->get_kegiatan($q, $id_satker, $status)->result();
         die(json_encode($data));
     }
     
     function sub_kegiatan() {
-        $q = $_GET['q'];
-        $id_satker = $_GET['id_satker'];
-        $status    = $_GET['status'];
+        $q = get_safe('q');
+        $id_satker = get_safe('id_satker');
+        $status    = get_safe('status');
         $data = $this->m_autocomplete->get_sub_kegiatan($q, $id_satker, $status)->result();
         die(json_encode($data));
     }
     
     function uraian() {
-        $q = $_GET['q'];
-        $id_satker = $_GET['id_satker'];
-        $status    = $_GET['status'];
+        $q = get_safe('q');
+        $id_satker = get_safe('id_satker');
+        $status    = get_safe('status');
         $data = $this->m_autocomplete->get_uraian($q, $id_satker, $status)->result();
         die(json_encode($data));
     }
     
     function sub_uraian() {
-        $q = $_GET['q'];
-        $id_satker = $_GET['id_satker'];
-        $status    = $_GET['status'];
+        $q = get_safe('q');
+        $id_satker = get_safe('id_satker');
+        $status    = get_safe('status');
         $data = $this->m_autocomplete->get_sub_uraian($q, $id_satker, $status)->result();
         die(json_encode($data));
     }
     
     function ma_proja() {
-        $q = $_GET['q'];
-        $data = $this->m_autocomplete->get_ma_proja($q)->result();
+        $q = get_safe('q');
+        $tahun = get_safe('tahun');
+        $data = $this->m_autocomplete->get_ma_proja($q, $tahun)->result();
         die(json_encode($data));
     }
     
@@ -105,7 +106,7 @@ class Autocomplete extends CI_Controller {
     }
     
     function get_nominal_renbut($id_uraian) {
-        $tanggal = get_safe('tanggal');
+        $tanggal = get_safe('tahun');
         $data = $this->m_autocomplete->get_nominal_renbut($id_uraian, $tanggal)->row();
         die(json_encode($data));
     }

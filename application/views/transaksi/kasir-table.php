@@ -26,8 +26,8 @@
         <td align="center"><?= datefmysql($data->tanggal) ?></td>
         <td><?= $data->kode ?></td>
         <td><?= $data->keterangan ?></td>
-        <td class="nowrap"><?= $data->penyetor ?></td>
-        <td align="right"><?= rupiah($data->pemasukkan) ?></td>
+        <td class="nowrap"><?= $data->penanggung_jwb ?></td>
+        <td align="right"><?= rupiah($data->nominal) ?></td>
         <td style="white-space: nowrap;"><?= $status ?></td>
         <td align="right">
             <button type="button" class="btn btn-default btn-xs" onclick="print_kasir('<?= $data->id ?>', '<?= $data->kode_trans ?>');" title="Klik untuk print"><i class="fa fa-print"></i></button>

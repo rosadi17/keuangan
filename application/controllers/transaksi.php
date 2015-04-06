@@ -27,10 +27,15 @@ class Transaksi extends CI_Controller {
         $limit = 10;
         switch ($action) {
             case 'list':
-                //$search['key'] = $_GET['search'];
-                //$search['id']  = $_GET['id'];
-                $search['bulan'] = get_safe('year').'-'.get_safe('bln');
-                $search['satker']= get_safe('id_satker');
+                $search = array(
+                    'satker' =>  get_safe('id_satker'),
+                    'awal' => date2mysql(get_safe('awal')),
+                    'akhir' => date2mysql(get_safe('akhir')),
+                    'awal_keg' => date2mysql(get_safe('awal_keg')),
+                    'akhir_keg' => date2mysql(get_safe('akhir_keg')),
+                    'kegiatan' => get_safe('kegiatan'),
+                    'jenis' => get_safe('jenis_renbut')
+                );
                 $data = $this->get_list_data_renbut($limit, $page, $search);
                 $this->load->view('transaksi/renbut-table', $data);
                 break;
@@ -366,7 +371,7 @@ class Transaksi extends CI_Controller {
     }
     
     function kasir() {
-        $data['title'] = 'Form Kasir (Penerimaan / Pengeluaran)';
+        $data['title'] = 'Form Kasir (Penerimaan / Pengeluaran / Mutasi)';
         $this->load->view('transaksi/kasir', $data);
     }
     
@@ -443,8 +448,13 @@ class Transaksi extends CI_Controller {
         $limit = 10;
         switch ($action) {
             case 'list':
-                $search['key'] = '';
-                $search['id']  = '';
+                $search = array(
+                    'awal' => date2mysql(get_safe('awal')),
+                    'akhir' => date2mysql(get_safe('akhir')),
+                    'jenis' => get_safe('jenis'),
+                    'kegiatan' => get_safe('kegiatan'),
+                    'png_jwb' => get_safe('png_jwb')
+                );
                 $data = $this->get_list_data_kasir($limit, $page, $search);
                 $this->load->view('transaksi/kasir-table', $data);
                 break;
@@ -474,7 +484,7 @@ class Transaksi extends CI_Controller {
         $data['list_data'] = $query['data'];
         $data['jumlah'] = $query['jumlah'];
         
-        $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, $search['key']);
+        $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1,'');
         $data['infopage'] = page_summary($data['jumlah'], $page, $limit);
         return $data;
     }
@@ -553,5 +563,10 @@ class Transaksi extends CI_Controller {
         $data = $this->m_transaksi->get_data_kasir_by_id($id, $transaksi)->row();
         die(json_encode($data));
     }
+    
+    function anggaran_kegiatan() {
+        $data['title'] = 'Anggaran Kegiatan';
+        $data['satker']= $this->m_masterdata->load_satker()->result();
+        $this->load->view('transaksi/anggaran-kegiatan', $data);
+    }
 }
-?>

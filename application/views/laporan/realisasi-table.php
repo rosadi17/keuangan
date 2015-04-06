@@ -3,30 +3,30 @@ $month1 = isset($_GET['awal'])?$_GET['awal']:'1';
 $month2 = isset($_GET['akhir'])?$_GET['akhir']:'12';
 $tahun  = isset($_GET['tahun'])?$_GET['tahun']:date("Y");
 $monthNames = array( 
-  1 => 'January', 
-  2 => 'February', 
-  3 => 'March', 
-  4 => 'April', 
+  1 => 'Jan', 
+  2 => 'Feb', 
+  3 => 'Mar', 
+  4 => 'Apr', 
   5 => 'May', 
-  6 => 'June', 
-  7 => 'July', 
-  8 => 'August', 
-  9 => 'September', 
-  10 => 'October', 
-  11 => 'November', 
-  12 => 'December' 
+  6 => 'Jun', 
+  7 => 'Jul', 
+  8 => 'Aug', 
+  9 => 'Sep', 
+  10 => 'Oct', 
+  11 => 'Nov', 
+  12 => 'Dec' 
 );
 
 
 ?>
-<center>LAPORAN ANGGARAN DAN REALISASI BULAN JANUARI - DESEMBER TAHUN <?= get_safe('tahun') ?><br />UNIVERSITAS BHAYANGKARA SURABAYA</center>
-<table cellspacing="0" width="100%" class="list-data">
+<!--<b style="float: right; position: absolute;">LAPORAN ANGGARAN DAN REALISASI BULAN JANUARI - DESEMBER TAHUN <?= get_safe('tahun') ?><br />UNIVERSITAS BHAYANGKARA SURABAYA</b>-->
+<table cellspacing="0" width="150%" class="list-data">
     <tr>
-        <th width="3%">No.</th>
-        <th width="7%">Unit</th>
+        <th width="5%">&nbsp;No.&nbsp;</th>
+        <th width="15%">Unit</th>
         <th width="7%">Pagu Anggaran</th>
         <?php for($i = $month1; $i <= $month2; $i++) { ?>
-        <th width="7%"><?= $monthNames[$i] ?></th>
+        <th width="7%" class="right"><?= $monthNames[$i] ?></th>
         <?php } ?>
         <th width="7%">Jumlah</th>
         <th width="7%">Sisa</th>
@@ -40,7 +40,7 @@ $monthNames = array(
         ?>
     <tr class="<?= ($key%2==1)?'even':'odd' ?>">
         <td align="center"><?= ++$key ?></td>
-        <td><?= $data->nama ?></td>
+        <td class="nowrap"><?= $data->nama ?></td>
         <td align="right"><?= rupiah($data->pagu) ?></td>
         <?php 
         $total_kanan = 0;

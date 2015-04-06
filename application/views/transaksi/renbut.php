@@ -29,15 +29,17 @@ $(function() {
             position: ['center',47],
             buttons: {
                 "Cancel": function() {
-                    $('#dialog_renbut_search').dialog('destroy');
+                    $('#dialog_renbut_search').dialog('close');
                 },
                 "Cari": function() {
+                    $('#dialog_renbut_search').dialog('close');
                     get_list_renbut(1);
                 } 
             }, close: function() {
-                $('#dialog_renbut_search').dialog('destroy');
+                $('#dialog_renbut_search').dialog('close');
             }, open: function() {
-                $('#uraian').focus();
+                $('#awal, #akhir, #awal_keg, #akhir_keg').datepicker('hide');
+                $('#jenis_renbut').focus();
             }
         });
     });
@@ -48,8 +50,12 @@ $(function() {
     }).click(function() {
         get_list_renbut(1);
     });
+    $('#awal, #akhir, #awal_keg, #akhir_keg').datepicker({
+        changeYear: true,
+        changeMonth: true
+    });
 });
-function get_list_renbut(page, src, id) {
+function get_list_renbut(page, id) {
     $.ajax({
         url: '<?= base_url('transaksi/manage_renbut') ?>/list/'+page,
         data: $('#search_renbut').serialize(),
@@ -78,7 +84,7 @@ function get_nominal_renbut(id) {
 function get_nomor_renbut() {
     $.ajax({
         url: '<?= base_url('autocomplete/get_nomor_renbut') ?>',
-        data: 'tanggal='+$('#tanggal').val(),
+        data: 'tanggal='+$('#tanggal_renbut').val(),
         dataType: 'json',
         success: function(data) {
            $('#nomor').val(data);
@@ -91,7 +97,8 @@ function form_renbut() {
             '<?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?>'+
             '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
                 '<tr><td width=40%>Nomor:</td><td><?= form_input('nomor', NULL, 'id=nomor size=60') ?></td></tr>'+
-                '<tr><td width=40%>Tanggal Kegiatan:</td><td><?= form_input('tanggal', date("d/m/Y"), 'id=tanggal size=10') ?></td></tr>'+
+                '<tr><td width=40%>Tanggal Renbut:</td><td><?= form_input('tanggal_renbut', date("d/m/Y"), 'id=tanggal_renbut size=10') ?></td></tr>'+
+                '<tr><td width=40%>Tanggal Kegiatan:</td><td><?= form_input('tanggal', NULL, 'id=tanggal size=10') ?></td></tr>'+
                 '<tr><td width=40%>Nomor BKK Cashbon *:</td><td><?= form_input('nomorbkk', '', 'id=nomorbkk size=10') ?><?= form_hidden('id_pengeluaran', NULL, 'id=id_pengeluaran') ?></td></tr>'+
                 '<tr><td width=40%>MA Proja:</td><td><?= form_input('uraian', NULL, 'id=uraian size=60') ?><?= form_hidden('id_uraian', NULL, 'id=id_uraian') ?></td></tr>'+
                 '<tr valign="top"><td width=40%>Detail:</td><td id="detail"></td></tr>'+
@@ -127,12 +134,16 @@ function form_renbut() {
             $('#nomor').focus();
         }
     });
-    $('#tanggal').datepicker({
+    $('#tanggal_renbut').datepicker({
         changeYear: true,
         changeMonth: true,
         onSelect: function() {
             get_nomor_renbut();
         }
+    });
+    $('#tanggal').datepicker({
+        changeYear: true,
+        changeMonth: true
     });
     $('#nomorbkk').autocomplete("<?= base_url('autocomplete/nomorbkk') ?>",
     {
@@ -196,6 +207,9 @@ function form_renbut() {
         $('#penerima').focus();
     });
     $('#save_renbut').submit(function() {
+        if ($('#tanggal_renbut').val() === '') {
+            custom_message('Peringatan', 'Tanggal renbut tidak boleh kosong !','#tanggal_renbut'); return false;
+        }
         if ($('#nomor').val().length < 8) {
             custom_message('Peringatan', 'Nomor yang anda masukkan harus dengan format yymmxxxx misal: 15010001 !', '#nomor');
             return false;
@@ -252,6 +266,7 @@ function edit_renbut(str) {
     $('#nomor').val(arr[8]);
     $('#nomorbkk').val(arr[9]);
     $('#id_pengeluaran').val(arr[10]);
+    $('#tanggal_renbut').val(arr[11]);
     $('#dialog_renbut').dialog({ title: 'Edit renbut satuan kerja' });
 }
 
@@ -310,7 +325,10 @@ function delete_renbut(id, page) {
     <div id="dialog_renbut_search" class="nodisplay">
         <form action="" id="search_renbut">
         <table width=100% cellpadding=0 cellspacing=0 class=inputan>
-            <tr><td width=25%>Bulan Tahun:</td><td><select name=bln id=bln style="width: 74px;"><?php foreach ($bulan as $bln) { ?> <option value="<?= $bln[0] ?>" <?= (($bln[0] === date("m"))?'selected':NULL) ?>><?= $bln[1] ?></option><?php } ?></select><select name="year" id="year" style="width: 74px;"><option value="">Select Year ....</option><?php for($i = 2010; $i <= date("Y"); $i++) { ?> <option value="<?= $i ?>" <?php if ($i == date("Y")) { echo "selected"; } ?>><?= $i ?></option><?php } ?></select></td></tr>
+            <tr><td>Tanggal Renbut:</td><td><input type="text" name="awal" id="awal" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir" value="<?= date("d/m/Y") ?>" /></td></tr>
+            <tr><td>Tanggal Kegiatan:</td><td><input type="text" name="awal_keg" id="awal_keg" value="" size="10" /> s.d <input type="text" name="akhir_keg" id="akhir_keg" value="" /></td></tr>
+            <tr><td>Jenis Renbut:</td><td><select name=jenis_renbut id="jenis_renbut"><option value="">Semua ...</option><option value="murni">Murni Renbut</option><option value="cashbon">Dari Cashbon</option></select></td></tr>
+            <tr><td>Kegiatan:</td><td><input type="text" name="kegiatan" id="kegiatan" /></td></tr>
             <tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>
         </table>
         </form>

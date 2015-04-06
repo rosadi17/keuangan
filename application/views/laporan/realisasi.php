@@ -102,9 +102,16 @@ function paging(page, tab, search) {
 }
 </script>
 <div class="kegiatan">
-    <button id="cari_button">Cari Data</button>
-    <button id="reload_realisasi">Refresh</button>
-    <div id="result" style="overflow-x: auto;">
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-1"><?= $title ?></a></li>
+        </ul>
+        <div id="tabs-1">
+            <button id="cari_button">Cari Data</button>
+            <button id="reload_realisasi">Refresh</button>
+            <div id="result" style="overflow-x: auto;">
 
+            </div>
+        </div>
     </div>
 </div>

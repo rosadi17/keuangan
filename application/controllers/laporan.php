@@ -261,8 +261,15 @@ class Laporan extends CI_Controller {
         $limit = 10;
         switch ($action) {
             case 'list':
-                $search['bulan'] = get_safe('year').'-'.get_safe('bln');
-                $search['satker']= get_safe('id_satker');
+                $search = array(
+                    'satker' =>  get_safe('id_satker'),
+                    'awal' => date2mysql(get_safe('awal')),
+                    'akhir' => date2mysql(get_safe('akhir')),
+                    'awal_keg' => date2mysql(get_safe('awal_keg')),
+                    'akhir_keg' => date2mysql(get_safe('akhir_keg')),
+                    'kegiatan' => get_safe('kegiatan'),
+                    'jenis' => get_safe('jenis_renbut')
+                );
                 $data = $this->get_list_data_renbut($limit, $page, $search);
                 $this->load->view('laporan/rekap-renbut-table', $data);
                 break;
@@ -287,8 +294,15 @@ class Laporan extends CI_Controller {
     }
     
     function export_excel_renbut() {
-        $search['bulan'] = get_safe('year').'-'.get_safe('bln');
-        $search['satker']= get_safe('id_satker');
+        $search = array(
+            'satker' =>  get_safe('id_satker'),
+            'awal' => date2mysql(get_safe('awal')),
+            'akhir' => date2mysql(get_safe('akhir')),
+            'awal_keg' => date2mysql(get_safe('awal_keg')),
+            'akhir_keg' => date2mysql(get_safe('akhir_keg')),
+            'kegiatan' => get_safe('kegiatan'),
+            'jenis' => get_safe('jenis_renbut')
+        );
         $data = $this->get_list_data_renbut(null, null, $search);
         $data['bulan']   = get_safe('year').'-'.get_safe('bln').'-01';
         $data['tahun']   = get_safe('year');

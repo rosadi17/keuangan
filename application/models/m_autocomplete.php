@@ -99,16 +99,21 @@ class M_autocomplete extends CI_Model {
         return $this->db->query($sql);
     }
     
-    function get_ma_proja($q) {
+    function get_ma_proja($q, $tahun = NULL) {
+        $f = NULL;
+        if ($tahun !== NULL) {
+            $f = " and su.tahun = '$tahun'";
+        }
         $sql = "select u.*, s.nama as satker, 
             u.kode as ma_proja, u.uraian,
             CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as keterangan
             from uraian u
+            join sub_uraian su on (su.id_uraian = u.id)
             join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
             join kegiatan k on (sk.id_kegiatan = k.id)
             join program p on (k.id_program = p.id)
             join satker s on (p.id_satker = s.id) 
-            where u.id is not NULL 
+            where u.id is not NULL $f
             having ma_proja like ('%$q%') or keterangan like ('%$q%')";
         return $this->db->query($sql);
     }
@@ -210,7 +215,7 @@ class M_autocomplete extends CI_Model {
     function get_last_code_kasir($trans, $tanggal) {
         $bulan = substr($tanggal, 0, 7);
         if ($trans === 'bkm') {
-            $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from penerimaan where tanggal like '".$bulan."%' order by id desc limit 1";
+            $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from kasir where jenis = 'BKM' and tanggal like '".$bulan."%' order by id desc limit 1";
             $data= $this->db->query($sql)->row();
             if (isset($data->kode)) {
                 $auto = $data->kode;
@@ -222,7 +227,7 @@ class M_autocomplete extends CI_Model {
             $result['no'] = 'BKM'.$thn.$bln.pad($auto+1, 4);
         }
         if ($trans === 'bkk') {
-            $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from pengeluaran where tanggal like '".$bulan."%' order by id desc limit 1";
+            $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from kasir where jenis = 'BKK' and tanggal like '".$bulan."%' order by id desc limit 1";
             $data= $this->db->query($sql)->row();
             if (isset($data->kode)) {
                 $auto = $data->kode;
@@ -232,6 +237,18 @@ class M_autocomplete extends CI_Model {
             $thn = substr($bulan, 2, 2);
             $bln = substr($bulan, 5, 2);
             $result['no'] = 'BKK'.$thn.$bln.pad($auto+1, 4);
+        }
+        if ($trans === 'mutasi') {
+            $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from kasir where jenis = 'MTS' and tanggal like '".$bulan."%' order by id desc limit 1";
+            $data= $this->db->query($sql)->row();
+            if (isset($data->kode)) {
+                $auto = $data->kode;
+            } else {
+                $auto = 0;
+            }
+            $thn = substr($bulan, 2, 2);
+            $bln = substr($bulan, 5, 2);
+            $result['no'] = 'MTS'.$thn.$bln.pad($auto+1, 4);
         }
         return $result;
     }
@@ -286,11 +303,9 @@ class M_autocomplete extends CI_Model {
         return $this->db->query($sql);
     }
     
-    function get_nominal_renbut($id_uraian, $tanggal) {
-        $tahun = substr($tanggal, 6, 4);
-        $sql = "select IFNULL(sum(ssu.sub_total), sum(su.sub_total)) as total from 
-        sub_sub_uraian ssu    
-        right join sub_uraian su on (ssu.id_sub_uraian = su.id)
+    function get_nominal_renbut($id_uraian, $tahun) {
+        $sql = "select sum(su.sub_total) as total from 
+        sub_uraian su
         join uraian u on (su.id_uraian = u.id)
         join sub_kegiatan sk on (sk.id = u.id_sub_kegiatan)
         join kegiatan k on (sk.id_kegiatan = k.id)
@@ -301,7 +316,7 @@ class M_autocomplete extends CI_Model {
     }
     
     function get_nomor_renbut($tanggal) {
-        $row = $this->db->query("select substr(kode,10,4) as kode from rencana_kebutuhan where kode != '' and tanggal_kegiatan like '".$tanggal."%' order by id_renbut desc limit 1")->row();
+        $row = $this->db->query("select substr(kode,10,4) as kode from rencana_kebutuhan where kode != '' and tanggal_renbut like '".$tanggal."%' order by id_renbut desc limit 1")->row();
         //echo "select substr(kode,10,4) as kode from rencana_kebutuhan where kode != '' and tanggal like '".$tanggal."%' order by id_renbut desc limit 1";
         if (!isset($row->kode)) {
             $nomor = 0;
@@ -313,7 +328,7 @@ class M_autocomplete extends CI_Model {
     
     function nomorbkk($q) {
         $sql = "select p.*, u.uraian as keterangan, CONCAT_WS(' ',p.kode,'Rp. ',p.pengeluaran,'<br/>',u.uraian) as kode, p.pengeluaran as cashbon, u.kode as kode_ma, r.id_renbut
-            from pengeluaran p
+            from kasir p
             left join rencana_kebutuhan r on (p.kode = r.kode_cashbon)
             join uraian u on (p.id_uraian = u.id)
             where p.id_renbut is NULL and p.kode like ('".$q."%')";
@@ -323,10 +338,10 @@ class M_autocomplete extends CI_Model {
     
     function nomorbkkdp($q) {
         $sql = "select p.*, u.uraian as keterangan, p.kode, p.pengeluaran as cashbon, u.kode as kode_ma, r.id_renbut
-            from pengeluaran p
+            from kasir p
             left join rencana_kebutuhan r on (p.kode = r.kode_cashbon)
             join uraian u on (p.id_uraian = u.id)
-            where p.perwabku = 'Belum' and p.kode like ('".$q."%')";
+            where p.perwabku = 'Belum' and p.kode like ('".$q."%') group by p.kode";
         //echo $sql;
         return $this->db->query($sql);
     }

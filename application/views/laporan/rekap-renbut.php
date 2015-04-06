@@ -20,16 +20,24 @@ $(function() {
             show: 'blind',
             position: ['center',47],
             buttons: {
+                "Cancel": function() {
+                    $('#rekap_dialog_renbut').dialog('destroy');
+                },
                 "Cari": function() {
                     get_list_rekap_renbut();
-                    $('#rekap_dialog_renbut').dialog('destroy');
-                }, "Cancel": function() {
                     $('#rekap_dialog_renbut').dialog('destroy');
                 }
             }, close: function() {
                 $('#rekap_dialog_renbut').dialog('destroy');
+            }, open: function() {
+                $('#awal, #akhir, #awal_keg, #akhir_keg').datepicker('hide');
+                $('#jenis_renbut').focus();
             }
         });
+    });
+    $('#awal, #akhir, #awal_keg, #akhir_keg').datepicker({
+        changeYear: true,
+        changeMonth: true
     });
     $('#reload_rekap_renbut').button({
         icons: {
@@ -43,13 +51,13 @@ $(function() {
             secondary: 'ui-icon-print'
         }
     }).click(function() {
-        window.location='<?= base_url('laporan/export_excel_renbut') ?>/?'+$('#form_search_renbut').serialize();
+        window.location='<?= base_url('laporan/export_excel_renbut') ?>/?'+$('#search_renbut').serialize();
     });
 });
-function get_list_rekap_renbut(page, src, id) {
+function get_list_rekap_renbut(page, src) {
     $.ajax({
         url: '<?= base_url('laporan/manage_renbut') ?>/list/'+page,
-        data: $('#form_search_renbut').serialize(),
+        data: $('#search_renbut').serialize(),
         cache: false,
         success: function(data) {
             $('#result-rekap').html(data);
@@ -86,11 +94,15 @@ function paging(page, tab, search) {
             </div>
         </div>
     </div>
-    <div id="rekap_dialog_renbut" class="nodisplay"><form action="" id="form_search_renbut">
-    <?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?>
-    <table width=100% cellpadding=0 cellspacing=0 class=inputan>
-        <tr><td width=25%>Bulan Tahun:</td><td><select name="bln" id="bulan" style="width: 74px;"><?php foreach ($bulan as $bln) { ?> <option value="<?= $bln[0] ?>" <?= (($bln[0] === date("m"))?'selected':NULL) ?>><?= $bln[1] ?></option><?php } ?></select><select name="year" id="tahun" style="width: 74px;"><option value="">Select Year ....</option><?php for($i = 2010; $i <= date("Y"); $i++) { ?> <option value="<?= $i ?>" <?php if ($i == date("Y")) { echo "selected"; } ?>><?= $i ?></option><?php } ?></select></td></tr>
-        <tr><td>Satuan Kerja:</td><td><select name="id_satker" id=id_satuan_kerja><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>
-    </table>
-    </form></div>
+    <div id="rekap_dialog_renbut" class="nodisplay">
+        <form action="" id="search_renbut">
+        <table width=100% cellpadding=0 cellspacing=0 class=inputan>
+            <tr><td>Tanggal Renbut:</td><td><input type="text" name="awal" id="awal" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir" value="<?= date("d/m/Y") ?>" /></td></tr>
+            <tr><td>Tanggal Kegiatan:</td><td><input type="text" name="awal_keg" id="awal_keg" value="" size="10" /> s.d <input type="text" name="akhir_keg" id="akhir_keg" value="" /></td></tr>
+            <tr><td>Jenis Renbut:</td><td><select name=jenis_renbut id="jenis_renbut"><option value="">Semua ...</option><option value="murni">Murni Renbut</option><option value="cashbon">Dari Cashbon</option></select></td></tr>
+            <tr><td>Kegiatan:</td><td><input type="text" name="kegiatan" id="kegiatan" /></td></tr>
+            <tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>
+        </table>
+        </form>
+    </div>
 </div>

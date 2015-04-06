@@ -193,13 +193,27 @@ class M_laporan extends CI_Model {
     
     function get_data_renbut($limit = null, $start = null, $search = null) {
         $q = null;
-        if ($search['bulan'] !== '') {
-            $q.=" and rk.tanggal_kegiatan like ('%".$search['bulan']."%')";
+        if ($search['awal'] !== '' and $search['akhir'] !== '') {
+            $q.=" and rk.tanggal_renbut between '".$search['awal']."' and '".$search['akhir']."'";
         }
-        if (($search['satker'] !== '') and ($search['satker'] !== 'undefined')) {
+        if ($search['awal_keg'] !== '' and $search['akhir_keg'] !== '') {
+            $q.=" and rk.tanggal_kegiatan between '".$search['awal_keg']."' and '".$search['akhir_keg']."'";
+        }
+        if ($search['jenis'] !== '') {
+            if ($search['jenis'] === 'murni') {
+                $q.=" and rk.kode_cashbon = ''";
+            }
+            if ($search['jenis'] === 'cashbon') {
+                $q.=" and rk.kode_cashbon != ''";
+            }
+        }
+        if ($search['kegiatan'] !== '') {
+            $q.=" and rk.keterangan like ('%".$search['kegiatan']."%')";
+        }
+        if ($search['satker'] !== '') {
             $q.=" and s.id = '".$search['satker']."'";
         }
-        $q.=" order by rk.tanggal asc";
+        $q.=" order by rk.id_renbut desc";
         $sql = "select rk.*, s.nama as satker, u.kode as ma_proja,
             CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as detail
             from rencana_kebutuhan rk

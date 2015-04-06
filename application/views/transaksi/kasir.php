@@ -14,10 +14,10 @@ function get_last_code_kasir(trans, tanggal) {
     });
 }
 
-function get_nominal_renbut(id, tanggal) {
+function get_nominal_kasir(id, tahun) {
     $.ajax({
-        url: '<?= base_url('autocomplete/get_nominal_renbut') ?>/'+id,
-        data: 'tanggal='+tanggal,
+        url: '<?= base_url('autocomplete/get_nominal_kasir') ?>/'+id,
+        data: 'tahun='+tahun,
         dataType: 'json',
         success: function(data) {
            $('#jumlah').val(numberToCurrency(data.total));
@@ -32,7 +32,7 @@ function cetak_bukti_kas(id, jenis) {
     var dHeight= wHeight * 1;
     var x = screen.width/2 - dWidth/2;
     var y = screen.height/2 - dHeight/2;
-    window.open('<?= base_url('transaksi/print_bukti_kas') ?>?id='+id+'&jenis='+jenis, 'Renbut Cetak', 'width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
+    window.open('<?= base_url('transaksi/print_bukti_kas') ?>?id='+id+'&jenis='+jenis, 'kasir Cetak', 'width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
 }
 
 function cetak_bukti_kas_masuk(id) {
@@ -42,7 +42,7 @@ function cetak_bukti_kas_masuk(id) {
     var dHeight= wHeight * 1;
     var x = screen.width/2 - dWidth/2;
     var y = screen.height/2 - dHeight/2;
-    window.open('<?= base_url('transaksi/manage_pemasukkan') ?>/print_bukti_kas?id='+id, 'Renbut Cetak', 'width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
+    window.open('<?= base_url('transaksi/manage_pemasukkan') ?>/print_bukti_kas?id='+id, 'kasir Cetak', 'width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
 }
 
 function print_kasir(id, jenis) {
@@ -67,12 +67,53 @@ $(function() {
         var nilai = $(this).val();
         if (nilai === 'bkk') {
             $('#perwabku').removeAttr('disabled');
+            $('#kdatas').html('Kode Perkiraan (K)*:');
+            $('#kdbawah').html('Kode Perkiraan Lawan (D)*:');
+            $('#pngjwb').html('Penerima:');
         }
         if (nilai === 'bkm') {
             $('.hidden').hide();
-            $('#kode_renbut, #id_renbut').val('');
-            $('#perwabku, #kode_renbut').attr('disabled','disabled');
+            $('#kode_kasir, #id_kasir').val('');
+            $('#perwabku, #kode_kasir').attr('disabled','disabled');
+            $('#kdatas').html('Kode Perkiraan (D)*:');
+            $('#kdbawah').html('Kode Perkiraan Lawan (K)*:');
+            $('#pngjwb').html('Penyetor:');
         }
+        if (nilai === 'mutasi') {
+            $('#perwabku').val('Default');
+            $('#kdatas').html('Kode Perkiraan (D)*:');
+            $('#kdbawah').html('Kode Perkiraan Lawan (K)*:');
+            $('#pngjwb').html('-');
+        }
+    });
+    $('#cari_button').button({
+        icons: {
+            secondary: 'ui-icon-search'
+        }
+    }).click(function() {
+        $('#dialog_kasir_search').dialog({
+            title: 'Cari Transaksi Kasir',
+            autoOpen: true,
+            width: 480,
+            autoResize:true,
+            modal: true,
+            hide: 'explode',
+            show: 'blind',
+            position: ['center',47],
+            buttons: {
+                "Cancel": function() {
+                    $('#dialog_kasir_search').dialog('close');
+                },
+                "Cari": function() {
+                    $('#dialog_kasir_search').dialog('close');
+                    get_list_rekap_kasir(1);
+                } 
+            }, close: function() {
+                $('#dialog_kasir_search').dialog('close');
+            }, open: function() {
+                $('#uraian').focus();
+            }
+        });
     });
     $('#cari_rekap_button').button({
         icons: {
@@ -80,7 +121,7 @@ $(function() {
         }
     }).click(function() {
         $('#form_kasir').dialog({
-            title: 'Form Kasir BKK / BKM',
+            title: 'Form Kasir BKK / BKM / Mutasi',
             autoOpen: true,
             width: 480,
             autoResize:true,
@@ -106,18 +147,22 @@ $(function() {
             secondary: 'ui-icon-refresh'
         }
     }).click(function() {
+        reset_form();
         get_list_rekap_kasir(1);
     });
     $('#jenis').change(function() {
         var jenis = $(this).val();
         var tanggal = $('#tanggal').val();
-        if (jenis === 'bkm') {
-            $('#user').val('Penyetor');
+        if (jenis !== '') {
             get_last_code_kasir(jenis, tanggal);
         } else {
-            $('#user').val('Penerima');
-            get_last_code_kasir(jenis, tanggal);
+            //get_last_code_kasir(jenis, tanggal);
+            $('#no').val('');
         }
+    });
+    $('#awal, #akhir').datepicker({
+        changeYear: true,
+        changeMonth: true
     });
     $('#tanggal').datepicker({
         changeYear: true,
@@ -126,7 +171,7 @@ $(function() {
             var jenis = $('#jenis').val();
             if ($('#id_kasir').val() === '') {
                 get_last_code_kasir(jenis, $(this).val());
-                get_nominal_renbut($('#id_kode').val(), $(this).val());
+                get_nominal_kasir($('#id_kode').val(), $('#tahun').val());
             }
         }
     });
@@ -134,8 +179,8 @@ $(function() {
         if ($('#jenis').val() === '') {
             custom_message('Peringatan', 'Jenis transaksi harus dipilih', '#jenis'); return false;
         }
-//        if ($('#id_renbut').val() === '') {
-//            custom_message('Peringatan', 'Nomor renbut harus dipilih', '#kode_renbut'); return false;
+//        if ($('#id_kasir').val() === '') {
+//            custom_message('Peringatan', 'Nomor kasir harus dipilih', '#kode_kasir'); return false;
 //        }
         if ($('#kode').val() === '') {
             custom_message('Peringatan', 'Kode MA / Proja harus dipilih', '#kode'); return false;
@@ -145,6 +190,9 @@ $(function() {
         }
         if ($('#jumlah').val() === '') {
             custom_message('Peringatan', 'Jumlah tidak boleh kosong', '#jumlah'); return false;
+        }
+        if ($('#perwabku').val() === '') {
+            custom_message('Peringatan','Jenis transaksi harus dipilih !','#perwabku'); return false;
         }
         $('<div id=alert>Anda yakin akan menyimpan transaksi ini ?</div>').dialog({
             title: 'Konfirmasi',
@@ -181,7 +229,7 @@ $(function() {
         });
         return false;
     });
-    $('#kode_renbut').autocomplete("<?= base_url('autocomplete/kode_renbut') ?>",
+    $('#kode_kasir').autocomplete("<?= base_url('autocomplete/kode_kasir') ?>",
     {
         parse: function(data){
             var parsed = [];
@@ -203,17 +251,17 @@ $(function() {
         max: 100
     }).result(
     function(event,data,formated){
-        $('#id_renbut').val(data.id_rk);
+        $('#id_kasir').val(data.id_rk);
         $(this).val(data.kode_rk);
         $('#kode').val(pad(data.ma_proja,5));
         $('#id_kode').val(data.id);
         $('#uraian').val(data.keterangan);
         $('#pengguna').val(data.satker);
         $('#keterangan').val(data.uraian);
-        $('#jumlah').val(numberToCurrency(data.jml_renbut));
+        $('#jumlah').val(numberToCurrency(data.jml_kasir));
         $('#nama_user').val(data.penerima);
     });
-    $('#kode_renbut').setOptions({
+    $('#kode_kasir').setOptions({
         extraParams:{
             tanggal: function(){
                 return $('#tanggal').val();
@@ -222,6 +270,11 @@ $(function() {
    });
     $('#kode').autocomplete("<?= base_url('autocomplete/ma_proja') ?>",
     {
+        extraParams: { 
+            tahun: function() { 
+                return $('#tahun').val();
+            }
+        },
         parse: function(data){
             var parsed = [];
             for (var i=0; i < data.length; i++) {
@@ -247,7 +300,7 @@ $(function() {
         $('#uraian').val(data.keterangan);
         $('#pengguna').val(data.satker);
         $('#keterangan').val(data.uraian);
-        get_nominal_renbut(data.id, $('#tanggal').val());
+        get_nominal_kasir(data.id, $('#tahun').val());
     });
     $('#kode_perkiraan').autocomplete("<?= base_url('autocomplete/kode_perkiraan') ?>",
     {
@@ -322,6 +375,8 @@ function reset_form() {
     $('input[type=text], input[type=hidden], select, textarea').val('');
     $('#s2id_supplier_auto a .select2-chosen').html('');
     $('#tanggal').val('<?= date("d/m/Y") ?>');
+    $('#awal').val('<?= date("01/m/Y") ?>');
+    $('#akhir').val('<?= date("d/m/Y") ?>');
 }
 
 function edit_kasir(id, transaksi) {
@@ -405,7 +460,7 @@ function delete_kasir(id, page, kode) {
 function get_list_rekap_kasir(page) {
     $.ajax({
         url: '<?= base_url('transaksi/manage_kasir') ?>/list/'+page,
-        data: $('#form_kasir').serialize(),
+        data: $('#search_kasir').serialize(),
         cache: false,
         success: function(data) {
             $('#result-kasir').html(data);
@@ -423,8 +478,9 @@ function paging(p) {
             <li><a href="#tabs-1">Parameter</a></li>
         </ul>
         <div id="tabs-1">
-            <button id="cari_rekap_button">Tambah Data</button>
-            <button id="reload_kasir_data">Refresh</button>
+            <button id="cari_rekap_button">Tambah</button>
+            <button id="cari_button">Cari</button>
+            <button id="reload_kasir_data">Reload Data</button>
             <div id="result-kasir">
 
             </div>
@@ -434,21 +490,37 @@ function paging(p) {
         <?= form_open('', 'id=form') ?>
         <input type="hidden" name="id_kasir" id="id_kasir" />
         <table class="inputan" width="100%">
-            <tr><td>Jenis Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Pilih ...', 'bkk' => 'Kas Keluar', 'bkm' => 'Kas Masuk'), NULL, 'id=jenis style="width: 300px;"') ?></td></tr>
+            <tr><td>Jenis Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Pilih ...', 'bkk' => 'Kas Keluar', 'bkm' => 'Kas Masuk','mutasi' => 'Mutasi'), NULL, 'id=jenis style="width: 300px;"') ?></td></tr>
             <tr><td>Tanggal Kegiatan:</td><td><?= form_input('tanggal', date("d/m/Y"), 'size=15 id=tanggal') ?></td></tr>
             <tr><td>No.</td><td><?= form_input('no', NULL, 'id=no') ?></td></tr>
             <tr><td>Sumber Dana:</td><td><?= form_dropdown('sumberdana', array('' => 'Pilih ...', 'Kas' => 'Kas', 'Bank' => 'Bank'), NULL, 'id="sumberdana" style="width: 300px;"') ?></td></tr>
-            <tr><td>Kode Perkiraan:</td><td><?= form_input('', NULL, 'id=kode_perkiraan size=60') ?><?= form_hidden('kode_perkiraan', NULL, 'id=hide_kode_perkiraan') ?></td></tr>
-            <tr><td>Nomor Renbut:</td><td><?= form_input('kode_renbut', NULL, 'id=kode_renbut size=60') ?><small style="font-style: italic;">Mengacu ke bulan kegiatan</small><?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?></td></tr>
+            <tr><td id="kdatas">Kode Perkiraan (D)*:</td><td><?= form_input('', NULL, 'id=kode_perkiraan size=60') ?><?= form_hidden('kode_perkiraan', NULL, 'id=hide_kode_perkiraan') ?></td></tr>
+            <tr><td>Nomor Renbut:</td><td><?= form_input('kode_kasir', NULL, 'id=kode_kasir size=60') ?><small style="font-style: italic;">Mengacu ke bulan kegiatan</small><?= form_hidden('id_kasir', NULL, 'id=id_kasir') ?></td></tr>
+            <tr><td>Tahun Anggaran</td><td>
+                <select name="tahun" id="tahun">
+                <?php for ($i = date("Y"); $i >=2014 ; $i--) { ?>
+                    <option value="<?= $i ?>" <?= (($i === date("Y"))?'selected':'') ?>><?= $i ?></option>
+                <?php } ?>
+                </select></td></tr>
             <tr><td>Kode MA/Proja:</td><td><?= form_input('kode', NULL, 'id=kode') ?><?= form_hidden('id_kode', NULL, 'id=id_kode') ?></td></tr>
             <tr><td>Pengguna Anggaran:</td><td><?= form_input('pengguna', NULL, 'id=pengguna') ?></td></tr>
             <tr><td valign="top">Uraian:</td><td><?= form_textarea('uraian', NULL, 'id=uraian rows=4 style="width: 294px;"') ?></td></tr>
-            <tr><td>Jumlah Biaya:</td><td><?= form_input('jumlah', NULL, 'id=jumlah onkeyup="FormNum(this);"') ?></td></tr>
-            <tr><td><?= form_dropdown('user', array('Penerima' => 'Penerima', 'Penyetor' => 'Penyetor'), NULL, 'id=user style="width: 120px;"') ?></td><td><?= form_input('nama_user', NULL, 'id=nama_user') ?></td></tr>
-            <tr><td>Perwabku:</td><td><?= form_dropdown('perwabku', array('Default' => 'Default', 'Belum' => 'Belum (DP)', 'Sudah' => 'Sudah (Pusat Biaya)'), NULL, 'id=perwabku') ?></td></tr>
-            <tr><td>Kode Perkiraan Pwk*:</td><td><?= form_input('', NULL, 'id=kode_perkiraan_pwk size=60') ?><?= form_hidden('kode_perkiraan_pwk', NULL, 'id=hide_kode_perkiraan_pwk') ?></td></tr>
+            <tr><td>Nominal Rp.:</td><td><?= form_input('jumlah', NULL, 'id=jumlah onkeyup="FormNum(this);"') ?></td></tr>
+            <tr><td id="pngjwb">-</td><td><?= form_input('nama_user', NULL, 'id=nama_user') ?></td></tr>
+            <tr><td>Jenis Transaksi:</td><td><?= form_dropdown('perwabku', array('' => 'Pilih ...', 'Default' => 'Default', 'Belum' => 'Belum (DP)', 'Sudah' => 'Sudah (Pusat Biaya)'), NULL, 'id=perwabku') ?></td></tr>
+            <tr><td style="white-space: nowrap;" id="kdbawah">Kode Perkiraan Lawan (K)*:</td><td><?= form_input('', NULL, 'id=kode_perkiraan_pwk size=60') ?><?= form_hidden('kode_perkiraan_pwk', NULL, 'id=hide_kode_perkiraan_pwk') ?></td></tr>
             <!--<tr><td></td><td><?= form_button('Simpan', 'id=simpan') ?> <?= form_button('Reset', 'id=reset') ?></td></tr>-->
         </table>
         <?= form_close() ?>
+    </div>
+    <div id="dialog_kasir_search" class="nodisplay">
+        <form action="" id="search_kasir">
+            <table width=100% cellpadding=0 cellspacing=0 class=inputan>
+                <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir" value="<?= date("d/m/Y") ?>" /></td></tr>
+                <tr><td>Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Semua Jenis ...', 'BKK' => 'Kas Keluar', 'BKM' => 'Kas Masuk','MTS' => 'Mutasi'), NULL, 'id=jenis_transaksi style="width: 300px;"') ?></td></tr>
+                <tr><td>Kegiatan:</td><td><input type="text" name="kegiatan" id="kegiatan" /></td></tr>
+                <tr><td>Penanggung Jawab:</td><td><input type="text" name="png_jwb" id="png_jwb" /></td></tr>
+            </table>
+        </form>
     </div>
 </div>
