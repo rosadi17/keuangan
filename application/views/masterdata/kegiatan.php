@@ -51,7 +51,7 @@ function paginate(page, tab, search, active) {
             <li><a href="#tabs-2" onclick="load_my_fucking_page('<?= base_url('masterdata/keg_program') ?>','#tabs-2');">Kegiatan</a></li>
             <li><a href="#tabs-3" onclick="load_my_fucking_page('<?= base_url('masterdata/sub_kegiatan') ?>','#tabs-3');">Sub Kegiatan</a></li>
             <li><a href="#tabs-4" onclick="load_my_fucking_page('<?= base_url('masterdata/uraian') ?>','#tabs-4');">Uraian</a></li>
-            <li><a href="#tabs-5" onclick="load_my_fucking_page('<?= base_url('masterdata/sub_uraian') ?>','#tabs-5');">Sub Uraian</a></li>
+            <!--<li><a href="#tabs-5" onclick="load_my_fucking_page('<?= base_url('masterdata/sub_uraian') ?>','#tabs-5');">Sub Uraian</a></li>-->
 <!--            <li><a href="#tabs-6" onclick="load_my_fucking_page('<?= base_url('masterdata/sub_sub_uraian') ?>','#tabs-6');">Sub Sub Uraian</a></li>-->
             <li><a href="#tabs-7" onclick="load_my_fucking_page('<?= base_url('masterdata/kegiatan_preview') ?>','#tabs-7');">Preview</a></li>
         </ul>
@@ -59,7 +59,7 @@ function paginate(page, tab, search, active) {
         <div id="tabs-2"></div>
         <div id="tabs-3"></div>
         <div id="tabs-4"></div>
-        <div id="tabs-5"></div>
+        <!--<div id="tabs-5"></div>-->
 <!--        <div id="tabs-6"></div>-->
         <div id="tabs-7"></div>
     </div>

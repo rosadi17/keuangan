@@ -66,7 +66,7 @@ $(function() {
     $('#jenis').change(function() {
         var nilai = $(this).val();
         if (nilai === 'bkk') {
-            $('#perwabku').removeAttr('disabled');
+            $('#perwabku, #kode_renbut').removeAttr('disabled');
             $('#kdatas').html('Kode Perkiraan (K)*:');
             $('#kdbawah').html('Kode Perkiraan Lawan (D)*:');
             $('#pngjwb').html('Penerima:');
@@ -177,7 +177,7 @@ $(function() {
     });
     $('#form').submit(function() {
         if ($('#jenis').val() === '') {
-            custom_message('Peringatan', 'Jenis transaksi harus dipilih', '#jenis'); return false;
+            custom_message('Peringatan', 'Nama transaksi harus dipilih', '#jenis'); return false;
         }
 //        if ($('#id_renbut').val() === '') {
 //            custom_message('Peringatan', 'Nomor renbut harus dipilih', '#kode_renbut'); return false;
@@ -191,7 +191,7 @@ $(function() {
         if ($('#jumlah').val() === '') {
             custom_message('Peringatan', 'Jumlah tidak boleh kosong', '#jumlah'); return false;
         }
-        if ($('#perwabku').val() === '') {
+        if ($('#perwabku').val() === '' && $('#jenis').val() !== 'bkm') {
             custom_message('Peringatan','Jenis transaksi harus dipilih !','#perwabku'); return false;
         }
         $('<div id=alert>Anda yakin akan menyimpan transaksi ini ?</div>').dialog({
@@ -500,7 +500,7 @@ function paging(p) {
         <?= form_open('', 'id=form') ?>
         <input type="hidden" name="id_kasir" id="id_kasir" />
         <table class="inputan" width="100%">
-            <tr><td>Jenis Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Pilih ...', 'bkk' => 'Kas Keluar', 'bkm' => 'Kas Masuk','mutasi' => 'Mutasi'), NULL, 'id=jenis style="width: 300px;"') ?></td></tr>
+            <tr><td>Nama Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Pilih ...', 'bkk' => 'Kas Keluar', 'bkm' => 'Kas Masuk','mutasi' => 'Mutasi'), NULL, 'id=jenis style="width: 300px;"') ?></td></tr>
             <tr><td>Tanggal Kegiatan:</td><td><?= form_input('tanggal', date("d/m/Y"), 'size=15 id=tanggal') ?></td></tr>
             <tr><td>No.</td><td><?= form_input('no', NULL, 'id=no') ?></td></tr>
             <tr><td>Sumber Dana:</td><td><?= form_dropdown('sumberdana', array('' => 'Pilih ...', 'Kas' => 'Kas', 'Bank' => 'Bank'), NULL, 'id="sumberdana" style="width: 300px;"') ?></td></tr>

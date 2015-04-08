@@ -50,6 +50,10 @@
             <file>file:/C:/wamp/www/keuangan/application/views/login.php</file>
             <file>file:/C:/wamp/www/keuangan/application/config/database.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/transaksi/anggaran-kegiatan.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/masterdata/program.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/masterdata/sub-kegiatan.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/laporan/realisasi.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/laporan/realisasi-table.php</file>
         </group>
     </open-files>
 </project-private>
