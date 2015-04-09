@@ -342,7 +342,7 @@ class M_autocomplete extends CI_Model {
             from kasir p
             left join rencana_kebutuhan r on (p.kode = r.kode_cashbon)
             join uraian u on (p.id_uraian = u.id)
-            where p.perwabku = 'Belum' and p.kode like ('".$q."%') group by p.kode";
+            where p.perwabku = 'Belum' and p.id not in (select id_pengeluaran from detail_perwabku) and p.kode like ('".$q."%') group by p.kode";
         //echo $sql;
         return $this->db->query($sql);
     }

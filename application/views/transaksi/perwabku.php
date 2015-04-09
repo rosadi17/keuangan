@@ -80,15 +80,25 @@ function get_nomor_perwabku() {
 }
 
 function removeEl(el) {
-    
+    el.parentNode.remove();
+    var jml = $('.rows_bkk').length;
+    var col = 0;
+    for (i = 1; i <= jml; i++) {
+        $('.rows_bkk:eq('+col+')').children('.nomorbkk').attr('id', 'nomorbkk'+i);
+        $('.rows_bkk:eq('+col+')').children('.id_nomorbkk').attr('id', 'id_nomorbkk'+i);
+        col++;
+    }
 }
 
 function bkk_add_row() {
     var jml = $('.rows_bkk').length+1;
-    str = '<div class="rows_bkk" style="margin-bottom: 3px;"><input type="text" name="nomorbkk" id="nomorbkk" /> <input type="hidden" name="id_nomorbkk" id="id_nomorbkk" /></div>';
-            //'<button type="button" class="btn btn-default btn-xs" onclick="removeEl(this);" id=""><i class="fa fa-times"></i></button>';
+    str = '<div class="rows_bkk" style="margin-bottom: 3px;">'+
+            '<input type="text" name="nomorbkk[]" id="nomorbkk'+jml+'" class="nomorbkk" /> '+
+            '<input type="hidden" name="id_nomorbkk[]" id="id_nomorbkk'+jml+'" class="id_nomorbkk" />'+
+            '<button class="btn btn-default btn-xs" onclick="removeEl(this);"><i class="fa fa-times"></i></button>'+
+          '</div>';
     $('#nobkk').append(str);
-    $('#nomorbkk').autocomplete("<?= base_url('autocomplete/nomorbkkdp') ?>",
+    $('#nomorbkk'+jml).autocomplete("<?= base_url('autocomplete/nomorbkkdp') ?>",
     {
         parse: function(data){
             var parsed = [];
@@ -101,7 +111,7 @@ function bkk_add_row() {
             return parsed;
         },
         formatItem: function(data,i,max){
-            var str = '<div class=result>'+data.kode+' '+data.keterangan+'<br/>Rp. '+numberToCurrency(data.pengeluaran)+'</div>';
+            var str = '<div class=result>'+datefmysql(data.tanggal)+' '+data.kode+' '+data.keterangan+'<br/>Rp. '+numberToCurrency(data.pengeluaran)+'</div>';
             return str;
         },
         width: 300, // panjang tampilan pencarian autocomplete yang akan muncul di bawah textbox pencarian
@@ -110,8 +120,8 @@ function bkk_add_row() {
         max: 100
     }).result(
     function(event,data,formated){
-        $(this).val(data.kode);
-        $('#id_nomorbkk').val(data.id);
+        $(this).val(data.kode+' Rp. '+numberToCurrency(data.pengeluaran)+' '+data.keterangan);
+        $('#id_nomorbkk'+jml).val(data.id);
         $('#keterangan').html(data.keterangan);
         $('#nominal').html('Rp. '+numberToCurrency(data.pengeluaran));
         $('#penerima').html(data.penerima);
@@ -135,17 +145,15 @@ function form_perwabku() {
             '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
                 '<tr><td width=40%>Nomor:</td><td><?= form_input('nomor', '', 'id=nomor size=60') ?></td></tr>'+
                 '<tr><td width=40%>Tanggal Perwabku:</td><td><?= form_input('tanggal', date("d/m/Y"), 'id=tanggal size=10') ?></td></tr>'+
-                //'<tr><td></td><td><button type="button" class="btn btn-default btn-xs delete" onclick="bkk_add_row();"><i class="fa fa-plus-circle"></i> Tambah Kode BKK</button></td></tr>'+
+                '<tr><td></td><td><button type="button" class="btn btn-default btn-xs delete" onclick="bkk_add_row();"><i class="fa fa-plus-circle"></i> Tambah Kode BKK</button></td></tr>'+
                 '<tr><td width=40% valign="top">Nomor BKK (DP):</td><td id="nobkk"></td></tr>'+
-                '<tr><td width=40% valign="top">Keterangan:</td><td id="keterangan"></td></tr>'+
-                '<tr><td width=40% valign="top">Nominal:</td><td id="nominal"></td></tr>'+
-                '<tr><td width=40% valign="top">Penerima:</td><td id="penerima"></td></tr>'+
+                '<tr><td width=40% valign="top">Dana yang Digunakan Rp.:</td><td><input type="text" name="dana" id="dana" onkeyup="FormNum(this);" /></td></tr>'+
             '</table>'+
             '</form></div>';
     $(str).dialog({
         title: 'Tambah Perwabku',
         autoOpen: true,
-        width: 480,
+        width: 510,
         autoResize:true,
         modal: true,
         hide: 'explode',
@@ -174,10 +182,16 @@ function form_perwabku() {
         }
     });
     $('#save_perwabku').submit(function() {
-        if ($('#nomorbkk').val() === '') {
-            custom_message('Peringatan', 'Nomor BKK harus dipilih', '#nomorbkk');
-            return false;
+        var jml = $('.rows_bkk').length;
+        for (i = 1; i <= jml; i++) {
+            if ($('#id_nomorbkk'+i).val() === '') {
+                custom_message('Peringatan', 'Nomor BKK harus dipilih', '#nomorbkk'+i); return false;
+            }
         }
+        if ($('#dana').val() === '') {
+            custom_message('Peringatan','Dana yang digunakan harus diisikan !','#dana'); return false;
+        }
+        
         $.ajax({
             url: '<?= base_url('transaksi/manage_perwabku/save') ?>',
             type: 'POST',
@@ -203,7 +217,7 @@ function print_perwabku(id) {
     var dHeight= wHeight * 1;
     var x = screen.width/2 - dWidth/2;
     var y = screen.height/2 - dHeight/2;
-    window.open('<?= base_url('transaksi/manage_perwabku') ?>/print?id='+id, 'perwabku Cetak', 'width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
+    window.open('<?= base_url('transaksi/manage_perwabku/print') ?>?id='+id, 'perwabku Cetak', 'width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
 }
 
 function paging(page, tab, search) {

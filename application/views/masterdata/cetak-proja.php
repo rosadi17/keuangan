@@ -33,7 +33,7 @@
                     join sub_kegiatan sk on (sk.id = u.id_sub_kegiatan)
                     join kegiatan k on (sk.id_kegiatan = k.id)
                     join program p on (k.id_program = p.id)
-                    join satker s on (p.id_satker = s.id) where p.id = '".$data->id."'")->row();
+                    join satker s on (p.id_satker = s.id) where p.id = '".$data->id."' and su.tahun = '".date("Y")."'")->row();
             ?>
         <tr>
             <td><?= ($status !== $data->status)?$data->status:NULL ?></td>
@@ -61,7 +61,7 @@
                     join sub_kegiatan sk on (sk.id = u.id_sub_kegiatan)
                     join kegiatan k on (sk.id_kegiatan = k.id)
                     join program p on (k.id_program = p.id)
-                    join satker s on (p.id_satker = s.id) where k.id = '".$rows->id."'")->row();
+                    join satker s on (p.id_satker = s.id) where k.id = '".$rows->id."' and su.tahun = '".date("Y")."'")->row();
                 $subkode = $rows->kode;
                 ?>
                 <tr data-tt-id='<?= $r1 ?>-<?= $r2 ?>' data-tt-parent-id='<?= $r1 ?>' class="even">
@@ -81,7 +81,7 @@
                             join sub_kegiatan sk on (sk.id = u.id_sub_kegiatan)
                             join kegiatan k on (sk.id_kegiatan = k.id)
                             join program p on (k.id_program = p.id)
-                            join satker s on (p.id_satker = s.id) where sk.id = '".$rowx->id."'")->row();
+                            join satker s on (p.id_satker = s.id) where sk.id = '".$rowx->id."' and su.tahun = '".date("Y")."'")->row();
                         $sub_sub_kode = $rowx->kode;
                         ?>
                         <tr data-tt-id='<?= $r1 ?>-<?= $r2 ?>-<?= $r3 ?>' data-tt-parent-id='<?= $r1 ?>-<?= $r2 ?>' class="even">
@@ -101,7 +101,7 @@
                             join sub_kegiatan sk on (sk.id = u.id_sub_kegiatan)
                             join kegiatan k on (sk.id_kegiatan = k.id)
                             join program p on (k.id_program = p.id)
-                            join satker s on (p.id_satker = s.id) where u.id = '".$rowy->id."'")->row();
+                            join satker s on (p.id_satker = s.id) where u.id = '".$rowy->id."' and su.tahun = '".date("Y")."'")->row();
                             $sub_sub_sub_kode = $rowy->kode;
                             ?>
                             <tr data-tt-id='<?= $r1 ?>-<?= $r2 ?>-<?= $r3 ?>-<?= $r4 ?>' data-tt-parent-id='<?= $r1 ?>-<?= $r2 ?>-<?= $r3 ?>' class="even">
@@ -114,7 +114,7 @@
                                 <td align="right"><?= ($total_uraian->total) ?></td>
                             </tr>
                         <?php
-                            $sub_uraian = $this->db->query("select * from sub_uraian where id_uraian = '".$rowy->id."'")->result();
+                            $sub_uraian = $this->db->query("select * from sub_uraian where id_uraian = '".$rowy->id."' and tahun = '".date("Y")."'")->result();
                             foreach ($sub_uraian as $r5 => $rowz) { 
                                 $sub_sub_sub_sub_kode = $rowz->kode;
                                 ?>

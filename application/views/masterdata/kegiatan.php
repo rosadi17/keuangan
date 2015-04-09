@@ -12,6 +12,9 @@ function load_my_fucking_page(url, el) {
     if ($(el).html() === '') {
         $.ajax({
             url: url,
+            beforeSend: function () {
+                
+            },
             success: function(data) {
                 $(el).html(data);
             }

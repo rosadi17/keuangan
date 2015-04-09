@@ -701,7 +701,7 @@ class M_transaksi extends CI_Model {
             //$q.=" and s.id = '".$search['satker']."'";
         }
         
-        $sql = "select pw.*, pg.tanggal as tanggal_pengeluaran, pg.pengeluaran as dana, 
+        $sql = "select pw.*, pw.kode as kode_pwk, pg.tanggal as tanggal_pengeluaran, sum(pg.pengeluaran) as dana, 
             pg.penerima, pg.kode, YEAR(pg.tanggal) as thn_anggaran, s.nama as satker,
             u.kode as kode_ma, s.kode as kode_satker,
             p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan, u.uraian
@@ -712,49 +712,77 @@ class M_transaksi extends CI_Model {
             join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
             join kegiatan k on (sk.id_kegiatan = k.id)
             join program p on (k.id_program = p.id)
-            join satker s on (p.id_satker = s.id) ";
+            join satker s on (p.id_satker = s.id)
+            where pw.tanggal like ('".date("Y-m")."%') $q group by pw.id";
         $limitation = null;
         if ($limit !== NULL) {
             $limitation =" limit $start , $limit";
         }
-        $query = $this->db->query($sql . $q . $limitation);
-        //echo $sql . $q . $limitation;
-        $queryAll = $this->db->query($sql . $q);
-        $data['data'] = $query->result();
+        $result = $this->db->query($sql . $limitation)->result();
+        foreach ($result as $key => $val) {
+            $sql_bkk = "select k.kode as kodes
+                from detail_perwabku dp 
+                join kasir k on (dp.id_pengeluaran = k.id)
+                where dp.id_perwabku = '".$val->id."'";
+            $child_bkk = $this->db->query($sql_bkk)->result();
+            $result[$key]->perwabku = $child_bkk;
+            
+            $sql_png = "select k.penerima as png_jwb
+                from detail_perwabku dp 
+                join kasir k on (dp.id_pengeluaran = k.id)
+                where dp.id_perwabku = '".$val->id."'";
+            $child_png = $this->db->query($sql_png)->result();
+            $result[$key]->png_jwb = $child_png;
+        }
+        $queryAll = $this->db->query($sql);
+        $data['data'] = $result;
         $data['jumlah'] = $queryAll->num_rows();
         return $data;
     }
     
     function save_perwabku() {
         $this->db->trans_begin();
-        $id_pengeluaran = post_safe('id_nomorbkk');
+        $id_pengeluaran = post_safe('id_nomorbkk'); // array
         $tanggal        = date2mysql(post_safe('tanggal'));
         $kode_pwk       = post_safe('nomor');
+        $dana           = currencyToNumber(post_safe('dana'));
         
-        $data = array(
-            'kode' => $kode_pwk,
-            'tanggal' => $tanggal,
-            'id_user' => $this->session->userdata('id_user')
-        );
-        $this->db->insert('perwabku', $data);
-        $id_perwabku = $this->db->insert_id();
-        if ($this->db->trans_status() === FALSE) {
-            $this->db->trans_rollback();
-            $result['status'] = FALSE;
-        }
-        
-        $data_detail = array(
-            'id_perwabku' => $id_perwabku,
-            'id_pengeluaran' => $id_pengeluaran
-        );
-        $this->db->insert('detail_perwabku', $data_detail);
-        if ($this->db->trans_status() === FALSE) {
-            $this->db->trans_rollback();
-            $result['status'] = FALSE;
+        if (is_array($id_pengeluaran)) {
+            $data = array(
+                'kode' => $kode_pwk,
+                'tanggal' => $tanggal,
+                'dana_digunakan' => $dana,
+                'id_user' => $this->session->userdata('id_user')
+            );
+            $this->db->insert('perwabku', $data);
+
+            $id_perwabku = $this->db->insert_id();
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $result['status'] = FALSE;
+            }
+            foreach ($id_pengeluaran as $data) {
+                $data_detail = array(
+                    'id_perwabku' => $id_perwabku,
+                    'id_pengeluaran' => $data
+                );
+                $this->db->insert('detail_perwabku', $data_detail);
+                if ($this->db->trans_status() === FALSE) {
+                    $this->db->trans_rollback();
+                    $result['status'] = FALSE;
+                }
+            }
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $result['status'] = FALSE;
+            } else {
+                $this->db->trans_commit();
+                $result['status'] = TRUE;
+            }
         } else {
-            $this->db->trans_commit();
-            $result['status'] = TRUE;
+            $result['status'] = FALSE;
         }
+        
         return $result;
     }
     

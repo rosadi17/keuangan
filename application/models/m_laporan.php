@@ -237,7 +237,7 @@ class M_laporan extends CI_Model {
     }
     
     function load_data_grafik_pengeluaran($perwabku) {
-        $sql = "select sum(pengeluaran) as pengeluaran, perwabku from pengeluaran where perwabku = '$perwabku' and tanggal like ('".date("Y-m")."%')";
+        $sql = "select sum(pengeluaran) as pengeluaran, perwabku from kasir where perwabku = '$perwabku' and tanggal like ('".date("Y-m")."%') and jenis = 'BKK'";
         //echo $sql;
         return $this->db->query($sql)->row();
     }
