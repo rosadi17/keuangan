@@ -563,4 +563,13 @@ class Transaksi extends CI_Controller {
         $data['satker']= $this->m_masterdata->load_satker()->result();
         $this->load->view('transaksi/anggaran-kegiatan', $data);
     }
+    
+    function update_dana_pwk() {
+        $query = $this->db->query("select p.*, sum(k.pengeluaran) as digunakan from perwabku p join detail_perwabku dp on (dp.id_perwabku = p.id) join kasir k on (dp.id_pengeluaran = k.id) group by p.id")->result();
+        foreach ($query as $data) {
+            $update = "update perwabku set dana_digunakan = '".$data->digunakan."' where id = '".$data->id."'";
+            $this->db->query($update);
+        }
+        echo "OK";
+    }
 }
