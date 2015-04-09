@@ -101,7 +101,8 @@ class Transaksi extends CI_Controller {
             case 'list':
                 //$search['key'] = $_GET['search'];
                 $search['id']  = get_safe('id');
-                $search['bulan'] = get_safe('year').'-'.get_safe('bln');
+                $search['awal'] = date2mysql(get_safe('awal'));
+                $search['akhir']= date2mysql(get_safe('akhir'));
                 $search['satker']= get_safe('id_satker');
                 $search['proja'] = get_safe('id_uraian');
                 $search['pjawab']= get_safe('png_jawab');
@@ -507,14 +508,14 @@ class Transaksi extends CI_Controller {
     
     function manage_perwabku($action, $page = null) {
         $limit = 10;
+        
         switch ($action) {
             case 'list':
-                //$search['key'] = $_GET['search'];
-                $search['id']  = get_safe('id');
-                $search['bulan'] = get_safe('year').'-'.get_safe('bln');
-                $search['satker']= get_safe('id_satker');
-                $search['proja'] = get_safe('id_uraian');
-                $search['pjawab']= get_safe('png_jawab');
+                $search['id'] = get_safe('id');
+                $search['awal'] = date2mysql(get_safe('awal'));
+                $search['akhir']= date2mysql(get_safe('akhir'));
+                $search['nomorpwk'] = get_safe('nomorpwk');
+                $search['nomorbkk']= get_safe('nomorbkk');
                 $data = $this->get_list_data_perwabku($limit, $page, $search);
                 $this->load->view('transaksi/perwabku-table', $data);
                 break;
@@ -523,10 +524,13 @@ class Transaksi extends CI_Controller {
                 die(json_encode($data));
                 break;
             case 'print': 
-                $param['id']   = get_safe('id');
-                $param['bulan']= '';
-                $param['satker'] = '';
-                $data = $this->get_list_data_perwabku(NULL, NULL, $param);
+                $search['id'] = get_safe('id');
+                $search['awal'] = date2mysql(get_safe('awal'));
+                $search['akhir']= date2mysql(get_safe('akhir'));
+                $search['nomorpwk'] = get_safe('nomorpwk');
+                $search['nomorbkk']= get_safe('nomorbkk');
+                $query = $this->m_transaksi->get_data_perwabku(NULL, NULL, $search);
+                $data['list_data'] = $query['data'];
                 $this->load->view('transaksi/print-perwabku', $data);
                 break;
             case 'delete': 
@@ -549,6 +553,7 @@ class Transaksi extends CI_Controller {
         $data['list_data'] = $query['data'];
         $data['jumlah'] = $query['jumlah'];
         
+        $data['infopage'] = page_summary($data['jumlah'], $page, $limit);
         $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, null);
         return $data;
     }

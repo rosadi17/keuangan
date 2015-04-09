@@ -43,7 +43,7 @@ class Masterdata extends CI_Controller {
         $query = $this->m_masterdata->get_data_unit($limit, $start, $search);
         $data['list_data'] = $query['data'];
         $data['jumlah'] = $query['jumlah'];
-        
+        $data['infopage'] = page_summary($data['jumlah'], $page, $limit);
         $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, null);
         return $data;
     }

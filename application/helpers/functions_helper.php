@@ -534,7 +534,7 @@ function paging_ajax($jmldata, $dataPerPage, $klik, $tab = NULL, $search) {
     $jumData = $jmldata;
     $jumPage = ceil($jumData / $dataPerPage);
     $get = $_GET;
-    if ($jumData > $dataPerPage) {
+    //if ($jumData > $dataPerPage) {
         $onclick = null;
         if ($noPage > 1) {
             $get['page'] = ($noPage - 1);
@@ -575,7 +575,7 @@ function paging_ajax($jmldata, $dataPerPage, $klik, $tab = NULL, $search) {
             $next = "onClick=\"paging(" . ($klik + 1) . "," . $tab . ", '" . $search . "')\" ";
         }
         echo "<div class='page-next' $next >next</div>";
-    }
+    //}
     echo "</div>";
 
     $buffer = ob_get_contents();

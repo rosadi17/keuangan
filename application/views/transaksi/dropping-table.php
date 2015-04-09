@@ -29,8 +29,8 @@
         ?>
     <tr class="<?= ($key%2==1)?'even':'odd' ?>">
         <td align="center"><?= $auto++ ?></td>
-        <td align="center"><?= datefmysql($data->tanggal) ?></td>
-        <td><?= $data->keterangan ?></td>
+        <td align="center"><?= datefmysql($data->tanggal_renbut) ?></td>
+        <td><?= $data->uraian ?></td>
         <td class="nowrap"><?= $data->satker ?></td>
         <td align="center"><?= $data->ma_proja ?></td>
         <td align="right"><?= rupiah($data->nominal) ?></td>

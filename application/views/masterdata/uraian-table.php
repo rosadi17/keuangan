@@ -25,8 +25,8 @@
         <td align="center"><?= $data->kode ?></td>
         <td><?= ucwords(strtolower($data->uraian)) ?></td>
         <td class="aksi" align="center">
-            <a class='edition' onclick="edit_uraian('<?= $str ?>');" title="Klik untuk edit unit">&nbsp;</a>
-            <a class='deletion' onclick="delete_uraian('<?= $data->id ?>', '<?= $page ?>');" title="Klik untuk hapus unit">&nbsp;</a>
+            <button class="btn btn-default btn-xs" onclick="edit_uraian('<?= $str ?>');" title="Klik untuk edit unit"><i class="fa fa-pencil"></i></button>
+            <button class="btn btn-default btn-xs" onclick="delete_uraian('<?= $data->id ?>', '<?= $page ?>');" title="Klik untuk hapus unit"><i class="fa fa-trash-o"></i></button>
         </td>
     </tr>
     <?php 

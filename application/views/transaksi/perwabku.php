@@ -28,26 +28,40 @@ $(function() {
             position: ['center',47],
             buttons: {
                 "Cancel": function() {
-                    $('#dialog_perwabku_search').dialog('destroy');
+                    $('#dialog_perwabku_search').dialog('close');
                 },
                 "Cari": function() {
                     get_list_perwabku(1);
+                    $('#dialog_perwabku_search').dialog('close');
                 } 
             }, close: function() {
-                $('#dialog_perwabku_search').dialog('destroy');
+                $('#dialog_perwabku_search').dialog('close');
             }, open: function() {
-                $('#uraian').focus();
+                $('#awal, #akhir').datepicker('hide');
+                $('#nomorpwk').focus();
             }
         });
+    });
+    $('#awal, #akhir').datepicker({
+        changeYear: true,
+        changeMonth: true
     });
     $('#reload_perwabku').button({
         icons: {
             secondary: 'ui-icon-refresh'
         }
     }).click(function() {
+        reset_form();
         get_list_perwabku(1);
     });
 });
+
+function reset_form() {
+    $('input[type=text], input[type=hidden], select, textarea').val('');
+    $('#awal').val('<?= date("01/m/Y") ?>');
+    $('#akhir').val('<?= date("d/m/Y") ?>');
+}
+
 function get_list_perwabku(page, src, id) {
     $.ajax({
         url: '<?= base_url('transaksi/manage_perwabku') ?>/list/'+page,
@@ -255,7 +269,7 @@ function delete_perwabku(id, page) {
         </ul>
         <div id="tabs-1">
             <button id="add_perwabku">Tambah Data</button>
-            <!--<button id="cari_button">Cari Data</button>-->
+            <button id="cari_button">Cari Data</button>
             <button id="reload_perwabku">Refresh</button>
             <div id="result">
 
@@ -265,8 +279,9 @@ function delete_perwabku(id, page) {
     <div id="dialog_perwabku_search" class="nodisplay">
         <form action="" id="search_perwabku">
         <table width=100% cellpadding=0 cellspacing=0 class=inputan>
-            <tr><td width=25%>Bulan Tahun:</td><td><select name=bln id=bln style="width: 74px;"><?php foreach ($bulan as $bln) { ?> <option value="<?= $bln[0] ?>" <?= (($bln[0] === date("m"))?'selected':NULL) ?>><?= $bln[1] ?></option><?php } ?></select><select name="year" id="year" style="width: 74px;"><option value="">Select Year ....</option><?php for($i = 2010; $i <= date("Y"); $i++) { ?> <option value="<?= $i ?>" <?php if ($i == date("Y")) { echo "selected"; } ?>><?= $i ?></option><?php } ?></select></td></tr>
-            <tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>
+            <tr><td>Tanggal Perwabku:</td><td><input type="text" name="awal" id="awal" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir" value="<?= date("d/m/Y") ?>" /></td></tr>
+            <tr><td>No. Perwabku:</td><td><input type="text" name="nomorpwk" id="nomorpwk" /></td></tr>
+            <tr><td>No. BKK:</td><td><input type="text" name="nomorbkk" id="nomorbkk" /></td></tr>
         </table>
         </form>
     </div>

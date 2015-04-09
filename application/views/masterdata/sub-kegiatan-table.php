@@ -22,8 +22,8 @@
         <td align="center"><?= $data->kode ?></td>
         <td><?= ucwords(strtolower($data->nama_sub_kegiatan)) ?></td>
         <td class="aksi" align="center">
-            <a class='edition' onclick="edit_sub_kegiatan('<?= $str ?>');" title="Klik untuk edit unit">&nbsp;</a>
-            <a class='deletion' onclick="delete_sub_kegiatan('<?= $data->id ?>', '<?= $page ?>');" title="Klik untuk hapus unit">&nbsp;</a>
+            <button class="btn btn-default btn-xs" onclick="edit_sub_kegiatan('<?= $str ?>');" title="Klik untuk edit unit"><i class="fa fa-pencil"></i></button>
+            <button class="btn btn-default btn-xs" onclick="delete_sub_kegiatan('<?= $data->id ?>', '<?= $page ?>');" title="Klik untuk hapus unit"><i class="fa fa-trash-o"></i></button>
         </td>
     </tr>
     <?php 

@@ -17,8 +17,8 @@
         <td><?= $data->satker ?></td>
         <td align="right"><?= rupiah($data->pagu) ?></td>
         <td class="aksi" align="center">
-            <a class='edition' onclick="edit_pagu('<?= $str ?>');" title="Klik untuk edit pagu">&nbsp;</a>
-            <a class='deletion' onclick="delete_pagu('<?= $data->id ?>', '<?= $page ?>');" title="Klik untuk hapus pagu">&nbsp;</a>
+            <button class="btn btn-default btn-xs" onclick="edit_pagu('<?= $str ?>');" title="Klik untuk edit pagu"><i class="fa fa-pencil"></i></button>
+            <button class="btn btn-default btn-xs" onclick="delete_pagu('<?= $data->id ?>', '<?= $page ?>');" title="Klik untuk hapus pagu"><i class="fa fa-trash-o"></i></button>
         </td>
     </tr>
     <?php 

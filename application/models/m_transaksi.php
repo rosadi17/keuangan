@@ -114,8 +114,8 @@ class M_transaksi extends CI_Model {
     /*DROPPING*/
     function get_data_dropping($limit = null, $start = null, $search = null) {
         $q = null;
-        if ($search['bulan'] !== '') {
-            $q.=" and rk.tanggal like ('%".$search['bulan']."%')";
+        if ($search['awal'] !== '' and $search['akhir'] !== '') {
+            $q.=" and rk.tanggal_renbut between '".$search['awal']."' and '".$search['akhir']."'";
         }
         if ($search['satker'] !== '') {
             $q.=" and s.id = '".$search['satker']."'";
@@ -127,7 +127,8 @@ class M_transaksi extends CI_Model {
             $q.=" and rk.penerima like ('%".$search['pjawab']."%')";
         }
         $q.=" order by rk.tanggal asc";
-        $sql = "select rk.*, s.nama as satker, u.kode as ma_proja from rencana_kebutuhan rk
+        $sql = "select rk.*, s.nama as satker, u.kode as ma_proja, u.uraian
+            from rencana_kebutuhan rk
             join uraian u on (rk.id_uraian = u.id)
             join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
             join kegiatan k on (sk.id_kegiatan = k.id)
@@ -694,13 +695,15 @@ class M_transaksi extends CI_Model {
         if ($search['id'] !== '') {
             $q.=" and pw.id = '".$search['id']."'";
         }
-        if ($search['bulan'] !== '') {
-            //$q.=" and rk.tanggal like ('".$search['bulan']."%')";
+        if ($search['awal'] !== '' and $search['akhir'] !== '') {
+            $q.=" and pw.tanggal between '".$search['awal']."' and '".$search['akhir']."'";
         }
-        if ($search['satker'] !== '') {
-            //$q.=" and s.id = '".$search['satker']."'";
+        if ($search['nomorpwk'] !== '') {
+            $q.=" and pw.kode like ('%".$search['nomorpwk']."%')";
         }
-        
+        if ($search['nomorbkk'] !== '') {
+            $q.=" and pg.kode like ('%".$search['nomorbkk']."%')";
+        }
         $sql = "select pw.*, pw.kode as kode_pwk, pg.tanggal as tanggal_pengeluaran, sum(pg.pengeluaran) as dana, 
             pg.penerima, pg.kode, YEAR(pg.tanggal) as thn_anggaran, s.nama as satker,
             u.kode as kode_ma, s.kode as kode_satker, us.username,
@@ -714,7 +717,7 @@ class M_transaksi extends CI_Model {
             join program p on (k.id_program = p.id)
             join satker s on (p.id_satker = s.id)
             join users us on (pw.id_user = us.id)
-            where pw.tanggal like ('".date("Y-m")."%') $q group by pw.id";
+            where pw.id is not NULL $q group by pw.id";
         $limitation = null;
         if ($limit !== NULL) {
             $limitation =" limit $start , $limit";

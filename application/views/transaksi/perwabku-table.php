@@ -39,4 +39,5 @@
     </tr>
     <?php } ?>
 </table>
+<?= $infopage ?>
 <?= $paging ?><br/><br/>

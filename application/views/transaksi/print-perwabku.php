@@ -19,8 +19,8 @@
             echo implode(', ', $value);
             ?>)
             </td></tr>
-        <tr><td>Tanggal Masuk</td><td>:</td><td><?= indo_tgl(date2mysql(datetimefmysql($data->waktu))) ?></td></tr>
-        <tr><td>Tanggal Kegiatan</td><td>:</td><td><?= indo_tgl($data->tanggal) ?></td></tr>
+        <!--<tr><td>Tanggal Masuk</td><td>:</td><td><?= indo_tgl(date2mysql(datetimefmysql($data->waktu))) ?></td></tr>-->
+        <tr><td>Tanggal Perwabku</td><td>:</td><td><?= indo_tgl($data->tanggal) ?></td></tr>
         <tr><td>Tahun Anggaran</td><td>:</td><td><?= $data->thn_anggaran ?></td></tr>
         <tr><td>Kode Unit Kerja</td><td>:</td><td><?= $data->kode_satker ?></td></tr>
         <tr><td>Unit Kerja</td><td>:</td><td><?= $data->satker ?></td></tr>
