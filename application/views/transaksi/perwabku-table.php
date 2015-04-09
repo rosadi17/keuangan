@@ -2,19 +2,22 @@
     <tr>
         <th width="3%">No.</th>
         <th width="10%">No. Perwabku</th>
+        <th width="10%" class="right">Jumlah Dana</th>
+        <th width="10%" class="right">Dana Terpakai</th>
         <th width="7%">Tgl Masuk</th>
         <th width="7%">Tgl PWK</th>
         <th width="7%">Thn Agr</th>
         <!--<th width="10%" class="left">Unit Kerja</th>-->
         <th width="30%" class="left">Nomor BKK</th>
-        <th width="10%" class="right">Jumlah Dana</th>
-        <th width="15%" class="left">Penanggung Jwb</th>
+        <th width="10%" class="left">User</th>
         <th width="5%"></th>
     </tr>
     <?php foreach ($list_data as $key => $data) { ?>
     <tr class="<?= ($key%2==1)?'even':'odd' ?>">
         <td align="center"><?= $auto++ ?></td>
         <td align="center"><?= $data->kode_pwk ?></td>
+        <td align="right"><?= rupiah($data->dana) ?></td>
+        <td align="right"><?= rupiah($data->dana_digunakan) ?></td>
         <td align="center"><?= datetimefmysql($data->waktu) ?></td>
         <td align="center"><?= datefmysql($data->tanggal) ?></td>
         <td align="center"><?= substr($data->tanggal, 0, 4) ?></td>
@@ -28,8 +31,7 @@
             echo implode(', ', $value);
             ?>
         </td>
-        <td align="right"><?= rupiah($data->dana) ?></td>
-        <td><?= $data->penerima ?></td>
+        <td><i><?= $data->username ?></i></td>
         <td align="right">
             <button type="button" class="btn btn-default btn-xs" onclick="print_perwabku('<?= $data->id ?>');" title="Klik untuk print"><i class="fa fa-print"></i></button>
             <button type="button" class="btn btn-default btn-xs" onclick="delete_perwabku('<?= $data->id ?>', '<?= $page ?>');" title="Klik untuk hapus"><i class="fa fa-trash-o"></i></button>

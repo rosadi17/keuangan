@@ -703,7 +703,7 @@ class M_transaksi extends CI_Model {
         
         $sql = "select pw.*, pw.kode as kode_pwk, pg.tanggal as tanggal_pengeluaran, sum(pg.pengeluaran) as dana, 
             pg.penerima, pg.kode, YEAR(pg.tanggal) as thn_anggaran, s.nama as satker,
-            u.kode as kode_ma, s.kode as kode_satker,
+            u.kode as kode_ma, s.kode as kode_satker, us.username,
             p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan, u.uraian
             from perwabku pw
             join detail_perwabku dp on (dp.id_perwabku = pw.id)
@@ -713,6 +713,7 @@ class M_transaksi extends CI_Model {
             join kegiatan k on (sk.id_kegiatan = k.id)
             join program p on (k.id_program = p.id)
             join satker s on (p.id_satker = s.id)
+            join users us on (pw.id_user = us.id)
             where pw.tanggal like ('".date("Y-m")."%') $q group by pw.id";
         $limitation = null;
         if ($limit !== NULL) {
