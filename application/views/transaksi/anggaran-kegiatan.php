@@ -80,11 +80,11 @@ function form_sub_uraian() {
                 '<tr><td>Tahun:</td><td><?= form_input('tahun', NULL, 'id=tahun size=60') ?></td></tr>'+
                 '<tr><td>Status:</td><td><select name=status id=status><option value="SPP">SPP</option><option value="NON SPP">NON SPP</option></select></td></tr>'+
                 '<tr><td>Kode / Nama Uraian:</td><td><?= form_input('uraian', NULL, 'id=uraian size=60') ?><?= form_hidden('id_uraian', NULL, 'id=id_uraian') ?></td></tr>'+
-                '<tr><td>Sub uraian:</td><td><?= form_input('sub_uraian', NULL, 'id=sub_uraian size=60') ?></td></tr>'+
+                '<tr><td>Keterangan:</td><td><?= form_input('sub_uraian', NULL, 'id=sub_uraian size=60') ?></td></tr>'+
 //                '<tr><td>Data Kuat Organisasi:</td><td><?= form_input('kuat', NULL, 'id=kuat size=60') ?></td></tr>'+
 //                '<tr><td>&Sigma; Orang:</td><td><?= form_input('vol_orang', NULL, 'id=vol_orang size=60') ?></td></tr>'+
 //                '<tr><td>&Sigma; Hari/Bulan:</td><td><?= form_input('haribulan', NULL, 'id=haribulan size=60') ?></td></tr>'+
-                '<tr><td>Harga Satuan:</td><td><?= form_input('harga', NULL, 'id=harga onkeyup="FormNum(this);" size=60') ?></td></tr>'+
+                '<tr><td>Besar Anggaran:</td><td><?= form_input('harga', NULL, 'id=harga onkeyup="FormNum(this);" size=60') ?></td></tr>'+
             '</table>'+
             '</form></div>';
     
@@ -164,6 +164,7 @@ function form_sub_uraian() {
     }).result(
     function(event,data,formated){
         $(this).val(pad(data.code,5)+' '+data.uraian);
+        $('#sub_uraian').val(data.uraian);
         $('#id_uraian').val(data.id);
         $('#id_satker').val(data.id_satker);
         $('#status').val(data.status);
@@ -263,7 +264,8 @@ function delete_sub_uraian(id, page) {
         <form action="" id="search_anggaran">
         <table width=100% cellpadding=0 cellspacing=0 class=inputan>
             <tr><td width=25%>Tahun:</td><td><select name="year" id="year" style="width: 74px;"><option value="">Select Year ....</option><?php for($i = 2014; $i <= date("Y"); $i++) { ?> <option value="<?= $i ?>" <?php if ($i == date("Y")) { echo "selected"; } ?>><?= $i ?></option><?php } ?></select></td></tr>
-            <tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->kode ?> <?= $data->nama ?></option><?php } ?></select></td></tr>
+            <tr><td>Satuan Kerja:</td><td><select name=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->kode ?> <?= $data->nama ?></option><?php } ?></select></td></tr>
+            <tr><td>Status:</td><td><select name="status"><option value="">Semua ...</option><option value="SPP">SPP</option><option value="NON SPP">NON SPP</option></select></td></tr>
             <tr><td>Sub Uraian:</td><td><input type="text" name="suburaian" id="suburaian" /></td></tr>
         </table>
         </form>

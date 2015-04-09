@@ -273,6 +273,7 @@ class Masterdata extends CI_Controller {
                 $search['tahun'] = get_safe('year');
                 $search['satker']  = get_safe('id_satker');
                 $search['suburaian'] = get_safe('suburaian');
+                $search['status'] = get_safe('status');
                 $data = $this->get_list_data_sub_uraian($limit, $page, $search);
                 $this->load->view('masterdata/sub-uraian-table', $data);
                 break;

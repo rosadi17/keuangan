@@ -299,9 +299,12 @@ class M_masterdata extends CI_Model {
         if ($search['suburaian'] !== '') {
             $q.=" and su.keterangan like ('%".$search['suburaian']."%')";
         }
+        if ($search['status'] !== '') {
+            $q.=" and p.status = '".$search['status']."'";
+        }
         $q.=" order by p.id asc, k.kode asc";
         $sql = "select su.*, u.id as id_uraian, u.kode as kode_uraian, p.id as id_program, k.id as id_kegiatan, k.kode as kode_sub_kegiatan, k.nama_kegiatan, 
-            u.kode as kode, s.nama as satker, s.kode as kode_satker,
+            u.kode as kode, CONCAT_WS(' ',s.nama, '(', p.status, ')') as satker, s.kode as kode_satker,
             s.id as id_satker, u.uraian, u.kode as id_sub_kegiatan, p.status,  
             k.kode as kode_kegiatan, 
             sk.kode as kode_sub_kegiatan, 
