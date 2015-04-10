@@ -31,8 +31,8 @@
         <tr><td>Sub Kegiatan</td><td>:</td><td><?= $data->nama_sub_kegiatan ?></td></tr>
         <tr><td>Uraian Kegiatan</td><td>:</td><td><?= $data->uraian ?></td></tr>
         <tr><td>Keterangan</td><td>:</td><td></td></tr>
-        <tr><td>Jumlah Dana</td><td>:</td><td><?= rupiah($data->dana) ?></td></tr>
-        <tr><td>Dana yang Digunakan</td><td>:</td><td><?= rupiah($data->dana_digunakan) ?></td></tr>
+        <tr><td>Jumlah Dana Rp.</td><td>:</td><td><?= rupiah($data->dana) ?></td></tr>
+        <tr><td>Dana yang Digunakan Rp.</td><td>:</td><td><?= rupiah($data->dana_digunakan) ?>, Selisih Rp. <?= rupiah($data->dana-$data->dana_digunakan) ?></td></tr>
         <tr><td>Penanggung Jawab</td><td>:</td><td>
             <?php 
             $values = array();

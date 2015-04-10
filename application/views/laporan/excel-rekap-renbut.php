@@ -11,6 +11,7 @@
         <th width="3%" rowspan="2">No.</th>
         <th width="5%" rowspan="2">Tanggal Renbut</th>
         <th width="5%" rowspan="2">No. Renbut</th>
+        <th width="5%" rowspan="2">No. BKK</th>
         <th width="40%" rowspan="2">Kegiatan</th>
         <th width="5%" rowspan="2">Unit</th>
         <th width="5%" rowspan="2">MA<br/>Proja</th>
@@ -29,6 +30,7 @@
         <td align="center"><?= $auto++ ?></td>
         <td align="center"><?= datefmysql($data->tanggal_renbut) ?></td>
         <td><?= $data->kode ?></td>
+        <td><?= $data->kode_cashbon ?></td>
         <td><?= $data->keterangan ?></td>
         <td><?= $data->satker ?></td>
         <td align="center"><?= $data->ma_proja ?></td>
