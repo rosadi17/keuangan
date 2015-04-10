@@ -162,6 +162,15 @@ function form_perwabku() {
                 '<tr><td></td><td><button type="button" class="btn btn-default btn-xs delete" onclick="bkk_add_row();"><i class="fa fa-plus-circle"></i> Tambah Kode BKK</button></td></tr>'+
                 '<tr><td width=40% valign="top">Nomor BKK (DP):</td><td id="nobkk"></td></tr>'+
                 '<tr><td width=40% valign="top">Dana yang Digunakan Rp.:</td><td><input type="text" name="dana" id="dana" onkeyup="FormNum(this);" /></td></tr>'+
+                '<tr><td>Kelengkapan:</td><td>'+
+                    '<select name="kelengkapan" id="kelengkapan">'+
+                        '<option value="">Pilih ...</option>'+
+                        '<option value="Asli">Asli</option>'+
+                        '<option value="Copy">Copy</option>'+
+                        '<option value="Asli & Copy">Asli & Copy</option>'+
+                    '</select>'+
+                '</td></tr>'+
+                '<tr><td>Catatan/Memorial:</td><td><textarea name="catatan" id="catatan" rows="4"></textarea></td></tr>'+
             '</table>'+
             '</form></div>';
     $(str).dialog({

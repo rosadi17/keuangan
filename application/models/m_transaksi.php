@@ -749,6 +749,8 @@ class M_transaksi extends CI_Model {
         $id_pengeluaran = post_safe('id_nomorbkk'); // array
         $tanggal        = date2mysql(post_safe('tanggal'));
         $kode_pwk       = post_safe('nomor');
+        $kelengkapan    = post_safe('kelengkapan');
+        $catatan        = post_safe('catatan');
         $dana           = currencyToNumber(post_safe('dana'));
         
         if (is_array($id_pengeluaran)) {
@@ -756,6 +758,8 @@ class M_transaksi extends CI_Model {
                 'kode' => $kode_pwk,
                 'tanggal' => $tanggal,
                 'dana_digunakan' => $dana,
+                'kelengkapan' => $kelengkapan,
+                'catatan' => $catatan,
                 'id_user' => $this->session->userdata('id_user')
             );
             $this->db->insert('perwabku', $data);

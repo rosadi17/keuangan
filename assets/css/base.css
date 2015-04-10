@@ -6,7 +6,7 @@ h3 { font-weight: normal; }
 html, body { height: 100%; font-weight: normal; background: #efefef; }
 input[type=text] { border: 1px solid #abadb3; padding: 2px; outline: none; width: 294px; }
 select { border: 1px solid #abadb3; margin: 0; outline: none; padding: 2px; width: 299px; margin-bottom: 1px; }
-textarea { resize: none; border: 1px solid #abadb3; outline: none; max-height: 35px; margin-bottom: 0; width: 260px; }
+textarea { resize: none; border: 1px solid #abadb3; outline: none; max-height: 35px; margin-bottom: 0; width: 294px; }
 input[type=text]:focus, select:focus, textarea:focus { border: 1px solid blue; }
 .aksi { white-space: nowrap; text-transform: none; }
 .aksi .addition {background: url('../images/icons/add.png') no-repeat 0 50%; padding-left:18px;}

@@ -42,8 +42,8 @@
             echo implode(', ', $values);
             ?>
             </td></tr>
-        <tr><td>Kelengkapan</td><td>:</td><td></td></tr>
-        <tr><td>Catatan</td><td>:</td><td></td></tr>
+        <tr><td>Kelengkapan</td><td>:</td><td><?= $data->kelengkapan ?></td></tr>
+        <tr><td>Catatan</td><td>:</td><td><?= $data->catatan ?></td></tr>
     </table>
     <br/>
     <table width="100%" style="float: left;">
