@@ -25,10 +25,23 @@ class Laporan extends CI_Controller {
     function manage_realisasi($action, $page = null) {
         switch ($action) {
             case 'list':
-                $search['tahun'] = get_safe('tahun');
-                $search['satker']= get_safe('satker');
+                $search['tahun'] = get_safe('year');
+                $search['satker']= get_safe('id_satker');
                 $data = $this->get_list_data_realisasi($search);
+                $data['tahun'] = get_safe('year');
                 $this->load->view('laporan/realisasi-table', $data);
+                break;
+            case 'detail_ma':
+                $search = array(
+                    'satker' => get_safe('satker'),
+                    'tahun' => get_safe('tahun'),
+                    'nama' => get_safe('nama_satker')
+                );
+                $data = $this->m_laporan->load_detail_ma_satker($search);
+                $data['satker'] = $search['satker'];
+                $data['tahun']  = $search['tahun'];
+                $data['nama']   = $search['nama'];
+                $this->load->view('laporan/realisasi-detail-table', $data);
                 break;
         }
     }

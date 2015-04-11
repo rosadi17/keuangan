@@ -42,10 +42,10 @@ class M_laporan extends CI_Model {
         if ($param['satker'] !== '' and $param['satker'] !== 'undefined') {
             $q.=" and p.id_satker = '".$param['satker']."'";
         }
-        $sql = "select s.*, p.pagu, p.tahun, p.id_satker "
-                . "from satker s "
-                . "join pagu_anggaran p on (s.id = p.id_satker) "
-                . "where p.tahun = '".$tahun."' $q order by s.nama";
+        $sql = "select s.*, p.pagu, p.tahun, p.id_satker
+                from satker s
+                join pagu_anggaran p on (s.id = p.id_satker)
+                where p.tahun = '".$tahun."' $q order by s.kode asc";
         //echo $sql;
         return $this->db->query($sql);
     }
@@ -55,15 +55,17 @@ class M_laporan extends CI_Model {
         if ($id_satker !== NULL) {
             $q = "and s.id = '$id_satker'";
         }
-        $sql = "select sum(nominal)+sum(cashbon) as total 
-            from rencana_kebutuhan rk
-            join uraian u on (rk.id_uraian = u.id)
+        $sql = "select sum(ks.pengeluaran) as total 
+            from kasir ks
+            join rencana_kebutuhan rk on (ks.id_renbut = rk.id_renbut)
+            join uraian u on (ks.id_uraian = u.id)
             join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
             join kegiatan k on (sk.id_kegiatan = k.id)
             join program p on (k.id_program = p.id)
             join satker s on (p.id_satker = s.id)
-            where rk.tanggal_kegiatan like ('%".$bulan."%')
+            where ks.tanggal like ('".$bulan."%')
                 $q";
+        //echo $sql;
         return $this->db->query($sql);
     }
     
@@ -240,6 +242,62 @@ class M_laporan extends CI_Model {
         $sql = "select sum(pengeluaran) as pengeluaran, perwabku from kasir where perwabku = '$perwabku' and tanggal like ('".date("Y-m")."%') and jenis = 'BKK'";
         //echo $sql;
         return $this->db->query($sql)->row();
+    }
+    
+    function load_detail_ma_satker($search) {
+        $monthNames = array($search['tahun'].'-01', $search['tahun'].'-02', $search['tahun'].'-03', $search['tahun'].'-04'
+            , $search['tahun'].'-05', $search['tahun'].'-06', $search['tahun'].'-07', $search['tahun'].'-08'
+            , $search['tahun'].'-09', $search['tahun'].'-10', $search['tahun'].'-11', $search['tahun'].'-12');
+        $sql = "select ks.*, s.nama as satker, u.kode as ma_proja, u.uraian, year(ks.tanggal) as tahun,
+            CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as detail
+            from kasir ks 
+            join rencana_kebutuhan kb on (ks.id_renbut = kb.id_renbut)
+            join uraian u on (ks.id_uraian = u.id)
+            join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
+            join kegiatan k on (sk.id_kegiatan = k.id)
+            join program p on (k.id_program = p.id)
+            join satker s on (p.id_satker = s.id)
+            where s.id = '".$search['satker']."' and year(ks.tanggal) = '".$search['tahun']."'
+                group by u.id
+                ";
+        $result = $this->db->query($sql)->result();
+        foreach ($result as $i => $val) {
+            foreach ($monthNames as $key => $name) {
+                $sql_real = "select IFNULL(sum(ks.pengeluaran),0) as realisasi 
+                    from kasir ks 
+                    join rencana_kebutuhan kb on (ks.id_renbut = kb.id_renbut)
+                    join uraian u on (ks.id_uraian = u.id)
+                    join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
+                    join kegiatan k on (sk.id_kegiatan = k.id)
+                    join program p on (k.id_program = p.id)
+                    join satker s on (p.id_satker = s.id)
+                    where s.id = '".$search['satker']."' 
+                        and ks.id_uraian = '".$val->id_uraian."' 
+                        and ks.tanggal like ('".$name."%')
+                    ";
+                //echo $sql_real;
+                $child_real = $this->db->query($sql_real)->row();
+                $result[$i]->rincian[$key] = $child_real->realisasi;
+            }
+        }
+        $data['list_data'] = $result;
+        return $data;
+        //die(json_encode($data));
+    }
+    
+    function total_realisasi_perbulan_persatker($satker, $bname) {
+        $sql_real = "select IFNULL(sum(ks.pengeluaran),0) as realisasi 
+                    from kasir ks 
+                    join rencana_kebutuhan kb on (ks.id_renbut = kb.id_renbut)
+                    join uraian u on (ks.id_uraian = u.id)
+                    join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
+                    join kegiatan k on (sk.id_kegiatan = k.id)
+                    join program p on (k.id_program = p.id)
+                    join satker s on (p.id_satker = s.id)
+                    where s.id = '$satker' and ks.tanggal like ('".$bname."%')
+                    ";
+        //echo $sql_real;
+        return $this->db->query($sql_real);
     }
 }
 ?>

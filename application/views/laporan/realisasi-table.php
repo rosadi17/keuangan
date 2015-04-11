@@ -1,7 +1,6 @@
 <?php
 $month1 = isset($_GET['awal'])?$_GET['awal']:'1';
 $month2 = isset($_GET['akhir'])?$_GET['akhir']:'12';
-$tahun  = isset($_GET['tahun'])?$_GET['tahun']:date("Y");
 $monthNames = array( 
   1 => 'Jan', 
   2 => 'Feb', 
@@ -20,11 +19,12 @@ $monthNames = array(
 
 ?>
 <!--<b style="float: right; position: absolute;">LAPORAN ANGGARAN DAN REALISASI BULAN JANUARI - DESEMBER TAHUN <?= get_safe('tahun') ?><br />UNIVERSITAS BHAYANGKARA SURABAYA</b>-->
-<table cellspacing="0" width="150%" class="list-data">
+<table cellspacing="0" width="150%" class="list-data-border">
     <tr>
-        <th width="5%">&nbsp;No.&nbsp;</th>
+        <th width="5%"></th>
+        <th width="5%">&nbsp;Kode.&nbsp;</th>
         <th width="15%">Unit</th>
-        <th width="7%">Pagu Anggaran</th>
+        <th width="7%">Pagu Angg.</th>
         <?php for($i = $month1; $i <= $month2; $i++) { ?>
         <th width="7%" class="right"><?= $monthNames[$i] ?></th>
         <?php } ?>
@@ -39,8 +39,9 @@ $monthNames = array(
         $total_pagu = $total_pagu + $data->pagu;
         ?>
     <tr class="<?= ($key%2==1)?'even':'odd' ?>">
-        <td align="center"><?= ++$key ?></td>
-        <td class="nowrap"><?= $data->nama ?></td>
+        <td align="center"><button class="btn btn-default btn-xs" onclick="detail_kode_ma('<?= $data->id_satker ?>','<?= $data->nama ?>', '<?= $tahun ?>');"><i class="fa fa-eye"></i></button></td>
+        <td align="center"><?= $data->kode ?></td>
+        <td class="nowrap"><small><?= $data->nama ?></small></td>
         <td align="right"><?= rupiah($data->pagu) ?></td>
         <?php 
         $total_kanan = 0;
@@ -49,7 +50,7 @@ $monthNames = array(
             $total_kanan = $total_kanan+$real->total;
             ?>
             
-        <td align="right"><?= isset($real->total)?rupiah($real->total):'-' ?></td>
+        <td align="right" style="min-width: 90px;"><?= isset($real->total)?rupiah($real->total):'-' ?></td>
         <?php } ?>
         <td align="right"><?= ($total_kanan !== 0)?rupiah($total_kanan):'-' ?></td>
         <td align="right"><?= rupiah($data->pagu-$total_kanan) ?></td>
@@ -57,7 +58,7 @@ $monthNames = array(
     <?php 
     $total_terpakai = $total_terpakai+$total_kanan;
         } ?>
-    <tr>
+<!--    <tr>
         <td colspan="2">Jumlah (Rp.)</td>
         <td align="right"><b><?= rupiah($total_pagu) ?></b></td>
         <?php for($i = $month1; $i <= $month2; $i++) { 
@@ -123,7 +124,7 @@ $monthNames = array(
         } ?>
         <td align="center"><?=$total_persen_efisiensi ?> %</td>
         <td></td>
-    </tr>
+    </tr>-->
     <?php } else { ?>
     CHECK KEMBALI DATA ENTRI PAGU
     <?php } ?>

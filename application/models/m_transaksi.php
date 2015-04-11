@@ -134,7 +134,7 @@ class M_transaksi extends CI_Model {
             join kegiatan k on (sk.id_kegiatan = k.id)
             join program p on (k.id_program = p.id)
             join satker s on (p.id_satker = s.id)
-            where rk.id_renbut is not NULL";
+            where rk.kode_cashbon = ''";
         $limitation = null;
         $limitation.=" limit $start , $limit";
         $query = $this->db->query($sql . $q . $limitation);

@@ -51,6 +51,16 @@ input[type=text]:focus, select:focus, textarea:focus { border: 1px solid blue; }
 .list-data .even:hover, .list-data .odd:hover {background: #d0e7fe; }
 .list-data .link_button { text-transform: capitalize; }
 .list-data .link_button:hover { text-decoration: underline; cursor: pointer; }
+.list-data-border { text-transform: none; border: 1px solid #6eb7ff; margin: 5px 0; background: #fff; color: #000; font-size: 11px; border-spacing: 0; }
+.list-data-border th { border-left: 1px solid #6eb7ff; border-top: 1px solid #6eb7ff; }
+.list-data-border th { font-weight: normal; text-transform: uppercase; border-bottom: 1px solid #ccc; background: #3399ff; border-bottom: #dfdfdf; height: 30px; color: #fff; cursor: pointer; padding: 0 5px; }
+.list-data-border td { height: 20px; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; border-left: 1px solid #ccc; height: 20px; empty-cells: show; padding: 1px 2px; }
+.list-data-border td input[type=text], .list-data td select { padding: 0; }
+.list-data-border td.aksi { white-space: nowrap; width: 2%; text-align: center; }
+.list-data-border tfoot td { font-weight: bold; }
+.list-data-border .even { background: #fff; cursor: pointer; }
+.list-data-border .odd { background: #f4f4f4; cursor: pointer; }
+.list-data-border .even:hover, .list-data .odd:hover {background: #d0e7fe; }
 
 .list-data-input { text-transform: uppercase; border-top: 1px solid #6eb7ff; border-left: 1px solid #6eb7ff; margin: 5px 0; background: #fff; color: #000; font-size: 11px; border-spacing: 0; }
 .list-data-input input[type=text], .list-data-input input[type=button] { margin: 0; font-size: inherit; }
