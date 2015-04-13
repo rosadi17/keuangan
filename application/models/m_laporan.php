@@ -167,19 +167,11 @@ class M_laporan extends CI_Model {
         if ($rekening !== NULL) {
             $q=" and s.nama like ('%$rekening%')";
         }
-        $sql = "select SUBSTR(p.kode,1,3) as kode_ket,SUBSTR(p.kode,5,4) as kode_auto, p.id, u.uraian,
-            p.penyetor as user, p.pemasukkan, 0 as pengeluaran 
-            from penerimaan p
-            left join sub_sub_sub_sub_rekening s on (p.id_rekening = s.id)
-            join uraian u on (p.id_uraian = u.id) 
-            where p.tanggal like ('%$bulan%') $q
-            UNION
-            select SUBSTR(p.kode,1,3) as kode_ket,SUBSTR(p.kode,5,4) as kode_auto, p.id, u.uraian, 
-            p.penerima as user, 0 as pemasukkan, p.pengeluaran 
-            from pengeluaran p
-            left join sub_sub_sub_sub_rekening s on (p.id_rekening = s.id)
-            join uraian u on (p.id_uraian = u.id)
-            where p.tanggal like ('%$bulan%') $q";
+        $sql = "select ks.*, u.uraian
+            from kasir ks
+            join uraian u on (ks.id_uraian = u.id)
+            join sub_sub_sub_sub_rekening s on (ks.id_rekening = s.id)
+            where ks.tanggal like ('%$bulan%') $q";
         //echo "<pre>".$sql."</pre>";
         return $this->db->query($sql);
     }
@@ -188,7 +180,7 @@ class M_laporan extends CI_Model {
         $ext = explode('-', $bulan);
         $prev= mktime(0, 0, 0, $ext[1]-1, date("d") , $ext[0]);
         $new_prev = date("Y-m-31", $prev);
-        $sql = "select sum(pemasukkan)-(select sum(pengeluaran) from pengeluaran where tanggal <= '$new_prev') as saldo_sisa from penerimaan where tanggal <= '$new_prev'";
+        $sql = "select sum(pemasukkan)-(select sum(pengeluaran) from kasir where tanggal <= '$new_prev') as saldo_sisa from penerimaan where tanggal <= '$new_prev'";
         //echo $sql;
         return $this->db->query($sql);
     }
