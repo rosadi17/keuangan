@@ -80,14 +80,8 @@
         $('#dialog_realisasi').dialog({ title: 'Edit realisasi satuan kerja' });
     }
 
-    function print_realisasi(id) {
-        var wWidth = $(window).width();
-        var dWidth = wWidth * 1;
-        var wHeight= $(window).height();
-        var dHeight= wHeight * 1;
-        var x = screen.width/2 - dWidth/2;
-        var y = screen.height/2 - dHeight/2;
-        window.open('<?= base_url('laporan/manage_realisasi') ?>/print?id='+id, 'realisasi Cetak', 'width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
+    function print_realisasi(id_satker, nama, tahun) {
+        location.href='<?= base_url('laporan/manage_realisasi/print') ?>/?satker='+id_satker+'&tahun='+tahun+'&nama_satker='+nama;
     }
 
     function detail_kode_ma(id_satker, nama, tahun) {
@@ -101,6 +95,9 @@
             show: 'blind',
             position: ['center',0],
             buttons: {
+                "Export Excel": function() {
+                    print_realisasi(id_satker, nama, tahun);
+                },
                 "Close": function() {
                     $('#detail_ma').dialog('close');
                 }

@@ -1,4 +1,5 @@
 <?php
+header_excel('realisasi-'.$nama.'-'.$tahun.'.xls');
 $monthNames = array(
             array('01','Jan'),
             array('02','Feb'),
@@ -15,10 +16,10 @@ $monthNames = array(
         );
 ?>
 <table width=100% cellpadding=0 cellspacing=0 class=inputan>
-    <tr><td>Nama Satker:</td><td><?= $nama ?></td></tr>
-    <tr><td>Tahun:</td><td><?= $tahun ?></td></tr>
+    <tr><td colspan="2">Nama Satker:</td><td colspan="16"><?= $nama ?></td></tr>
+    <tr><td colspan="2">Tahun:</td><td colspan="16" align="left"><?= $tahun ?></td></tr>
 </table><br/>
-<table cellspacing="0" width="150%" class="list-data">
+<table cellspacing="0" width="100%" border="1">
     <tr>
         <th width="2%">No.</th>
         <th width="3%">Kode</th>
@@ -29,7 +30,6 @@ $monthNames = array(
         <?php } ?>
         <th width="6%%" class="right">Total</th>
         <th width="6%%" class="right">Sisa</th>
-        <th width="1%">&nbsp;</th>
     </tr>
     <?php 
     $total = 0; $pagu = 0; $sisa = 0;
@@ -38,17 +38,16 @@ $monthNames = array(
         <td align="center"><?= ++$key ?></td>
         <td align="center"><?= $data->ma_proja ?></td>
         <td><?= $data->uraian ?></td>
-        <td align="right"><?= rupiah($data->sub_total) ?></td>
+        <td align="right"><?= ($data->sub_total) ?></td>
         <?php 
         $subtotal = 0;
         foreach ($data->rincian as $list) { 
             $subtotal+=$list;
             ?>
-        <td align="right"><?= rupiah($list) ?></td>
+        <td align="right"><?= ($list) ?></td>
         <?php } ?>
-        <td align="right"><?= rupiah($subtotal) ?></td>
-        <td align="right"><?= rupiah($data->sub_total-$subtotal) ?></td>
-        <td></td>
+        <td align="right"><?= ($subtotal) ?></td>
+        <td align="right"><?= ($data->sub_total-$subtotal) ?></td>
     </tr>
     <?php 
     $pagu +=$data->sub_total;
@@ -57,14 +56,13 @@ $monthNames = array(
     } ?>
     <tr class="odd">
         <td colspan="3"  align="center">TOTAL</td>
-        <td align="right"><?= rupiah($pagu) ?></td>
+        <td align="right"><?= ($pagu) ?></td>
         <?php foreach ($monthNames as $key => $bname) { 
             $total_bln = $this->m_laporan->total_realisasi_perbulan_persatker($satker, $tahun.'-'.$bname[0])->row();
             ?>
-        <td align="right"><?= rupiah($total_bln->realisasi) ?></td>
+        <td align="right"><?= ($total_bln->realisasi) ?></td>
         <?php } ?>
-        <td align="right"><b><?= rupiah($total) ?></b></td>
-        <td align="right"><b><?= rupiah($sisa) ?></b></td>
-        <td></td>
+        <td align="right"><b><?= ($total) ?></b></td>
+        <td align="right"><b><?= ($sisa) ?></b></td>
     </tr>
 </table>

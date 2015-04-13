@@ -43,6 +43,18 @@ class Laporan extends CI_Controller {
                 $data['nama']   = $search['nama'];
                 $this->load->view('laporan/realisasi-detail-table', $data);
                 break;
+            case 'print':
+                $search = array(
+                    'satker' => get_safe('satker'),
+                    'tahun' => get_safe('tahun'),
+                    'nama' => get_safe('nama_satker')
+                );
+                $data = $this->m_laporan->load_detail_ma_satker($search);
+                $data['satker'] = $search['satker'];
+                $data['tahun']  = $search['tahun'];
+                $data['nama']   = $search['nama'];
+                $this->load->view('laporan/realisasi-detail-excel', $data);
+                break;
         }
     }
     

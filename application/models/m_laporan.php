@@ -57,7 +57,6 @@ class M_laporan extends CI_Model {
         }
         $sql = "select sum(ks.pengeluaran) as total 
             from kasir ks
-            join rencana_kebutuhan rk on (ks.id_renbut = rk.id_renbut)
             join uraian u on (ks.id_uraian = u.id)
             join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
             join kegiatan k on (sk.id_kegiatan = k.id)
@@ -240,16 +239,15 @@ class M_laporan extends CI_Model {
         $monthNames = array($search['tahun'].'-01', $search['tahun'].'-02', $search['tahun'].'-03', $search['tahun'].'-04'
             , $search['tahun'].'-05', $search['tahun'].'-06', $search['tahun'].'-07', $search['tahun'].'-08'
             , $search['tahun'].'-09', $search['tahun'].'-10', $search['tahun'].'-11', $search['tahun'].'-12');
-        $sql = "select ks.*, s.nama as satker, u.kode as ma_proja, u.uraian, year(ks.tanggal) as tahun,
+        $sql = "select ks.*, s.nama as satker, u.kode as ma_proja, u.uraian, ks.tahun,
             CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as detail
-            from kasir ks 
-            join rencana_kebutuhan kb on (ks.id_renbut = kb.id_renbut)
+            from sub_uraian ks
             join uraian u on (ks.id_uraian = u.id)
             join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
             join kegiatan k on (sk.id_kegiatan = k.id)
             join program p on (k.id_program = p.id)
             join satker s on (p.id_satker = s.id)
-            where s.id = '".$search['satker']."' and year(ks.tanggal) = '".$search['tahun']."'
+            where s.id = '".$search['satker']."' and ks.tahun = '".$search['tahun']."'
                 group by u.id
                 ";
         $result = $this->db->query($sql)->result();
@@ -257,7 +255,6 @@ class M_laporan extends CI_Model {
             foreach ($monthNames as $key => $name) {
                 $sql_real = "select IFNULL(sum(ks.pengeluaran),0) as realisasi 
                     from kasir ks 
-                    join rencana_kebutuhan kb on (ks.id_renbut = kb.id_renbut)
                     join uraian u on (ks.id_uraian = u.id)
                     join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
                     join kegiatan k on (sk.id_kegiatan = k.id)
@@ -266,6 +263,7 @@ class M_laporan extends CI_Model {
                     where s.id = '".$search['satker']."' 
                         and ks.id_uraian = '".$val->id_uraian."' 
                         and ks.tanggal like ('".$name."%')
+                        and ks.jenis = 'BKK'
                     ";
                 //echo $sql_real;
                 $child_real = $this->db->query($sql_real)->row();
@@ -280,13 +278,14 @@ class M_laporan extends CI_Model {
     function total_realisasi_perbulan_persatker($satker, $bname) {
         $sql_real = "select IFNULL(sum(ks.pengeluaran),0) as realisasi 
                     from kasir ks 
-                    join rencana_kebutuhan kb on (ks.id_renbut = kb.id_renbut)
                     join uraian u on (ks.id_uraian = u.id)
                     join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
                     join kegiatan k on (sk.id_kegiatan = k.id)
                     join program p on (k.id_program = p.id)
                     join satker s on (p.id_satker = s.id)
-                    where s.id = '$satker' and ks.tanggal like ('".$bname."%')
+                    where s.id = '$satker' 
+                        and ks.tanggal like ('".$bname."%')
+                        and ks.jenis = 'BKK'
                     ";
         //echo $sql_real;
         return $this->db->query($sql_real);
