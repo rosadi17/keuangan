@@ -333,4 +333,69 @@ class Laporan extends CI_Controller {
         $data['tahun']   = get_safe('year');
         $this->load->view('laporan/excel-rekap-renbut', $data);
     }
+    
+    function perwabku() {
+        $data['title'] = 'Rekap Perwabku';
+        $data['satker']= $this->m_masterdata->load_satker()->result();
+        $this->load->view('laporan/perwabku', $data);
+    }
+    
+    function manage_perwabku($action, $page = null) {
+        $limit = 10;
+        
+        switch ($action) {
+            case 'list':
+                $search['id'] = get_safe('id');
+                $search['awal'] = date2mysql(get_safe('awal'));
+                $search['akhir']= date2mysql(get_safe('akhir'));
+                $search['nomorpwk'] = get_safe('nomorpwk');
+                $search['nomorbkk']= get_safe('nomorbkk');
+                $search['satker'] =  get_safe('id_satker');
+                $data = $this->get_list_data_perwabku($limit, $page, $search);
+                $data['cari'] = $search;
+                $this->load->view('laporan/perwabku-table', $data);
+                break;
+            case 'save': 
+                $data = $this->m_transaksi->save_perwabku();
+                die(json_encode($data));
+                break;
+            case 'export': 
+                $search['id'] = get_safe('id');
+                $search['awal'] = date2mysql(get_safe('awal'));
+                $search['akhir']= date2mysql(get_safe('akhir'));
+                $search['nomorpwk'] = get_safe('nomorpwk');
+                $search['nomorbkk']= get_safe('nomorbkk');
+                $search['satker'] =  get_safe('id_satker');
+                if ($search['satker'] !== '') {
+                    $data['satker'] = $this->db->get_where('satker', array('id' => $search['satker']))->row();
+                }
+                $query = $this->m_transaksi->get_data_perwabku(NULL, NULL, $search);
+                $data['list_data'] = $query['data'];
+                $data['cari'] = $search;
+                $this->load->view('laporan/excel-perwabku', $data);
+                break;
+            case 'delete': 
+                $this->m_transaksi->delete_perwabku(get_safe('id'));
+                break;
+            
+        }
+    }
+    
+    function get_list_data_perwabku($limit, $page, $search) {
+        if ($page == 'undefined') {
+            $page = 1;
+        }
+        //$str = 'null';
+        $start = ($page - 1) * $limit;
+        $data['page'] = $page;
+        $data['limit'] = $limit;
+        $data['auto'] = $start+1;
+        $query = $this->m_transaksi->get_data_perwabku($limit, $start, $search);
+        $data['list_data'] = $query['data'];
+        $data['jumlah'] = $query['jumlah'];
+        
+        $data['infopage'] = page_summary($data['jumlah'], $page, $limit);
+        $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, null);
+        return $data;
+    }
 }

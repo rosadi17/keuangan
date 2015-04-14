@@ -697,6 +697,9 @@ class M_transaksi extends CI_Model {
         if ($search['nomorbkk'] !== '') {
             $q.=" and pg.kode like ('%".$search['nomorbkk']."%')";
         }
+        if (isset($search['satker']) and $search['satker'] !== '') {
+            $q.=" and s.id = '".$search['satker']."'";
+        }
         $sql = "select pw.*, pw.kode as kode_pwk, pg.tanggal as tanggal_pengeluaran, sum(pg.pengeluaran) as dana, 
             pg.penerima, pg.kode, YEAR(pg.tanggal) as thn_anggaran, s.nama as satker,
             u.kode as kode_ma, s.kode as kode_satker, us.username,

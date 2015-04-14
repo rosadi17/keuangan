@@ -87,8 +87,8 @@ function paging(page, tab, search) {
         </ul>
         <div id="tabs-1">
             <button id="cari_rekap_button">Cari Data</button>
-            <button id="reload_rekap_renbut">Refresh</button>
             <button id="print_excel">Export Excel</button>
+            <button id="reload_rekap_renbut">Reload Data</button>
             <div id="result-rekap">
 
             </div>
