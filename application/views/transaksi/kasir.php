@@ -432,7 +432,7 @@ function edit_kasir(id, transaksi) {
                         $('#kode_renbut').removeAttr('disabled');
                     }
                     $('#user').val('Penerima');
-                    var kd_pwk = data.id_rekening_pwk+' '+data.rekening_pwk;
+                    var kd_pwk = data.kode_rekening_pwk;
                     var id_kd_pwk = data.id_rekening_pwk;
                     
                     $('#kode_perkiraan_pwk').val(kd_pwk);

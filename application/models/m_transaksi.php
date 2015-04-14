@@ -669,7 +669,8 @@ class M_transaksi extends CI_Model {
         $sql = "select pg.*, IFNULL(pg.id_rekening,'') as id_rekening, substr(pg.kode,1,3) as kode_trans, 
             u.kode as kode_uraian, u.uraian as keterangan_ma, IFNULL(pg.id_renbut,'') as renbut, s4r.nama as rekening, s.nama as satker,
             CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as keterangan,
-            IFNULL(pg.id_rekening_pwk,'') as id_rekening_pwk, IFNULL(s4r2.nama,'') as rekening_pwk
+            IFNULL(pg.id_rekening_pwk,'') as id_rekening_pwk, IFNULL(s4r2.nama,'') as rekening_pwk,
+            CONCAT_WS(' ',pg.id_rekening_pwk,s4r2.nama) as kode_rekening_pwk
             from kasir pg
             join uraian u on (pg.id_uraian = u.id)
             join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
