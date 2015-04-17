@@ -23,12 +23,16 @@
         else {
             $status = "<i class='fa fa-retweet'></i> Mutasi";
         }
+        $keterangan = $data->keterangan;
+        if ($data->keterangan === NULL) {
+            $keterangan = 'Mutasi';
+        }
         ?>
     <tr class="<?= ($key%2==1)?'even':'odd' ?>">
         <td align="center"><?= $auto++ ?></td>
         <td align="center"><?= datefmysql($data->tanggal) ?></td>
         <td><?= $data->kode ?></td>
-        <td><?= $data->keterangan ?></td>
+        <td><?= $keterangan ?></td>
         <td class="nowrap"><?= $data->penanggung_jwb ?></td>
         <td align="right"><?= rupiah($data->nominal) ?></td>
         <td style="white-space: nowrap;"><?= $status ?></td>

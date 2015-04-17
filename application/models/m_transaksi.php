@@ -447,7 +447,7 @@ class M_transaksi extends CI_Model {
                     'tanggal' => date("Y-m-d"),
                     'kode_cashbon' => $no,
                     'tanggal_kegiatan' => $tanggal,
-                    'id_uraian' => $maproja,
+                    'id_uraian' => ($maproja !== '')?$maproja:NULL,
                     'keterangan' => $uraian,
                     'cashbon' => $jumlah,
                     'penerima' => $penyetor
@@ -471,7 +471,7 @@ class M_transaksi extends CI_Model {
                 'tanggal' => $tanggal,
                 'id_rekening' => $kd_perkiraan,
                 'id_renbut' => ($id_renbut !== '')?$id_renbut:NULL, // NULL jika cashbon
-                'id_uraian' => $maproja,
+                'id_uraian' => ($maproja !== '')?$maproja:NULL,
                 'pengeluaran' => $jumlah,
                 'penerima' => $penyetor,
                 'perwabku' => !empty($perwabku)?$perwabku:NULL,
@@ -653,7 +653,7 @@ class M_transaksi extends CI_Model {
                 pg.id_uraian, pg.pengeluaran as nominal, pg.penerima as penanggung_jwb, pg.perwabku, substr(pg.kode,1,3) as kode_trans, 
                 u.uraian as keterangan, IFNULL(pg.id_renbut,'') as renbut 
                 from kasir pg
-                join uraian u on (pg.id_uraian = u.id)
+                left join uraian u on (pg.id_uraian = u.id)
                 where pg.id is not NULL $q order by pg.id desc";
         $limitation = null;
         $limitation.=" limit $start , $limit";

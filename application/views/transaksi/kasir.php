@@ -160,7 +160,7 @@ $(function() {
             $('#no').val('');
         }
     });
-    $('#awal, #akhir').datepicker({
+    $('#awal_kasir, #akhir_kasir').datepicker({
         changeYear: true,
         changeMonth: true
     });
@@ -182,11 +182,13 @@ $(function() {
 //        if ($('#id_renbut').val() === '') {
 //            custom_message('Peringatan', 'Nomor renbut harus dipilih', '#kode_renbut'); return false;
 //        }
-        if ($('#kode').val() === '') {
-            custom_message('Peringatan', 'Kode MA / Proja harus dipilih', '#kode'); return false;
-        }
-        if ($('#nama_user').val() === '') {
-            custom_message('Peringatan', 'Penyetor / Penerima anggaran tidak boleh kosong', '#nama_user'); return false;
+        if ($('#jenis').val() !== 'mutasi') {
+            if ($('#kode').val() === '') {
+                custom_message('Peringatan', 'Kode MA / Proja harus dipilih', '#kode'); return false;
+            }
+            if ($('#nama_user').val() === '') {
+                custom_message('Peringatan', 'Penyetor / Penerima anggaran tidak boleh kosong', '#nama_user'); return false;
+            }
         }
         if ($('#jumlah').val() === '') {
             custom_message('Peringatan', 'Jumlah tidak boleh kosong', '#jumlah'); return false;
@@ -375,8 +377,8 @@ function reset_form() {
     $('input[type=text], input[type=hidden], select, textarea').val('');
     $('#s2id_supplier_auto a .select2-chosen').html('');
     $('#tanggal').val('<?= date("d/m/Y") ?>');
-    $('#awal').val('<?= date("01/m/Y") ?>');
-    $('#akhir').val('<?= date("d/m/Y") ?>');
+    $('#awal_kasir').val('<?= date("01/m/Y") ?>');
+    $('#akhir_kasir').val('<?= date("d/m/Y") ?>');
 }
 
 function edit_kasir(id, transaksi) {
@@ -526,7 +528,7 @@ function paging(p) {
     <div id="dialog_kasir_search" class="nodisplay">
         <form action="" id="search_kasir">
             <table width=100% cellpadding=0 cellspacing=0 class=inputan>
-                <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir" value="<?= date("d/m/Y") ?>" /></td></tr>
+                <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal_kasir" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir_kasir" value="<?= date("d/m/Y") ?>" /></td></tr>
                 <tr><td>Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Semua Jenis ...', 'BKK' => 'Kas Keluar', 'BKM' => 'Kas Masuk','MTS' => 'Mutasi'), NULL, 'id=jenis_transaksi style="width: 300px;"') ?></td></tr>
                 <tr><td>Kegiatan:</td><td><input type="text" name="kegiatan" id="kegiatan" /></td></tr>
                 <tr><td>Penanggung Jawab:</td><td><input type="text" name="png_jwb" id="png_jwb" /></td></tr>
