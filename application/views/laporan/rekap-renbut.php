@@ -30,12 +30,12 @@ $(function() {
             }, close: function() {
                 $('#rekap_dialog_renbut').dialog('destroy');
             }, open: function() {
-                $('#awal, #akhir, #awal_keg, #akhir_keg').datepicker('hide');
+                $('#awal_lrenbut, #akhir_lrenbut, #awal_keg, #akhir_keg').datepicker('hide');
                 $('#jenis_renbut').focus();
             }
         });
     });
-    $('#awal, #akhir, #awal_keg, #akhir_keg').datepicker({
+    $('#awal_lrenbut, #akhir_lrenbut, #awal_keg, #akhir_keg').datepicker({
         changeYear: true,
         changeMonth: true
     });
@@ -97,7 +97,7 @@ function paging(page, tab, search) {
     <div id="rekap_dialog_renbut" class="nodisplay">
         <form action="" id="search_renbut">
         <table width=100% cellpadding=0 cellspacing=0 class=inputan>
-            <tr><td>Tanggal Renbut:</td><td><input type="text" name="awal" id="awal" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir" value="<?= date("d/m/Y") ?>" /></td></tr>
+            <tr><td>Tanggal Renbut:</td><td><input type="text" name="awal" id="awal_lrenbut" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir_lrenbut" value="<?= date("d/m/Y") ?>" /></td></tr>
             <tr><td>Tanggal Kegiatan:</td><td><input type="text" name="awal_keg" id="awal_keg" value="" size="10" /> s.d <input type="text" name="akhir_keg" id="akhir_keg" value="" /></td></tr>
             <tr><td>Jenis Renbut:</td><td><select name=jenis_renbut id="jenis_renbut"><option value="">Semua ...</option><option value="murni">Murni Renbut</option><option value="cashbon">Dari Cashbon</option></select></td></tr>
             <tr><td>Kegiatan:</td><td><input type="text" name="kegiatan" id="kegiatan" /></td></tr>

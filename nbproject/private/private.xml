@@ -64,6 +64,10 @@
             <file>file:/C:/wamp/www/keuangan/application/views/masterdata/uraian-table.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/transaksi/pagu-table.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/laporan/realisasi-detail-table.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/laporan/realisasi-detail-excel.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/laporan/perwabku.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/laporan/perwabku-table.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/laporan/excel-perwabku.php</file>
         </group>
     </open-files>
 </project-private>

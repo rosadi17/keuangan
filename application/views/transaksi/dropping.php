@@ -13,7 +13,7 @@ $(function() {
         form_dropping();
     });
     
-    $('#awal, #akhir').datepicker({
+    $('#awal_dropping, #akhir_dropping').datepicker({
         changeYear: true,
         changeMonth: true
     });
@@ -43,7 +43,7 @@ $(function() {
             }, close: function() {
                 $('#dialog_dropping').dialog('destroy');
             }, open: function() {
-                $('#awal, #akhir').datepicker('hide');
+                $('#awal_dropping, #akhir_dropping').datepicker('hide');
                 $('#id_satker').focus();
             }
         });
@@ -183,7 +183,7 @@ function paging(page, tab, search) {
     <div class="nodisplay" id="dialog_dropping"><form action="" id="search_dropping">
         <?= form_hidden('id_dropping', NULL, 'id=id_dropping') ?>
         <table width=100% cellpadding=0 cellspacing=0 class=inputan>
-            <tr><td>Tanggal Renbut:</td><td><input type="text" name="awal" id="awal" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir" value="<?= date("d/m/Y") ?>" /></td></tr>
+            <tr><td>Tanggal Renbut:</td><td><input type="text" name="awal" id="awal_dropping" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir_dropping" value="<?= date("d/m/Y") ?>" /></td></tr>
             <tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Semua Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>
             <tr><td width=40%>MA Proja:</td><td><?= form_input('uraian', NULL, 'id=uraian size=60') ?><?= form_hidden('id_uraian', NULL, 'id=id_uraian') ?></td></tr>
             <tr><td width=40%>Keterangan:</td><td><?= form_input('keterangan', NULL, 'id=keterangan size=60') ?></td></tr>

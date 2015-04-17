@@ -740,6 +740,61 @@ class M_transaksi extends CI_Model {
         return $data;
     }
     
+    function get_data_perwabku2($limit = null, $start = null, $search = null) { // untuk bkk yang belum perwabku
+        $q = null;
+        if ($search['id'] !== '') {
+            $q.=" and pg.id = '".$search['id']."'";
+        }
+        if ($search['awal'] !== '' and $search['akhir'] !== '') {
+            //$q.=" and pg.tanggal between '".$search['awal']."' and '".$search['akhir']."'";
+        }
+        if ($search['nomorbkk'] !== '') {
+            $q.=" and pg.kode like ('%".$search['nomorbkk']."%')";
+        }
+        if (isset($search['satker']) and $search['satker'] !== '') {
+            $q.=" and s.id = '".$search['satker']."'";
+        }
+        $sql = "select pg.id, pg.kode as kode_bkk, pg.tanggal as waktu, pg.pengeluaran as dana,
+            NULL as kode_pwk, pg.penerima,
+            YEAR(pg.tanggal) as thn_anggaran, s.nama as satker,
+            u.kode as kode_ma, s.kode as kode_satker, us.username,
+            p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan, u.uraian
+            from kasir pg
+            join uraian u on (pg.id_uraian = u.id)
+            join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
+            join kegiatan k on (sk.id_kegiatan = k.id)
+            join program p on (k.id_program = p.id)
+            join satker s on (p.id_satker = s.id)
+            left join users us on (pg.id_users = us.id)
+            where pg.perwabku = 'belum' and pg.jenis = 'BKK'
+            and pg.id not in (select id_pengeluaran from detail_perwabku) $q order by s.kode asc, pg.tanggal asc";
+        $limitation = null;
+        if ($limit !== NULL) {
+            $limitation =" limit $start , $limit";
+        }
+        //echo $sql;
+        $result = $this->db->query($sql . $limitation)->result();
+        foreach ($result as $key => $val) {
+            $sql_bkk = "select k.kode as kodes
+                from detail_perwabku dp 
+                join kasir k on (dp.id_pengeluaran = k.id)
+                where dp.id_perwabku = '".$val->id."'";
+            $child_bkk = $this->db->query($sql_bkk)->result();
+            $result[$key]->perwabku = $child_bkk;
+            
+            $sql_png = "select k.penerima as png_jwb
+                from detail_perwabku dp 
+                join kasir k on (dp.id_pengeluaran = k.id)
+                where dp.id_perwabku = '".$val->id."'";
+            $child_png = $this->db->query($sql_png)->result();
+            $result[$key]->png_jwb = $child_png;
+        }
+        $queryAll = $this->db->query($sql);
+        $data['data'] = $result;
+        $data['jumlah'] = $queryAll->num_rows();
+        return $data;
+    }
+    
     function save_perwabku() {
         $this->db->trans_begin();
         $id_pengeluaran = post_safe('id_nomorbkk'); // array

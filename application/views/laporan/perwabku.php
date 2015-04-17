@@ -10,7 +10,12 @@ $(function() {
             secondary: 'ui-icon-print'
         }
     }).click(function() {
-        window.location='<?= base_url('laporan/manage_perwabku/export') ?>/?'+$('#search_perwabku').serialize();
+        var status = $('#status_pwk').val();
+        if (status === 'sudah') {
+            window.location='<?= base_url('laporan/manage_perwabku/export') ?>/?'+$('#search_perwabku').serialize();
+        } else {
+            window.location='<?= base_url('laporan/manage_perwabku/export2') ?>/?'+$('#search_perwabku').serialize();
+        }
     });
     $('#cari_button').button({
         icons: {
@@ -37,12 +42,12 @@ $(function() {
             }, close: function() {
                 $('#dialog_perwabku_search').dialog('close');
             }, open: function() {
-                $('#awal, #akhir').datepicker('hide');
+                $('#awal_lpwk, #akhir_lpwk').datepicker('hide');
                 $('#id_satker').focus();
             }
         });
     });
-    $('#awal, #akhir').datepicker({
+    $('#awal_lpwk, #akhir_lpwk').datepicker({
         changeYear: true,
         changeMonth: true
     });
@@ -54,17 +59,36 @@ $(function() {
         reset_form();
         get_list_perwabku(1);
     });
+    $('#awal_lpwk').val('<?= date("01/m/Y") ?>');
+    $('#akhir_lpwk').val('<?= date("d/m/Y") ?>');
+    $('#nomorpwk, #awal_lpwk, #akhir_lpwk').removeAttr('disabled');
+    $('#status_pwk').change(function() {
+        var val = $(this).val();
+        if (val === 'belum') {
+            $('#awal_lpwk, #akhir_lpwk').val('');
+            $('#nomorpwk, #awal_lpwk, #akhir_lpwk').attr('disabled','disabled');
+        } else {
+            $('#awal_lpwk').val('<?= date("01/m/Y") ?>');
+            $('#akhir_lpwk').val('<?= date("d/m/Y") ?>');
+            $('#nomorpwk, #awal_lpwk, #akhir_lpwk').removeAttr('disabled');
+        }
+    });
 });
 
 function reset_form() {
     $('input[type=text], input[type=hidden], select, textarea').val('');
-    $('#awal').val('<?= date("01/m/Y") ?>');
-    $('#akhir').val('<?= date("d/m/Y") ?>');
+    $('#awal_lpwk').val('<?= date("01/m/Y") ?>');
+    $('#akhir_lpwk').val('<?= date("d/m/Y") ?>');
 }
 
-function get_list_perwabku(page, src, id) {
+function get_list_perwabku(page) {
+    var status = $('#status_pwk').val();
+    var url = '<?= base_url('laporan/manage_perwabku') ?>/list2/'+page;
+    if (status === 'sudah') {
+        url = '<?= base_url('laporan/manage_perwabku') ?>/list/'+page;
+    }
     $.ajax({
-        url: '<?= base_url('laporan/manage_perwabku') ?>/list/'+page,
+        url: url,
         data: $('#search_perwabku').serialize(),
         cache: false,
         success: function(data) {
@@ -288,10 +312,11 @@ function delete_perwabku(id, page) {
     <div id="dialog_perwabku_search" class="nodisplay">
         <form action="" id="search_perwabku">
         <table width=100% cellpadding=0 cellspacing=0 class=inputan>
-            <tr><td>Tanggal Perwabku:</td><td><input type="text" name="awal" id="awal" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir" value="<?= date("d/m/Y") ?>" /></td></tr>
+            <tr><td>Tanggal Perwabku:</td><td><input type="text" name="awal" id="awal_lpwk" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir_lpwk" value="<?= date("d/m/Y") ?>" /></td></tr>
             <tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Semua Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>
             <tr><td>No. Perwabku:</td><td><input type="text" name="nomorpwk" id="nomorpwk" /></td></tr>
             <tr><td>No. BKK:</td><td><input type="text" name="nomorbkk" id="nomorbkk" /></td></tr>
+            <tr><td>Status Perwabku:</td><td><select name="status" id="status_pwk"><option value="sudah">Sudah Perwabku</option><option value="belum">Belum Perwabku</option></select></td></tr>
         </table>
         </form>
     </div>

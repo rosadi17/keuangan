@@ -18,7 +18,7 @@ $(function() {
         }
     }).click(function() {
         $('#dialog_perwabku_search').dialog({
-            title: 'Cari Data Rencana Kebutuhan',
+            title: 'Cari Data Perwabku',
             autoOpen: true,
             width: 480,
             autoResize:true,
@@ -37,12 +37,12 @@ $(function() {
             }, close: function() {
                 $('#dialog_perwabku_search').dialog('close');
             }, open: function() {
-                $('#awal, #akhir').datepicker('hide');
+                $('#awal_pwk, #akhir_pwk').datepicker('hide');
                 $('#nomorpwk').focus();
             }
         });
     });
-    $('#awal, #akhir').datepicker({
+    $('#awal_pwk, #akhir_pwk').datepicker({
         changeYear: true,
         changeMonth: true
     });
@@ -58,8 +58,8 @@ $(function() {
 
 function reset_form() {
     $('input[type=text], input[type=hidden], select, textarea').val('');
-    $('#awal').val('<?= date("01/m/Y") ?>');
-    $('#akhir').val('<?= date("d/m/Y") ?>');
+    $('#awal_pwk').val('<?= date("01/m/Y") ?>');
+    $('#akhir_pwk').val('<?= date("d/m/Y") ?>');
 }
 
 function get_list_perwabku(page, src, id) {
@@ -288,7 +288,7 @@ function delete_perwabku(id, page) {
     <div id="dialog_perwabku_search" class="nodisplay">
         <form action="" id="search_perwabku">
         <table width=100% cellpadding=0 cellspacing=0 class=inputan>
-            <tr><td>Tanggal Perwabku:</td><td><input type="text" name="awal" id="awal" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir" value="<?= date("d/m/Y") ?>" /></td></tr>
+            <tr><td>Tanggal Perwabku:</td><td><input type="text" name="awal" id="awal_pwk" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir_pwk" value="<?= date("d/m/Y") ?>" /></td></tr>
             <tr><td>No. Perwabku:</td><td><input type="text" name="nomorpwk" id="nomorpwk" /></td></tr>
             <tr><td>No. BKK:</td><td><input type="text" name="nomorbkk" id="nomorbkk" /></td></tr>
         </table>
