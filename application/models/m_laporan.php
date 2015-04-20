@@ -237,7 +237,7 @@ class M_laporan extends CI_Model {
             join satker s on (p.id_satker = s.id) 
             where ks.tahun = '".$search['tahun']."' 
             and s.id = '".$search['satker']."' 
-            group by u.id order by s.kode asc
+            group by u.id order by u.kode asc
                 ";
         $result = $this->db->query($sql)->result();
         foreach ($result as $i => $val) {

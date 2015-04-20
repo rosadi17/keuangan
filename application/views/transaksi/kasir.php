@@ -421,6 +421,8 @@ function edit_kasir(id, transaksi) {
                     $('#nama_user').val(data.penerima);
                     $('#perwabku').val(data.perwabku);
                     $('#user').val('Penyetor');
+                    $('#kode_renbut').val(data.kode_renbut);
+                    $('#id_renbut').val(data.id_renbut);
                     if (data.jenis === 'BKK') {
                         $('#pngjwb').html('Penerima:');
                         $('#kode_renbut').removeAttr('disabled');
