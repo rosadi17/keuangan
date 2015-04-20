@@ -97,7 +97,7 @@ function form_renbut() {
             '<?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?>'+
             '<table width=100% cellpadding=0 cellspacing=0 class=inputan>'+
                 '<tr><td width=40%>Nomor:</td><td><?= form_input('nomor', NULL, 'id=nomor size=60') ?></td></tr>'+
-                '<tr><td width=40%>Tanggal Renbut:</td><td><?= form_input('tanggal_renbut', date("d/m/Y"), 'id=tanggal_renbut size=10') ?></td></tr>'+
+                '<tr><td width=40%>Tanggal Renbut:</td><td><?= form_input('tanggal_renbut', date("d/m/Y"), 'id=tanggal_renbut size=10') ?> * <small style="font-style: italic;">Tahun renbut berkaitan dgn MA Proja</small></td></tr>'+
                 '<tr><td width=40%>Tanggal Kegiatan:</td><td><?= form_input('tanggal', NULL, 'id=tanggal size=10') ?></td></tr>'+
                 '<tr><td width=40%>Nomor BKK Cashbon *:</td><td><?= form_input('nomorbkk', '', 'id=nomorbkk size=10') ?><?= form_hidden('id_pengeluaran', NULL, 'id=id_pengeluaran') ?></td></tr>'+
                 '<tr><td width=40%>MA Proja:</td><td><?= form_input('uraian', NULL, 'id=uraian size=60') ?><?= form_hidden('id_uraian', NULL, 'id=id_uraian') ?></td></tr>'+
@@ -180,6 +180,11 @@ function form_renbut() {
     });
     $('#uraian').autocomplete("<?= base_url('autocomplete/ma_proja') ?>",
     {
+        extraParams: { 
+            tahun: function() { 
+                return $('#tanggal_renbut').val().substr(6,4);
+            }
+        },
         parse: function(data){
             var parsed = [];
             for (var i=0; i < data.length; i++) {

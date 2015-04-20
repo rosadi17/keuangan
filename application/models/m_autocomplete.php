@@ -106,14 +106,14 @@ class M_autocomplete extends CI_Model {
         }
         $sql = "select u.*, s.nama as satker, 
             u.kode as ma_proja, u.uraian,
-            CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as keterangan
+            CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan, CONCAT_WS(' ','Thn.',su.tahun)) as keterangan
             from uraian u
             join sub_uraian su on (su.id_uraian = u.id)
             join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
             join kegiatan k on (sk.id_kegiatan = k.id)
             join program p on (k.id_program = p.id)
             join satker s on (p.id_satker = s.id) 
-            where u.id is not NULL $f
+            where u.id is not NULL $f group by su.id
             having ma_proja like ('%$q%') or keterangan like ('%$q%')";
         //echo $sql;
         return $this->db->query($sql);
