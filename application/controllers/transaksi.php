@@ -388,8 +388,7 @@ class Transaksi extends CI_Controller {
     
     function print_bukti_kas() {
         $id = $_GET['id'];
-        $jns= $_GET['jenis'];
-        $data['list_data'] = $this->m_transaksi->print_bukti_kas($id, $jns)->result();
+        $data['list_data'] = $this->m_transaksi->print_bukti_kas($id)->result();
         $this->load->view('transaksi/print-bukti-kas', $data);
     }
     

@@ -32,7 +32,7 @@ function cetak_bukti_kas(id, jenis) {
     var dHeight= wHeight * 1;
     var x = screen.width/2 - dWidth/2;
     var y = screen.height/2 - dHeight/2;
-    window.open('<?= base_url('transaksi/print_bukti_kas') ?>?id='+id+'&jenis='+jenis, 'Renbut Cetak', 'width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
+    window.open('<?= base_url('transaksi/print_bukti_kas') ?>?id='+id, 'Renbut Cetak', 'width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
 }
 
 function cetak_bukti_kas_masuk(id) {
