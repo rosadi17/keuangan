@@ -1,6 +1,6 @@
 <?php
 $month1 = isset($_GET['awal'])?$_GET['awal']:'1';
-$month2 = isset($_GET['akhir'])?$_GET['akhir']:'12';
+$month2 = isset($_GET['akhir'])?$_GET['akhir']:date("m");
 $monthNames = array( 
   1 => 'Jan', 
   2 => 'Feb', 

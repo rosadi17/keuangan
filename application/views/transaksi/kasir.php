@@ -79,7 +79,7 @@ $(function() {
             $('#kdbawah').html('Kode Perkiraan Lawan (K)*:');
             $('#pngjwb').html('Penyetor:');
         }
-        if (nilai === 'mutasi') {
+        if (nilai === 'mts') {
             $('#perwabku').val('Default');
             $('#kdatas').html('Kode Perkiraan (D)*:');
             $('#kdbawah').html('Kode Perkiraan Lawan (K)*:');
@@ -182,7 +182,7 @@ $(function() {
 //        if ($('#id_renbut').val() === '') {
 //            custom_message('Peringatan', 'Nomor renbut harus dipilih', '#kode_renbut'); return false;
 //        }
-        if ($('#jenis').val() !== 'mutasi') {
+        if ($('#jenis').val() !== 'mts') {
             if ($('#kode').val() === '') {
                 custom_message('Peringatan', 'Kode MA / Proja harus dipilih', '#kode'); return false;
             }
@@ -383,7 +383,7 @@ function reset_form() {
 
 function edit_kasir(id, transaksi) {
     $('#form_kasir').dialog({
-        title: 'Form Kasir BKK / BKM',
+        title: 'Form Kasir BKK / BKM / MUTASI',
         autoOpen: true,
         width: 480,
         autoResize:true,
@@ -502,7 +502,7 @@ function paging(p) {
         <?= form_open('', 'id=form') ?>
         <input type="hidden" name="id_kasir" id="id_kasir" />
         <table class="inputan" width="100%">
-            <tr><td>Nama Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Pilih ...', 'bkk' => 'Kas Keluar', 'bkm' => 'Kas Masuk','mutasi' => 'Mutasi'), NULL, 'id=jenis style="width: 300px;"') ?></td></tr>
+            <tr><td>Nama Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Pilih ...', 'bkk' => 'Kas Keluar', 'bkm' => 'Kas Masuk','mts' => 'Mutasi'), NULL, 'id=jenis style="width: 300px;"') ?></td></tr>
             <tr><td>Tanggal Kegiatan:</td><td><?= form_input('tanggal', date("d/m/Y"), 'size=15 id=tanggal') ?></td></tr>
             <tr><td>No.</td><td><?= form_input('no', NULL, 'id=no') ?></td></tr>
             <tr><td>Sumber Dana:</td><td><?= form_dropdown('sumberdana', array('' => 'Pilih ...', 'Kas' => 'Kas', 'Bank' => 'Bank'), NULL, 'id="sumberdana" style="width: 300px;"') ?></td></tr>

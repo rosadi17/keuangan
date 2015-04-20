@@ -38,7 +38,7 @@ $monthNames = array(
         <td align="center"><?= ++$key ?></td>
         <td align="center"><?= $data->ma_proja ?></td>
         <td><?= $data->uraian ?></td>
-        <td align="right"><?= ($data->sub_total) ?></td>
+        <td align="right"><?= ($data->pagu) ?></td>
         <?php 
         $subtotal = 0;
         foreach ($data->rincian as $list) { 
@@ -47,12 +47,12 @@ $monthNames = array(
         <td align="right"><?= ($list) ?></td>
         <?php } ?>
         <td align="right"><?= ($subtotal) ?></td>
-        <td align="right"><?= ($data->sub_total-$subtotal) ?></td>
+        <td align="right"><?= ($data->pagu-$subtotal) ?></td>
     </tr>
     <?php 
-    $pagu +=$data->sub_total;
+    $pagu +=$data->pagu;
     $total+=$subtotal;
-    $sisa +=$data->sub_total-$subtotal;
+    $sisa +=$data->pagu-$subtotal;
     } ?>
     <tr class="odd">
         <td colspan="3"  align="center">TOTAL</td>

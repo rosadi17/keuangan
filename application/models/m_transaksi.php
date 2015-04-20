@@ -462,7 +462,7 @@ class M_transaksi extends CI_Model {
             if ($jenis === 'bkm') {
                 $jns = 'BKM';
             }
-            if ($jenis === 'mutasi') {
+            if ($jenis === 'mts') {
                 $jns = 'MTS';
             }
             $data = array(
@@ -488,7 +488,7 @@ class M_transaksi extends CI_Model {
                     'tanggal' => date("Y-m-d"),
                     'kode_cashbon' => $no,
                     'tanggal_kegiatan' => $tanggal,
-                    'id_uraian' => $maproja,
+                    'id_uraian' => ($maproja !== '')?$maproja:NULL,
                     'keterangan' => $uraian,
                     'cashbon' => $jumlah,
                     'penerima' => $penyetor
@@ -502,7 +502,7 @@ class M_transaksi extends CI_Model {
                 'tanggal' => $tanggal,
                 'id_rekening' => $kd_perkiraan,
                 'id_renbut' => ($id_renbut !== '')?$id_renbut:NULL,
-                'id_uraian' => $maproja,
+                'id_uraian' => ($maproja !== '')?$maproja:NULL,
                 'pengeluaran' => $jumlah,
                 'penerima' => $penyetor,
                 'perwabku' => !empty($perwabku)?$perwabku:NULL,
@@ -667,16 +667,16 @@ class M_transaksi extends CI_Model {
     
     function get_data_kasir_by_id($id, $transaksi) {
         $sql = "select pg.*, IFNULL(pg.id_rekening,'') as id_rekening, substr(pg.kode,1,3) as kode_trans, 
-            u.kode as kode_uraian, u.uraian as keterangan_ma, IFNULL(pg.id_renbut,'') as renbut, s4r.nama as rekening, s.nama as satker,
+            IFNULL(u.kode,'') as kode_uraian, IFNULL(u.uraian,'') as keterangan_ma, IFNULL(pg.id_renbut,'') as renbut, s4r.nama as rekening, s.nama as satker,
             CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as keterangan,
             IFNULL(pg.id_rekening_pwk,'') as id_rekening_pwk, IFNULL(s4r2.nama,'') as rekening_pwk,
             CONCAT_WS(' ',pg.id_rekening_pwk,s4r2.nama) as kode_rekening_pwk
             from kasir pg
-            join uraian u on (pg.id_uraian = u.id)
-            join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
-            join kegiatan k on (sk.id_kegiatan = k.id)
-            join program p on (k.id_program = p.id)
-            join satker s on (p.id_satker = s.id) 
+            left join uraian u on (pg.id_uraian = u.id)
+            left join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
+            left join kegiatan k on (sk.id_kegiatan = k.id)
+            left join program p on (k.id_program = p.id)
+            left join satker s on (p.id_satker = s.id) 
             left join sub_sub_sub_sub_rekening s4r on (pg.id_rekening = s4r.id)
             left join sub_sub_sub_sub_rekening s4r2 on (pg.id_rekening_pwk = s4r2.id)
             where pg.id = '$id'";
