@@ -244,7 +244,7 @@ $(function() {
             return parsed;
         },
         formatItem: function(data,i,max){
-            var str = '<div class=result>'+data.kode_rk+' <br/> '+data.keterangan+'</div>';
+            var str = '<div class=result>'+data.kode_rk+' '+data.uraian+' &Rightarrow; <i><small>'+data.keterangan+'</small></i></div>';
             return str;
         },
         width: 400, // panjang tampilan pencarian autocomplete yang akan muncul di bawah textbox pencarian
@@ -257,7 +257,7 @@ $(function() {
         $(this).val(data.kode_rk);
         $('#kode').val(pad(data.ma_proja,5));
         $('#id_kode').val(data.id);
-        $('#uraian').val(data.keterangan);
+        $('#uraian').val(data.keterangan_light);
         $('#pengguna').val(data.satker);
         $('#keterangan').val(data.uraian);
         $('#jumlah').val(numberToCurrency(data.jml_renbut));
@@ -509,7 +509,7 @@ function paging(p) {
             <tr><td>No.</td><td><?= form_input('no', NULL, 'id=no') ?></td></tr>
             <tr><td>Sumber Dana:</td><td><?= form_dropdown('sumberdana', array('' => 'Pilih ...', 'Kas' => 'Kas', 'Bank' => 'Bank'), NULL, 'id="sumberdana" style="width: 300px;"') ?></td></tr>
             <tr><td id="kdatas">Kode Perkiraan (D)*:</td><td><?= form_input('', NULL, 'id=kode_perkiraan size=60') ?><?= form_hidden('kode_perkiraan', NULL, 'id=hide_kode_perkiraan') ?></td></tr>
-            <tr><td>Nomor Renbut:</td><td><?= form_input('kode_renbut', NULL, 'id=kode_renbut size=60') ?><small style="font-style: italic;">Mengacu ke bulan kegiatan</small><?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?></td></tr>
+            <tr><td>Nomor Renbut:</td><td><?= form_input('kode_renbut', NULL, 'id=kode_renbut size=60') ?><!--<small style="font-style: italic;">Mengacu ke bulan kegiatan</small>--><?= form_hidden('id_renbut', NULL, 'id=id_renbut') ?></td></tr>
             <tr><td>Tahun Anggaran</td><td>
                 <select name="tahun" id="tahun">
                 <?php for ($i = date("Y"); $i >=2014 ; $i--) { ?>

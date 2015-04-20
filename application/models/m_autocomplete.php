@@ -105,7 +105,7 @@ class M_autocomplete extends CI_Model {
             $f = " and su.tahun = '$tahun'";
         }
         $sql = "select u.*, s.nama as satker, 
-            u.kode as ma_proja, u.uraian,
+            u.kode as ma_proja, su.keterangan as uraian,
             CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan, CONCAT_WS(' ','Thn.',su.tahun)) as keterangan
             from uraian u
             join sub_uraian su on (su.id_uraian = u.id)
@@ -122,19 +122,20 @@ class M_autocomplete extends CI_Model {
     function get_kode_renbut($q, $tanggal = NULL) {
         $param = NULL;
         if ($tanggal !== NULL) {
-            $param = "and rk.tanggal_kegiatan like ('".$tanggal."%')";
+            //$param = "and rk.tanggal_kegiatan like ('".$tanggal."%')";
         }
         $sql = "select u.*, s.nama as satker, rk.id_renbut as id_rk, rk.kode as kode_rk, rk.jml_renbut, rk.penerima, 
-            u.kode as ma_proja, u.uraian,
+            u.kode as ma_proja, su.keterangan as uraian, CONCAT_WS(' ',u.uraian,su.keterangan) as keterangan_light,
             CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as keterangan
             from uraian u
+            join sub_uraian su on (su.id_uraian = u.id)
             join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
             join kegiatan k on (sk.id_kegiatan = k.id)
             join program p on (k.id_program = p.id)
             join satker s on (p.id_satker = s.id) 
             join rencana_kebutuhan rk on (rk.id_uraian = u.id)
             where u.id is not NULL 
-            and rk.kode like ('$q%') $param";
+            and rk.kode like ('%$q%') $param group by su.id";
         //echo $sql;
         return $this->db->query($sql);
     }
