@@ -67,7 +67,11 @@ function get_list_perwabku(page, src, id) {
         url: '<?= base_url('transaksi/manage_perwabku') ?>/list/'+page,
         data: $('#search_perwabku').serialize(),
         cache: false,
+        beforeSend: function() {
+            show_ajax_indicator();
+        },
         success: function(data) {
+            hide_ajax_indicator();
             $('#result').html(data);
         }
     });

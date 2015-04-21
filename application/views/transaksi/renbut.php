@@ -60,7 +60,11 @@ function get_list_renbut(page, id) {
         url: '<?= base_url('transaksi/manage_renbut') ?>/list/'+page,
         data: $('#search_renbut').serialize(),
         cache: false,
+        beforeSend: function() {
+            show_ajax_indicator();
+        },
         success: function(data) {
+            hide_ajax_indicator();
             $('#result').html(data);
         }
     });

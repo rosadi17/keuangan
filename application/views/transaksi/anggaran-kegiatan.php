@@ -66,7 +66,11 @@ function get_list_sub_uraian(page, id) {
         url: '<?= base_url('masterdata/manage_sub_uraian') ?>/list/'+page+'/'+idx,
         data: $('#search_anggaran').serialize(),
         cache: false,
+        beforeSend: function() {
+            show_ajax_indicator();
+        },
         success: function(data) {
+            hide_ajax_indicator();
             $('#result-sub_uraian').html(data);
         }
     });

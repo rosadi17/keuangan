@@ -87,7 +87,11 @@ function get_list_dropping(page, src, id) {
         url: '<?= base_url('transaksi/manage_dropping') ?>/list/'+page,
         data: $('#search_dropping').serialize(),
         cache: false,
+        beforeSend: function() {
+            show_ajax_indicator();
+        },
         success: function(data) {
+            hide_ajax_indicator();
             $('#result').html(data);
         }
     });

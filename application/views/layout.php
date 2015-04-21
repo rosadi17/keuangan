@@ -36,8 +36,43 @@
         <script type="text/javascript" src="<?= base_url('assets/js/mousetrap.min.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/jquery.nicescroll.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/jquery.cookies.js') ?>"></script>
-
+        <script type="text/javascript" src="<?= base_url('assets/js/jquery.blockUI.js') ?>"></script>
         <script type="text/javascript">
+            function show_ajax_indicator(){
+                $('body').block({ 
+                    message: '<span><img src="<?= base_url('assets/js/images/loading_.gif') ?>" /> Loading ...</span>', 
+                    css: { 
+                        border: '1px solid #999',
+                        padding: '5px',
+                        backgroundColor: '#f4f4f4', 
+                        '-webkit-border-radius': '10px', 
+                        '-moz-border-radius': '10px', 
+                        opacity: 1, 
+                        width: '120px',
+                        color: '#666'
+                    } 
+                }); 
+            }
+
+            function show_ajax_indicator_with_message(msg){
+                $('body').block({ 
+                    message: '<span><img src="<?= base_url('assets/js/images/loading_.gif') ?>" /> '+msg+'</span>', 
+                    css: { 
+                        border: '1px solid #ccc',
+                        padding: '5px',
+                        backgroundColor: '#f4f4f4', 
+                        '-webkit-border-radius': '10px', 
+                        '-moz-border-radius': '10px', 
+                        opacity: 1, 
+                        width: 'auto',
+                        color: '#000' 
+                    } 
+                }); 
+            }
+
+            function hide_ajax_indicator(){
+                $('body').unblock(); 
+            }
             function remove_cache() {
                 $.cookie('url', null);
             }
@@ -56,8 +91,12 @@
                 $.cookie('url', val);
                 $.ajax({
                     url: val,
-                    cache: false
+                    cache: false,
+                    beforeSend: function() {
+                        show_ajax_indicator();
+                    }
                 }).done(function( data ) {
+                    hide_ajax_indicator();
                     $('#loaddata').html(data);
                 });
                 return false;

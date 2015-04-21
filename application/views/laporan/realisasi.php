@@ -12,6 +12,15 @@
         }).click(function() {
             form_realisasi();
         });
+        
+        $('#excel_realisasi').button({
+            icons: {
+                secondary: 'ui-icon-print'
+            }
+        }).click(function() {
+            location.href='<?= base_url('laporan/manage_realisasi/export_excel') ?>/?'+$('#form_cari_realisasi').serialize();
+        });
+        
         $('#cari_button').button({
             icons: {
                 secondary: 'ui-icon-search'
@@ -61,7 +70,11 @@
             url: '<?= base_url('laporan/manage_realisasi') ?>/list/'+page,
             data: $('#form_cari_realisasi').serialize(),
             cache: false,
+            beforeSend: function() {
+                show_ajax_indicator();
+            },
             success: function(data) {
+                hide_ajax_indicator();
                 $('#result').html(data);
             }
         });
@@ -115,7 +128,11 @@
             url: '<?= base_url('laporan/manage_realisasi') ?>/detail_ma/',
             data: 'satker='+id_satker+'&tahun='+tahun+'&nama_satker='+nama_satker,
             cache: false,
+            beforeSend: function() {
+                show_ajax_indicator();
+            },
             success: function(data) {
+                hide_ajax_indicator();
                 $('#detail_ma').html(data);
             }
         });
@@ -131,7 +148,8 @@
             <li><a href="#tabs-1"><?= $title ?></a></li>
         </ul>
         <div id="tabs-1">
-            <button id="cari_button">Cari Data</button>
+            <button id="cari_button">Cari</button>
+            <button id="excel_realisasi">Export Excel</button>
             <button id="reload_realisasi">Reload Data</button>
             <div id="result" style="overflow-x: auto;">
 

@@ -91,7 +91,11 @@ function get_list_perwabku(page) {
         url: url,
         data: $('#search_perwabku').serialize(),
         cache: false,
+        beforeSend: function() {
+            show_ajax_indicator();
+        },
         success: function(data) {
+            hide_ajax_indicator();
             $('#result').html(data);
         }
     });

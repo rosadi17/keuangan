@@ -476,7 +476,11 @@ function get_list_rekap_kasir(page) {
         url: '<?= base_url('transaksi/manage_kasir') ?>/list/'+page,
         data: $('#search_kasir').serialize(),
         cache: false,
+        beforeSend: function() {
+            show_ajax_indicator();
+        },
         success: function(data) {
+            hide_ajax_indicator();
             $('#result-kasir').html(data);
         }
     });

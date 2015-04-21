@@ -39,7 +39,7 @@ class M_laporan extends CI_Model {
         if ($param['tahun'] !== '') {
             $tahun = $param['tahun'];
         }
-        if ($param['satker'] !== '' and $param['satker'] !== 'undefined') {
+        if ($param['satker'] !== '') {
             $q.=" and p.id_satker = '".$param['satker']."'";
         }
         $sql = "select sum(ks.sub_total) as pagu, s.kode, s.nama, s.id as id_satker, ks.tahun,
@@ -50,7 +50,7 @@ class M_laporan extends CI_Model {
             join kegiatan k on (sk.id_kegiatan = k.id)
             join program p on (k.id_program = p.id)
             join satker s on (p.id_satker = s.id)
-            where ks.tahun = '$tahun'
+            where ks.tahun = '$tahun' $q
                 group by s.id order by s.kode asc";
         //echo $sql;
         return $this->db->query($sql);

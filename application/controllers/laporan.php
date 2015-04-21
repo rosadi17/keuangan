@@ -55,11 +55,19 @@ class Laporan extends CI_Controller {
                 $data['nama']   = $search['nama'];
                 $this->load->view('laporan/realisasi-detail-excel', $data);
                 break;
+            case 'export_excel':
+                $search['tahun'] = get_safe('year');
+                $search['satker']= get_safe('id_satker');
+                $data = $this->get_list_data_realisasi($search);
+                $data['tahun'] = get_safe('year');
+                $data['satker'] = $search['satker'];
+                $this->load->view('laporan/excel-realisasi-table', $data);
+                break;
         }
     }
     
-    function get_list_data_realisasi($tahun) {
-        $data['list_data'] = $this->m_laporan->load_satker($tahun)->result();
+    function get_list_data_realisasi($search) {
+        $data['list_data'] = $this->m_laporan->load_satker($search)->result();
         return $data;
     }
     

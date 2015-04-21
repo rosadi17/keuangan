@@ -93,7 +93,11 @@ function get_list_jurnal(page, src, id) {
     $.ajax({
         url: '<?= base_url('transaksi/manage_jurnal') ?>/list/'+page,
         cache: false,
+        beforeSend: function() {
+            show_ajax_indicator();
+        },
         success: function(data) {
+            hide_ajax_indicator();
             $('#result').html(data);
         }
     });
