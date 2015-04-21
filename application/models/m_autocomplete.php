@@ -241,7 +241,7 @@ class M_autocomplete extends CI_Model {
             $bln = substr($bulan, 5, 2);
             $result['no'] = 'BKK'.$thn.$bln.pad($auto+1, 4);
         }
-        if ($trans === 'mutasi') {
+        if ($trans === 'mts') {
             $sql = "select IFNULL(SUBSTR(kode,8,4),0) as kode from kasir where jenis = 'MTS' and tanggal like '".$bulan."%' order by id desc limit 1";
             $data= $this->db->query($sql)->row();
             if (isset($data->kode)) {
