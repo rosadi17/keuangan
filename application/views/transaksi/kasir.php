@@ -150,6 +150,13 @@ $(function() {
         reset_form();
         get_list_rekap_kasir(1);
     });
+    $('#excel_kasir').button({
+        icons: {
+            secondary: 'ui-icon-print'
+        }
+    }).click(function() {
+        location.href='<?= base_url('transaksi/manage_kasir/export_excel') ?>/?'+$('#search_kasir').serialize();
+    });
     $('#jenis').change(function() {
         var jenis = $(this).val();
         var tanggal = $('#tanggal').val();
@@ -498,6 +505,7 @@ function paging(p) {
         <div id="tabs-1">
             <button id="cari_rekap_button">Tambah</button>
             <button id="cari_button">Cari</button>
+            <button id="excel_kasir">Export Excel</button>
             <button id="reload_kasir_data">Reload Data</button>
             <div id="result-kasir">
 

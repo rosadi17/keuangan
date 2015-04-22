@@ -462,6 +462,18 @@ class Transaksi extends CI_Controller {
                 $id    = get_safe('id');
                 $this->db->delete('kasir', array('id' => $id));
                 break;
+            case 'export_excel':
+                $search = array(
+                    'awal' => date2mysql(get_safe('awal')),
+                    'akhir' => date2mysql(get_safe('akhir')),
+                    'jenis' => get_safe('jenis'),
+                    'kegiatan' => get_safe('kegiatan'),
+                    'png_jwb' => get_safe('png_jwb')
+                );
+                $query = $this->m_transaksi->get_data_kasir(NULL, NULL, $search);
+                $data['list_data'] = $query['data'];
+                $this->load->view('transaksi/excel-kasir', $data);
+                break;
         }
     }
     

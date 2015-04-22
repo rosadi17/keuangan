@@ -622,7 +622,7 @@ class M_transaksi extends CI_Model {
         $this->db->delete('jurnal', array('id' => $id));
     }
     
-    function get_data_kasir($limit, $start, $search) {
+    function get_data_kasir($limit = NULL, $start = NULL, $search = NULL) {
         $q = NULL;
         if ($search['awal'] !== '' and $search['akhir'] !== '') {
             $q.=" and pg.tanggal between '".$search['awal']."' and '".$search['akhir']."'";
@@ -643,7 +643,9 @@ class M_transaksi extends CI_Model {
                 left join uraian u on (pg.id_uraian = u.id)
                 where pg.id is not NULL $q order by pg.id desc";
         $limitation = null;
-        $limitation.=" limit $start , $limit";
+        if ($limit !== NULL) {
+            $limitation = " limit $start , $limit";
+        }
         $query = $this->db->query($sql . $limitation);
         //echo $sql . $q . $limitation;
         $queryAll = $this->db->query($sql);

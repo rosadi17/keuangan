@@ -35,16 +35,16 @@
             <?php 
             $saldo = 0;
             foreach ($list_data as $key => $data) { 
-                $saldo = $saldo+$awal_kas->saldo_sisa+$data->pemasukkan-$data->pengeluaran;
+                //$saldo = $saldo+$awal_kas->saldo_sisa+$data->pemasukkan-$data->pengeluaran;
                 if ($data->sumberdana === 'Kas') {
                 ?>
                 <tr class="<?= ($key%2===0)?'odd':'even' ?>">
-                    <td align="center"><?= $data->kode_ket ?></td>
-                    <td align="center"><?= $data->kode_auto ?></td>
+                    <td align="center"></td>
+                    <td align="center"></td>
                     <td align="center"><?= substr($data->tanggal, 8, 2) ?></td>
                     <td><?= $data->uraian ?></td>
-                    <td align="right"><?= ($data->pemasukkan !== '0')?rupiah($data->pemasukkan):NULL ?></td>
-                    <td align="right"><?= ($data->pengeluaran !== '0')?rupiah($data->pengeluaran):NULL ?></td>
+                    <td align="right"></td>
+                    <td align="right"></td>
                     <td align="right"><?= rupiah($saldo) ?></td>
                 </tr>
             <?php   } 
