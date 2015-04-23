@@ -295,7 +295,7 @@ $(function() {
             return parsed;
         },
         formatItem: function(data,i,max){
-            var str = '<div class=result>'+pad(data.ma_proja,5)+' <br/> '+data.keterangan+'</div>';
+            var str = '<div class=result>'+pad(data.ma_proja,5)+' / '+data.uraian+' &Rightarrow; <i>'+data.keterangan+'</i></div>';
             return str;
         },
         width: 400, // panjang tampilan pencarian autocomplete yang akan muncul di bawah textbox pencarian
@@ -306,7 +306,7 @@ $(function() {
     function(event,data,formated){
         $(this).val(pad(data.ma_proja,5));
         $('#id_kode').val(data.id);
-        $('#uraian').val(data.keterangan);
+        $('#uraian').val(data.uraian);
         $('#pengguna').val(data.satker);
         $('#keterangan').val(data.uraian);
         get_nominal_renbut(data.id, $('#tahun').val());

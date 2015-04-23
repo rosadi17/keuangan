@@ -569,8 +569,8 @@ class Transaksi extends CI_Controller {
         return $data;
     }
     
-    function get_data_kasir($id, $transaksi) {
-        $data = $this->m_transaksi->get_data_kasir_by_id($id, $transaksi)->row();
+    function get_data_kasir($id) {
+        $data = $this->m_transaksi->get_data_kasir_by_id($id)->row();
         die(json_encode($data));
     }
     

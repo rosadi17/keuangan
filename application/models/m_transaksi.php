@@ -441,6 +441,7 @@ class M_transaksi extends CI_Model {
         $id_renbut = post_safe('id_renbut');
         $uraian = post_safe('uraian');
         $id_rek_pwk = post_safe('kode_perkiraan_pwk');
+        $tahun  = post_safe('tahun');
         if ($idkasir === '') { // proses tambah data
             if ($jenis === 'bkk' and $id_renbut === '') {
                 $data_renbut = array(
@@ -472,6 +473,7 @@ class M_transaksi extends CI_Model {
                 'id_rekening' => $kd_perkiraan,
                 'id_renbut' => ($id_renbut !== '')?$id_renbut:NULL, // NULL jika cashbon
                 'id_uraian' => ($maproja !== '')?$maproja:NULL,
+                'tahun_anggaran' => $tahun,
                 'pengeluaran' => $jumlah,
                 'penerima' => $penyetor,
                 'perwabku' => !empty($perwabku)?$perwabku:NULL,
@@ -490,6 +492,7 @@ class M_transaksi extends CI_Model {
                 'id_rekening' => $kd_perkiraan,
                 'id_renbut' => ($id_renbut !== '')?$id_renbut:NULL,
                 'id_uraian' => ($maproja !== '')?$maproja:NULL,
+                'tahun_anggaran' => $tahun,
                 'pengeluaran' => $jumlah,
                 'penerima' => $penyetor,
                 'perwabku' => !empty($perwabku)?$perwabku:NULL,
@@ -654,7 +657,7 @@ class M_transaksi extends CI_Model {
         return $data;
     }
     
-    function get_data_kasir_by_id($id, $transaksi) {
+    function get_data_kasir_by_id($id) {
         $sql = "select pg.*, IFNULL(pg.id_rekening,'') as id_rekening, substr(pg.kode,1,3) as kode_trans, rk.kode as kode_renbut,
             IFNULL(u.kode,'') as kode_uraian, IFNULL(u.uraian,'') as keterangan_ma, IFNULL(pg.id_renbut,'') as renbut, s4r.nama as rekening, s.nama as satker,
             CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as keterangan,
