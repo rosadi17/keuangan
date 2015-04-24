@@ -571,8 +571,7 @@ class Transaksi extends CI_Controller {
     
     function get_data_kasir($id) {
         $data = $this->m_transaksi->get_data_kasir_by_id($id)->row();
-        //$value = mb_check_encoding($data, 'UTF-8') ? $data : utf8_encode($data);
-        die(json_encode($data, JSON_UNESCAPED_UNICODE));
+        die(json_encode($data));
     }
     
     function anggaran_kegiatan() {
