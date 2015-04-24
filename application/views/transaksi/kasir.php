@@ -432,14 +432,20 @@ function edit_kasir(id, transaksi) {
                     $('#kode_renbut').val(data.kode_renbut);
                     $('#id_renbut').val(data.id_renbut);
                     if (data.jenis === 'BKK') {
+                        $('#kdatas').html('Kode Perkiraan (K)*:');
+                        $('#kdbawah').html('Kode Perkiraan Lawan (D)*:');
                         $('#pngjwb').html('Penerima:');
                         $('#kode_renbut').removeAttr('disabled');
                     }
                     if (data.jenis === 'BKM') {
+                        $('#kdatas').html('Kode Perkiraan (D)*:');
+                        $('#kdbawah').html('Kode Perkiraan Lawan (K)*:');
                         $('#pngjwb').html('Penyetor:');
                         $('#kode_renbut').attr('disabled','disabled');
                     }
                     if (data.jenis === 'MTS') {
+                        $('#kdatas').html('Kode Perkiraan (D)*:');
+                        $('#kdbawah').html('Kode Perkiraan Lawan (K)*:');
                         $('#pngjwb').html('-');
                         $('#kode_renbut').removeAttr('disabled');
                     }

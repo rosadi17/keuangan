@@ -36,15 +36,21 @@ foreach ($list_data as $detail);
         foreach ($list_data as $key => $data) { 
             ?>
         <tr valign="top">
-            <td align="center"><?= $data->id_akun_rekening ?></td>
+            <td align="center"><?= ($data->jenis === 'BKK')?$data->id_rekening_pwk:$data->id_akun_rekening ?></td>
             <td><?= $data->ma_proja ?></td>
             <td><?= $data->uraian ?></td>
             <td align="right"><?= rupiah($data->nominal) ?></td>
         </tr>
+        <tr valign="top">
+            <td align="center"></td>
+            <td></td>
+            <td><?= $data->keterangan ?></td>
+            <td align="right"></td>
+        </tr>
         <?php 
         $total = $total + $data->nominal;
         } 
-        for ($i = 1; $i <= (8-$key); $i++) { ?>
+        for ($i = 1; $i <= (7-$key); $i++) { ?>
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
