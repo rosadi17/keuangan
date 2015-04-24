@@ -74,6 +74,8 @@
             <file>file:/C:/wamp/www/keuangan/application/views/laporan/excel-realisasi-table.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/laporan/kasbank-list.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/transaksi/excel-kasir.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/transaksi/excel-dropping.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/transaksi/print-bukti-kas.php</file>
         </group>
     </open-files>
 </project-private>

@@ -8,7 +8,7 @@
     <tr>
         <th width="3%" rowspan="2">No.</th>
         <th width="5%" rowspan="2">Tanggal</th>
-        <th width="5%" rowspan="2">No. BKK</th>
+        <th width="5%" rowspan="2">No. Renbut</th>
         <th width="38%" rowspan="2">Kegiatan</th>
         <th width="5%" rowspan="2">Unit</th>
         <th width="5%" rowspan="2">MA<br/>Proja</th>
@@ -36,7 +36,7 @@
     <tr class="<?= ($key%2==1)?'even':'odd' ?>">
         <td align="center"><?= ++$key ?></td>
         <td align="center"><?= datefmysql($data->tanggal_renbut) ?></td>
-        <td><?= $data->nobkk ?></td>
+        <td><?= $data->kode ?></td>
         <td><?= $data->uraian ?></td>
         <td class="nowrap"><?= $data->satker ?></td>
         <td align="center"><?= $data->ma_proja ?></td>
