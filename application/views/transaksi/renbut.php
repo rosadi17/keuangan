@@ -325,7 +325,7 @@ function delete_renbut(id, page) {
         <div id="tabs-1">
             <button id="add_renbut">Tambah Data</button>
             <button id="cari_button">Cari Data</button>
-            <button id="reload_renbut">Refresh</button>
+            <button id="reload_renbut">Reload Data</button>
             <div id="result">
 
             </div>

@@ -127,16 +127,20 @@ class M_transaksi extends CI_Model {
             $q.=" and rk.penerima like ('%".$search['pjawab']."%')";
         }
         $q.=" order by rk.tanggal asc";
-        $sql = "select rk.*, s.nama as satker, u.kode as ma_proja, u.uraian
+        $sql = "select rk.*, s.nama as satker, u.kode as ma_proja, u.uraian,
+            ks.kode as nobkk
             from rencana_kebutuhan rk
+            left join kasir ks on (rk.id_renbut = ks.id_renbut)
             join uraian u on (rk.id_uraian = u.id)
             join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
             join kegiatan k on (sk.id_kegiatan = k.id)
             join program p on (k.id_program = p.id)
             join satker s on (p.id_satker = s.id)
-            where rk.kode_cashbon = ''";
+            where rk.kode != ''";
         $limitation = null;
-        $limitation.=" limit $start , $limit";
+        if ($limit !== NULL) {
+            $limitation =" limit $start , $limit";
+        }
         $query = $this->db->query($sql . $q . $limitation);
         //echo $sql . $q . $limitation;
         $queryAll = $this->db->query($sql . $q);
@@ -175,8 +179,14 @@ class M_transaksi extends CI_Model {
     }
     
     function approve_dropping($param) {
+        $array = array(
+            'verificator' => $this->session->userdata('id_user'), 
+            'status' => $param['status'], 
+            'date_verify' => date("Y-m-d"), 
+            'jml_dropping' => currencyToNumber($param['jumlah'])
+        );
         $this->db->where('id_renbut', $param['id']);
-        $this->db->update('rencana_kebutuhan', array('verificator' => $this->session->userdata('id_user'), 'status' => $param['status'], 'date_verify' => date("Y-m-d"), 'jml_dropping' => currencyToNumber($param['jumlah'])));
+        $this->db->update('rencana_kebutuhan', $array);
         return array('status' => $param['status']);
     }
     

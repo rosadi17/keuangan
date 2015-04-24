@@ -120,6 +120,19 @@ class Transaksi extends CI_Controller {
                 $data = $this->m_transaksi->approve_dropping($param);
                 die(json_encode($data));
                 break;
+            case 'export_excel':
+                $search['id']  = get_safe('id');
+                $search['awal'] = date2mysql(get_safe('awal'));
+                $search['akhir']= date2mysql(get_safe('akhir'));
+                $search['satker']= get_safe('id_satker');
+                $search['proja'] = get_safe('id_uraian');
+                $search['pjawab']= get_safe('png_jawab');
+                $query = $this->m_transaksi->get_data_dropping(NULL, NULL, $search);
+                $data['list_data'] = $query['data'];
+                $data['awal'] = date2mysql(get_safe('awal'));
+                $data['akhir']= date2mysql(get_safe('akhir'));
+                $this->load->view('transaksi/excel-dropping', $data);
+                break;
             case 'delete': 
                 $this->m_transaksi->delete_dropping(get_safe('id'));
                 break;

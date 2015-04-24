@@ -1,4 +1,10 @@
-<table cellspacing="0" width="100%" class="list-data">
+<?php
+    header_excel('renbut_'.$awal.'_sd_'.$akhir.'.xls');
+?>
+<table>
+    <tr><td colspan="12">REKAP DROPPING <?= datefmysql($awal) ?> S.D <?= datefmysql($akhir) ?></td></tr>
+</table>
+<table cellspacing="0" width="100%" border="1">
     <tr>
         <th width="3%" rowspan="2">No.</th>
         <th width="5%" rowspan="2">Tanggal</th>
@@ -9,7 +15,6 @@
         <th width="5%" colspan="4">Jumlah</th>
         <th width="10%" rowspan="2">Penerima /<br/> Penanggungjawab</th>
         <th width="5%" rowspan="2">Status</th>
-        <th width="2%" rowspan="2">Aksi</th>
     </tr>
     <tr>
         <th width="7%" style="border-top: 1px solid #6eb7ff;">Nominal</th>
@@ -29,25 +34,18 @@
         }
         ?>
     <tr class="<?= ($key%2==1)?'even':'odd' ?>">
-        <td align="center"><?= $auto++ ?></td>
+        <td align="center"><?= ++$key ?></td>
         <td align="center"><?= datefmysql($data->tanggal_renbut) ?></td>
         <td><?= $data->nobkk ?></td>
         <td><?= $data->uraian ?></td>
         <td class="nowrap"><?= $data->satker ?></td>
         <td align="center"><?= $data->ma_proja ?></td>
-        <td align="right"><?= rupiah($data->nominal) ?></td>
-        <td align="right"><?= rupiah($data->cashbon) ?></td>
-        <td align="right"><?= rupiah($data->jml_renbut) ?></td>
-        <td align="right"><?= rupiah($data->jml_dropping) ?></td>
+        <td align="right"><?= ($data->nominal) ?></td>
+        <td align="right"><?= ($data->cashbon) ?></td>
+        <td align="right"><?= ($data->jml_renbut) ?></td>
+        <td align="right"><?= ($data->jml_dropping) ?></td>
         <td><?= $data->penerima ?></td>
         <td align="center"><?= $alert ?></td>
-        <td class="aksi" align="center">
-            <button type="button" <?= $button ?> class="btn btn-default btn-xs" onclick="edit_dropping('<?= $data->id_renbut ?>','<?= $data->jml_renbut ?>');" title="Klik untuk persetujuan"><i class="fa fa-gear"></i></button>
-            <button type="button" class="btn btn-default btn-xs" onclick="delete_dropping('<?= $data->id_renbut ?>', '<?= $page ?>');" title="Klik untuk hapus"><i class="fa fa-trash-o"></i></button>
-        </td>
     </tr>
     <?php } ?>
 </table>
-<?= $paging ?>
-<?= $infopage ?>
-<br/><br/>

@@ -18,6 +18,14 @@ $(function() {
         changeMonth: true
     });
     
+    $('#excel_dropping').button({
+        icons: {
+            secondary: 'ui-icon-print'
+        }
+    }).click(function() {
+        location.href='<?= base_url('transaksi/manage_dropping/export_excel') ?>/?'+$('#search_dropping').serialize();
+    });
+    
     $('#cari_button').button({
         icons: {
             secondary: 'ui-icon-search'
@@ -178,7 +186,8 @@ function paging(page, tab, search) {
         </ul>
         <div id="tabs-1">
             <button id="cari_button">Cari Data</button>
-            <button id="reload_dropping">Refresh</button>
+            <button id="excel_dropping">Export Excel</button>
+            <button id="reload_dropping">Reload Data</button>
             <div id="result">
 
             </div>
