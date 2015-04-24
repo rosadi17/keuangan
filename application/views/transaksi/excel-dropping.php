@@ -1,5 +1,5 @@
 <?php
-    header_excel('renbut_'.$awal.'_sd_'.$akhir.'.xls');
+    header_excel('dropping_'.$awal.'_sd_'.$akhir.'.xls');
 ?>
 <table>
     <tr><td colspan="12">REKAP DROPPING <?= datefmysql($awal) ?> S.D <?= datefmysql($akhir) ?></td></tr>
