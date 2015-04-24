@@ -423,7 +423,8 @@ function edit_kasir(id, transaksi) {
                     $('#kode').val(data.kode_uraian+' '+data.keterangan_ma);
                     $('#id_kode').val(data.id_uraian);
                     $('#pengguna').val(data.satker);
-                    $('#uraian').val(data.keterangan);
+                    $('#label_uraian').html(data.keterangan);
+                    $('#uraian').val(data.keterangan_kasir);
                     $('#jumlah').val(numberToCurrency(data.pengeluaran));
                     $('#nama_user').val(data.penerima);
                     $('#perwabku').val(data.perwabku);
@@ -530,7 +531,8 @@ function paging(p) {
                 </select></td></tr>
             <tr><td>Kode MA/Proja:</td><td><?= form_input('kode', NULL, 'id=kode') ?><?= form_hidden('id_kode', NULL, 'id=id_kode') ?></td></tr>
             <tr><td>Pengguna Anggaran:</td><td><?= form_input('pengguna', NULL, 'id=pengguna') ?></td></tr>
-            <tr><td valign="top">Uraian:</td><td><?= form_textarea('uraian', NULL, 'id=uraian rows=4 style="width: 294px;"') ?></td></tr>
+            <tr><td valign="top">Uraian:</td><td id="label_uraian"></td></tr>
+            <tr><td valign="top">Keterangan <i>Memorial</i>:</td><td><?= form_textarea('uraian', NULL, 'id=uraian rows=4 style="width: 294px;"') ?></td></tr>
             <tr><td>Nominal Rp.:</td><td><?= form_input('jumlah', NULL, 'id=jumlah onkeyup="FormNum(this);"') ?></td></tr>
             <tr><td id="pngjwb">-</td><td><?= form_input('nama_user', NULL, 'id=nama_user') ?></td></tr>
             <tr><td>Jenis Transaksi:</td><td><?= form_dropdown('perwabku', array('' => 'Pilih ...', 'Default' => 'Default', 'Belum' => 'Belum (DP)', 'Sudah' => 'Sudah (Pusat Biaya)'), NULL, 'id=perwabku') ?></td></tr>

@@ -32,7 +32,7 @@
         <td align="center"><?= $auto++ ?></td>
         <td align="center"><?= datefmysql($data->tanggal) ?></td>
         <td><?= $data->kode ?></td>
-        <td><?= $keterangan ?></td>
+        <td><?= $keterangan ?> <i><?= $data->keterangan_kasir ?></i></td>
         <td class="nowrap"><?= $data->penanggung_jwb ?></td>
         <td align="right"><?= rupiah($data->nominal) ?></td>
         <td style="white-space: nowrap;"><?= $status ?></td>

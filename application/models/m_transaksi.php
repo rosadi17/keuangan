@@ -478,6 +478,7 @@ class M_transaksi extends CI_Model {
                 'penerima' => $penyetor,
                 'perwabku' => !empty($perwabku)?$perwabku:NULL,
                 'jenis' => $jns,
+                'keterangan' => $uraian,
                 'id_rekening_pwk' => ($id_rek_pwk !== '')?$id_rek_pwk:NULL
             );
             $this->db->insert('kasir', $data);
@@ -496,6 +497,7 @@ class M_transaksi extends CI_Model {
                 'pengeluaran' => $jumlah,
                 'penerima' => $penyetor,
                 'perwabku' => !empty($perwabku)?$perwabku:NULL,
+                'keterangan' => $uraian,
                 'id_rekening_pwk' => ($id_rek_pwk !== '')?$id_rek_pwk:NULL
             );
             $this->db->where('id', $idkasir);
@@ -641,7 +643,7 @@ class M_transaksi extends CI_Model {
         }
         $sql = "select pg.id, pg.kode, pg.sumberdana, pg.tanggal, pg.id_rekening, pg.id_renbut, 
                 pg.id_uraian, pg.pengeluaran as nominal, pg.penerima as penanggung_jwb, pg.perwabku, substr(pg.kode,1,3) as kode_trans, 
-                u.uraian as keterangan, IFNULL(pg.id_renbut,'') as renbut 
+                u.uraian as keterangan, IFNULL(pg.id_renbut,'') as renbut, pg.keterangan as keterangan_kasir 
                 from kasir pg
                 left join uraian u on (pg.id_uraian = u.id)
                 where pg.id is not NULL $q order by pg.id desc";
@@ -661,6 +663,7 @@ class M_transaksi extends CI_Model {
         $sql = "select pg.*, IFNULL(pg.id_rekening,'') as id_rekening, substr(pg.kode,1,3) as kode_trans, rk.kode as kode_renbut,
             IFNULL(u.kode,'') as kode_uraian, IFNULL(u.uraian,'') as keterangan_ma, IFNULL(pg.id_renbut,'') as renbut, s4r.nama as rekening, s.nama as satker,
             CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as keterangan,
+            pg.keterangan as keterangan_kasir,
             IFNULL(pg.id_rekening_pwk,'') as id_rekening_pwk, IFNULL(s4r2.nama,'') as rekening_pwk,
             CONCAT_WS(' ',pg.id_rekening_pwk,s4r2.nama) as kode_rekening_pwk
             from kasir pg
