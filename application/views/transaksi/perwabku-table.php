@@ -32,7 +32,7 @@
             ?>
         </td>
         <td><i><?= $data->username ?></i></td>
-        <td align="right">
+        <td align="right" class="nowrap">
             <button type="button" class="btn btn-default btn-xs" onclick="print_perwabku('<?= $data->id ?>');" title="Klik untuk print"><i class="fa fa-print"></i></button>
             <button type="button" class="btn btn-default btn-xs" onclick="delete_perwabku('<?= $data->id ?>', '<?= $page ?>');" title="Klik untuk hapus"><i class="fa fa-trash-o"></i></button>
         </td>
