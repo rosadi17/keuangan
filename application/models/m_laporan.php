@@ -144,21 +144,24 @@ class M_laporan extends CI_Model {
         return $this->db->query($sql);
     }
     
-    function get_data_kas_bank($bulan, $rekening = NULL) {
+    function get_data_kas_bank($param) {
         /*$sql = "select j.*, s.nama as nama_rekening, u.uraian
             from jurnal j
             join sub_sub_sub_sub_rekening s on (j.id_rekening = s.id)
             join uraian u on (j.id_uraian = u.id)
             where j.tanggal like ('%$bulan%')";*/
         $q = NULL;
-        if ($rekening !== NULL) {
-            $q=" and s.nama like ('%$rekening%')";
+        if ($param['awal'] !== '' and $param['akhir'] !== '') {
+            $q.=" and ks.tanggal between '".$param['awal']."' and '".$param['akhir']."'";
+        }
+        if ($param['norekening'] !== '') {
+            $q=" and s.nama like ('%".$param['norekening']."%')";
         }
         $sql = "select ks.*, u.uraian
             from kasir ks
             join uraian u on (ks.id_uraian = u.id)
             join sub_sub_sub_sub_rekening s on (ks.id_rekening = s.id)
-            where ks.tanggal like ('%$bulan%') $q";
+            where ks.id is not NULL $q";
         //echo "<pre>".$sql."</pre>";
         return $this->db->query($sql);
     }

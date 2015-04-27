@@ -12,7 +12,7 @@ header_excel('perwabku-'.$cari['awal'].'-sd-'.$cari['akhir'].'.xls');
         <th width="15%" class="left">Satker</th>
         <?php } ?>
         <th width="15%" class="left">No. BKK</th>
-        <th width="7%">Tgl Masuk</th>
+        <th width="7%">Tgl BKK</th>
         <th width="30%" class="left">Uraian Kegiatan</th>
         <th width="7%" class="right">Jumlah</th>
         <?php if ($cari['satker'] !== '') { ?>
@@ -38,7 +38,7 @@ header_excel('perwabku-'.$cari['awal'].'-sd-'.$cari['akhir'].'.xls');
             echo implode(', ', $value);
             ?>
         </td>
-        <td align="center"><?= datetimefmysql($data->waktu) ?></td>
+        <td align="center"><?= datefmysql($data->tanggal_pengeluaran) ?></td>
         <td><?= $data->uraian ?></td>
         <td align="right"><?= ($data->dana) ?></td>
         <?php if ($cari['satker'] !== '') { ?>

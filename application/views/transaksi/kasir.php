@@ -389,6 +389,7 @@ function reset_form() {
 }
 
 function edit_kasir(id, transaksi) {
+    $('#perwabku, #kode_renbut').removeAttr('disabled');
     $('#form_kasir').dialog({
         title: 'Form Kasir BKK / BKM / MUTASI',
         autoOpen: true,

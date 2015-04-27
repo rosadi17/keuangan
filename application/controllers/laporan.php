@@ -258,15 +258,12 @@ class Laporan extends CI_Controller {
     }
     
     function get_data_kas_bank() {
-        $bulan = get_safe('tahun');
-        $data['awal_kas']  = $this->m_laporan->get_saldo_awal_kas($bulan)->row();
-        $data['list_data'] = $this->m_laporan->get_data_kas_bank($bulan)->result();
-        
-        $data['awal_kas_dropping']  = $this->m_laporan->get_saldo_awal_kas($bulan)->row();
-        $data['list_data_dropping'] = $this->m_laporan->get_data_kas_bank($bulan, 'Rekening Rektor')->result();
-        
-        $data['awal_kas_kelas_int']  = $this->m_laporan->get_saldo_awal_kas($bulan)->row();
-        $data['list_data_kelas_int'] = $this->m_laporan->get_data_kas_bank($bulan, 'Kelas Internasional')->result();
+        $param = array(
+            'awal' => date2mysql(get_safe('awal')),
+            'akhir' => date2mysql(get_safe('akhir')),
+            'norekening' => get_safe('kode_perkiraan')
+        );
+        $data['list_data'] = $this->m_laporan->get_data_kas_bank($param)->result();
         $this->load->view('laporan/kasbank-list', $data);
     }
     

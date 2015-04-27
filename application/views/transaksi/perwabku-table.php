@@ -4,7 +4,7 @@
         <th width="10%">No. Perwabku</th>
         <th width="10%" class="right">Jumlah Dana</th>
         <th width="10%" class="right">Dana Terpakai</th>
-        <th width="7%">Tgl Masuk</th>
+        <th width="7%">Tgl BKK</th>
         <th width="7%">Tgl PWK</th>
         <th width="7%">Thn Agr</th>
         <!--<th width="10%" class="left">Unit Kerja</th>-->
@@ -18,7 +18,7 @@
         <td align="center"><?= $data->kode_pwk ?></td>
         <td align="right"><?= rupiah($data->dana) ?></td>
         <td align="right"><?= rupiah($data->dana_digunakan) ?></td>
-        <td align="center"><?= datetimefmysql($data->waktu) ?></td>
+        <td align="center"><?= datefmysql($data->tanggal_pengeluaran) ?></td>
         <td align="center"><?= datefmysql($data->tanggal) ?></td>
         <td align="center"><?= substr($data->tanggal, 0, 4) ?></td>
         <!--<td><?= $data->satker ?></td>-->
