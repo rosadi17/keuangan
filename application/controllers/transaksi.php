@@ -416,13 +416,37 @@ class Transaksi extends CI_Controller {
     }
     
     function manage_jurnal($action, $page = null) {
-        $limit = 20;
         switch ($action) {
             case 'list':
-                $search['key'] = '';
-                $search['id']  = '';
+                $limit = 15;
+                $search = array(
+                    'awal' => date2mysql(get_safe('awal')),
+                    'akhir' => date2mysql(get_safe('akhir')),
+                    'norekening' => get_safe('kode_rekening'),
+                    'nobukti' => get_safe('nobukti')
+                );
                 $data = $this->get_list_data_jurnal($limit, $page, $search);
                 $this->load->view('transaksi/jurnal-table', $data);
+                break;
+            case 'verifikasi':
+                $limit = 15;
+                $search = array(
+                    'awal' => date2mysql(get_safe('awal')),
+                    'akhir' => date2mysql(get_safe('akhir')),
+                    'jenis' => get_safe('jenis'),
+                    'kegiatan' => get_safe('kegiatan'),
+                    'png_jwb' => get_safe('png_jwb')
+                );
+                $data = $this->get_list_data_kasir($limit, $page, $search);
+                $this->load->view('transaksi/jurnal-verifikasi-table', $data);
+                break;
+            case 'save_verifikasi':
+                $param = array(
+                    'id' => get_safe('id')
+                );
+                
+                $data = $this->m_transaksi->save_verifikasi($param);
+                die(json_encode($data));
                 break;
             case 'save': 
                 $data = $this->m_transaksi->save_jurnal();
@@ -453,7 +477,7 @@ class Transaksi extends CI_Controller {
         $data['list_data'] = $query['data'];
         $data['jumlah'] = $query['jumlah'];
         
-        $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, $search['key']);
+        $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 2, NULL);
         return $data;
     }
     

@@ -2,14 +2,41 @@
 <div class="titling"><h1><?= $title ?></h1></div>
 <script type="text/javascript">
     $(function() {
-        get_data_kas_bank();
+        get_data_kas_bank(1);
         $('#tabss').tabs();
+        $('#awal_kasbank, #akhir_kasbank').datepicker({
+            changeYear: true,
+            changeMonth: true
+        });
         $('#cari_kasbank').button({
             icons: {
                 secondary: 'ui-icon-search'
             }
         }).click(function() {
-            get_data_kas_bank();
+            $('#dialog_kasbank_search').dialog({
+                title: 'Cari Data',
+                autoOpen: true,
+                width: 480,
+                autoResize:true,
+                modal: true,
+                hide: 'explode',
+                show: 'blind',
+                position: ['center',47],
+                buttons: {
+                    "Cancel": function() {
+                        $('#dialog_kasbank_search').dialog('close');
+                    },
+                    "Cari": function() {
+                        $('#dialog_kasbank_search').dialog('close');
+                        get_data_kas_bank(1);
+                    } 
+                }, close: function() {
+                    $('#dialog_kasbank_search').dialog('close');
+                }, open: function() {
+                    $('#awal_kasbank, #akhir_kasbank').datepicker('hide');
+                    $('#kode_perkiraan').focus();
+                }
+            });
         });
         $('#reload_kasbank').button({
             icons: {
@@ -55,7 +82,7 @@
     <div id="dialog_kasbank_search" class="nodisplay">
         <form action="" id="search_kasbank">
             <table width=100% cellpadding=0 cellspacing=0 class=inputan>
-                <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal_kasir" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir_kasir" value="<?= date("d/m/Y") ?>" /></td></tr>
+                <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal_kasbank" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir_kasbank" value="<?= date("d/m/Y") ?>" /></td></tr>
                 <tr><td>Kode Rekening*:</td><td><?= form_input('', NULL, 'id=kode_perkiraan size=60') ?><?= form_hidden('kode_perkiraan', NULL, 'id=hide_kode_perkiraan') ?></td></tr>
             </table>
         </form>

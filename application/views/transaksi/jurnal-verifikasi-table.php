@@ -27,7 +27,6 @@
         if ($data->keterangan === NULL) {
             $keterangan = 'Mutasi';
         }
-        
         $tombol = NULL;
         if ($data->posted === '1') {
             $tombol = "disabled";
@@ -42,9 +41,8 @@
         <td align="right"><?= rupiah($data->nominal) ?></td>
         <td style="white-space: nowrap;"><?= $status ?></td>
         <td align="right">
-            <button type="button" class="btn btn-default btn-xs" onclick="print_kasir('<?= $data->id ?>', '<?= $data->kode_trans ?>');" title="Klik untuk print"><i class="fa fa-print"></i></button>
             <button type="button" class="btn btn-default btn-xs" <?= $tombol ?> onclick="edit_kasir('<?= $data->id ?>','<?= $data->kode_trans ?>');" title="Klik untuk edit"><i class="fa fa-pencil"></i></button>
-            <button type="button" class="btn btn-default btn-xs" <?= $tombol ?> onclick="delete_kasir('<?= $data->id ?>', '<?= $page ?>','<?= $data->kode_trans ?>');" title="Klik untuk delete"><i class="fa fa-trash-o"></i></button>
+            <button type="button" class="btn btn-default btn-xs" <?= $tombol ?> onclick="verifikasi('<?= $data->id ?>','<?= $page ?>');" title="Klik untuk verifikasi kode Akun"><i class="fa fa-pencil-square-o"></i></button>
         </td>
     </tr>
     <?php } ?>

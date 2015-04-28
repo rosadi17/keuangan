@@ -30,11 +30,11 @@
                 ?>
                 <tr class="<?= ($key%2===0)?'odd':'even' ?>">
                     <td align="center"><?= ++$key ?></td>
-                    <td align="center"><?= $data->kode ?></td>
-                    <td align="center"><?= datefmysql($data->tanggal) ?></td>
-                    <td><?= $data->uraian ?><i><?= $data->keterangan ?></i></td>
-                    <td align="right"></td>
-                    <td align="right"></td>
+                    <td align="center"><?= $data->kode_nota ?></td>
+                    <td align="center"><?= datetimefmysql($data->waktu) ?></td>
+                    <td><?= $data->keterangan ?></td>
+                    <td align="right"><?= $data->debet ?></td>
+                    <td align="right"><?= $data->kredit ?></td>
                     <td align="right"></td>
                 </tr>
             <?php

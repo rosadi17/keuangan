@@ -571,10 +571,20 @@ class M_transaksi extends CI_Model {
     
     function get_data_jurnal($limit, $start, $search) {
         $q = NULL;
-        $sql = "select * from jurnal order by id";
+        if ($search['awal'] !== '' and $search['akhir'] !== '') {
+            $q.=" and date(waktu) between '".$search['awal']."' and '".$search['akhir']."'";
+        }
+        if ($search['norekening'] !== '') {
+            $q.=" and id_rekening = '".$search['norekening']."'";
+        }
+        if ($search['nobukti'] !== '') {
+            $q.=" and kode_nota = '".$search['nobukti']."'";
+        }
+        $sql = "select * from jurnal where id is not NULL $q order by id";
+        
         $limitation = null;
         $limitation.=" limit $start , $limit";
-        $query = $this->db->query($sql . $q . $limitation);
+        $query = $this->db->query($sql . $limitation);
         //echo $sql . $q . $limitation;
         $queryAll = $this->db->query($sql . $q);
         $data['data'] = $query->result();
@@ -652,7 +662,7 @@ class M_transaksi extends CI_Model {
         if ($search['png_jwb'] !== '') {
             $q.=" and pg.penerima like ('%".$search['png_jwb']."%')";
         }
-        $sql = "select pg.id, pg.kode, pg.sumberdana, pg.tanggal, pg.id_rekening, pg.id_renbut, 
+        $sql = "select pg.id, pg.kode, pg.sumberdana, pg.tanggal, pg.id_rekening, pg.id_renbut, pg.posted,
                 pg.id_uraian, pg.pengeluaran as nominal, pg.penerima as penanggung_jwb, pg.perwabku, substr(pg.kode,1,3) as kode_trans, 
                 u.uraian as keterangan, IFNULL(pg.id_renbut,'') as renbut, pg.keterangan as keterangan_kasir 
                 from kasir pg
@@ -854,6 +864,57 @@ class M_transaksi extends CI_Model {
     
     function delete_perwabku($id) {
         $this->db->delete('perwabku', array('id' => $id));
+    }
+    
+    function save_verifikasi($param) {
+        $this->db->trans_begin();
+        
+        $this->db->where('id', $param['id']);
+        $this->db->update('kasir', array('posted' => 1));
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $result['status'] = FALSE;
+        }
+        
+        $rows = $this->db->get_where('kasir', array('id' => $param['id']))->row();
+        if ($rows->jenis === 'BKK') {
+            $debet = $rows->id_rekening_pwk;
+            $kredit= $rows->id_rekening;
+        } else {
+            $debet = $rows->id_rekening;
+            $kredit= $rows->id_rekening_pwk;
+        }
+        
+        $data = array(
+            'kode_nota' => $rows->kode,
+            'tanggal' => $rows->tanggal,
+            'id_rekening' => $debet,
+            'keterangan' => $rows->keterangan,
+            'debet' => $rows->pengeluaran
+        );
+        $this->db->insert('jurnal', $data);
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $result['status'] = FALSE;
+        }
+        
+        $data_kredit = array(
+            'kode_nota' => $rows->kode,
+            'tanggal' => $rows->tanggal,
+            'id_rekening' => $kredit,
+            'keterangan' => $rows->keterangan,
+            'kredit' => $rows->pengeluaran
+        );
+        $this->db->insert('jurnal', $data_kredit);
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $result['status'] = FALSE;
+        } else {
+            $this->db->trans_commit();
+            $result['status'] = TRUE;
+        }
+        
+        return $result;
     }
 }
 ?>
