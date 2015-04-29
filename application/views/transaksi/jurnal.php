@@ -254,6 +254,7 @@ function verifikasi(id, page) {
                         $('#label_tgl_trans').html(datefmysql(data.tanggal));
                         $('#label_uraian_verif').html(data.keterangan);
                         $('#label_keterangan').html(data.keterangan_kasir);
+                        $('#no_bukti').html(data.kode);
                         $('#value_rek_one').html(data.id_rekening+' '+data.rekening);
                         if (data.jenis === 'BKK') {
                             $('#rek_one').html('Kode Perkiraan (K)*:');
@@ -623,6 +624,7 @@ function delete_jurnal(id, page) {
         <tr><td>Tanggal Transaksi:</td><td id="label_tgl_trans"></td></tr>
         <tr><td>Uraian:</td><td id="label_uraian_verif"></td></tr>
         <tr><td>Keterangan <i>Memorial:</i></td><td id="label_keterangan"></td></tr>
+        <tr><td>No. Bukti:</td><td id="no_bukti"></td></tr>
         <tr><td id="rek_one">Kode Perkiraan (D):</td><td id="value_rek_one"></td></tr>
         <tr><td id="rek_two">Kode Perkiraan (K):</td><td id="value_rek_two"></td></tr>
     </table>
