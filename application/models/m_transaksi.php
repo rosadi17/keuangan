@@ -531,7 +531,8 @@ class M_transaksi extends CI_Model {
     
     function print_bukti_kas($id) {
         $sql = "select p.*, p.penerima, u.kode as ma_proja, s.nama as sub_rekening, u.uraian, 
-            p.pengeluaran as nominal, p.id_rekening as id_akun_rekening, p.id_rekening_pwk from kasir p 
+            p.pengeluaran as nominal, p.id_rekening as id_akun_rekening, p.id_rekening_pwk 
+            from kasir p 
             join sub_sub_sub_sub_rekening s on (p.id_rekening = s.id)
             join sub_sub_sub_sub_rekening ss on (p.id_rekening_pwk = ss.id)
             left join uraian u on (p.id_uraian = u.id)
@@ -683,7 +684,7 @@ class M_transaksi extends CI_Model {
     function get_data_kasir_by_id($id) {
         $sql = "select pg.*, IFNULL(pg.id_rekening,'') as id_rekening, substr(pg.kode,1,3) as kode_trans, rk.kode as kode_renbut,
             IFNULL(u.kode,'') as kode_uraian, IFNULL(u.uraian,'') as keterangan_ma, IFNULL(pg.id_renbut,'') as renbut, s4r.nama as rekening, s.nama as satker,
-            CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as keterangan,
+            CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan, u.uraian) as keterangan,
             pg.keterangan as keterangan_kasir,
             IFNULL(pg.id_rekening_pwk,'') as id_rekening_pwk, IFNULL(s4r2.nama,'') as rekening_pwk,
             CONCAT_WS(' ',pg.id_rekening_pwk,s4r2.nama) as kode_rekening_pwk

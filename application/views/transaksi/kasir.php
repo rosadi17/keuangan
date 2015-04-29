@@ -306,7 +306,7 @@ $(function() {
     function(event,data,formated){
         $(this).val(pad(data.ma_proja,5));
         $('#id_kode').val(data.id);
-        $('#uraian').val(data.uraian);
+        $('#label_uraian').html(data.keterangan);
         $('#pengguna').val(data.satker);
         $('#keterangan').val(data.uraian);
         get_nominal_renbut(data.id, $('#tahun').val());
@@ -382,10 +382,11 @@ $(function() {
 
 function reset_form() {
     $('input[type=text], input[type=hidden], select, textarea').val('');
-    $('#s2id_supplier_auto a .select2-chosen').html('');
+    $('#s2id_supplier_auto a .select2-chosen, #label_uraian').html('');
     $('#tanggal').val('<?= date("d/m/Y") ?>');
     $('#awal_kasir').val('<?= date("01/m/Y") ?>');
     $('#akhir_kasir').val('<?= date("d/m/Y") ?>');
+    $('#perwabku, #kode_renbut').removeAttr('disabled');
 }
 
 function edit_kasir(id, transaksi) {
