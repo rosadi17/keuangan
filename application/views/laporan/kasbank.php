@@ -33,8 +33,8 @@
                 }, close: function() {
                     $('#dialog_kasbank_search').dialog('close');
                 }, open: function() {
-                    $('#awal_kasbank, #akhir_kasbank').datepicker('hide');
-                    $('#kode_perkiraan').focus();
+                    //$('#awal_kasbank, #akhir_kasbank').datepicker('hide');
+                    //$('#kode_perkiraan').focus();
                 }
             });
         });
@@ -51,7 +51,7 @@
                 secondary: 'ui-icon-print'
             }
         }).click(function() {
-            location.href='<?= base_url('transaksi/manage_kasir/export_excel') ?>/?'+$('#search_kasbank').serialize();
+            location.href='<?= base_url('laporan/excel_kas_bank') ?>/?'+$('#search_kasbank').serialize();
         });
     });
     
@@ -83,7 +83,7 @@
         <form action="" id="search_kasbank">
             <table width=100% cellpadding=0 cellspacing=0 class=inputan>
                 <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal_kasbank" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir_kasbank" value="<?= date("d/m/Y") ?>" /></td></tr>
-                <tr><td>Kode Rekening*:</td><td><?= form_input('', NULL, 'id=kode_perkiraan size=60') ?><?= form_hidden('kode_perkiraan', NULL, 'id=hide_kode_perkiraan') ?></td></tr>
+                <!--<tr><td>Kode Rekening*:</td><td><?= form_input('', NULL, 'id=kode_perkiraan size=60') ?><?= form_hidden('kode_perkiraan', NULL, 'id=hide_kode_perkiraan') ?></td></tr>-->
             </table>
         </form>
     </div>

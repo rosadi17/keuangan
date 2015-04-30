@@ -1,4 +1,12 @@
-<table class="list-data" width="100%">
+<?php
+    header_excel('rekap_kas_bank_'.date2mysql($awal).'_sd_'.  date2mysql($akhir).'.xls');
+?>
+<table>
+    <tr>
+        <td colspan="7">REKAP TANSAKSI KAS & BANK TANGGAL <?= $awal ?> S.D <?= $akhir ?></td>
+    </tr>
+</table>
+<table border="1" width="100%">
     <thead>
     <tr>
         <th width="3%">NO.</th>
@@ -8,7 +16,6 @@
         <th width="10%" class="right">DEBET</th>
         <th width="10%" class="right">KREDIT</th>
         <th width="10%" class="right">SALDO</th>
-        <th width="1%"></th>
     </tr>
     </thead>
     <tbody>
@@ -19,8 +26,7 @@
         <td>SALDO AWAL</td>
         <td></td>
         <td></td>
-        <td align="right"><?= rupiah($saldo->awal) ?></td>
-        <td></td>
+        <td align="right"><?= ($saldo->awal) ?></td>
     </tr>
 
     <?php 
@@ -39,10 +45,9 @@
             <td align="center"><?= $data->kode ?></td>
             <td align="center"><?= datefmysql($data->tanggal) ?></td>
             <td><?= ($data->keterangan !== '')?$data->keterangan:$data->uraian ?></td>
-            <td align="right"><?= ($data->jenis !== 'BKK')?rupiah($data->pengeluaran):'-' ?></td>
-            <td align="right"><?= ($data->jenis === 'BKK')?rupiah($data->pengeluaran):'-' ?></td>
-            <td align="right"><?= rupiah($sisa) ?></td>
-            <td align="right"></td>
+            <td align="right"><?= ($data->jenis !== 'BKK')?($data->pengeluaran):'-' ?></td>
+            <td align="right"><?= ($data->jenis === 'BKK')?($data->pengeluaran):'-' ?></td>
+            <td align="right"><?= ($sisa) ?></td>
         </tr>
     <?php
     } ?>

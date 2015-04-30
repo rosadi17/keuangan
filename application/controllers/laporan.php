@@ -263,8 +263,20 @@ class Laporan extends CI_Controller {
             'akhir' => date2mysql(get_safe('akhir')),
             'norekening' => get_safe('kode_perkiraan')
         );
-        $data['list_data'] = $this->m_laporan->get_data_kas_bank($param)->result();
+        $data = $this->m_laporan->get_data_kas_bank($param);
         $this->load->view('laporan/kasbank-list', $data);
+    }
+    
+    function excel_kas_bank() {
+        $param = array(
+            'awal' => date2mysql(get_safe('awal')),
+            'akhir' => date2mysql(get_safe('akhir')),
+            'norekening' => get_safe('kode_perkiraan')
+        );
+        $data = $this->m_laporan->get_data_kas_bank($param);
+        $data['awal'] = get_safe('awal');
+        $data['akhir']= get_safe('akhir');
+        $this->load->view('laporan/excel-kasbank-list', $data);
     }
     
     function renbut() {

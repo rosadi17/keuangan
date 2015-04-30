@@ -150,18 +150,28 @@ class M_laporan extends CI_Model {
             join sub_sub_sub_sub_rekening s on (j.id_rekening = s.id)
             join uraian u on (j.id_uraian = u.id)
             where j.tanggal like ('%$bulan%')";*/
-        $q = NULL;
+        $q = NULL; $r = NULL;
         if ($param['awal'] !== '' and $param['akhir'] !== '') {
-            $q.=" and date(waktu) between '".$param['awal']."' and '".$param['akhir']."'";
+            $q.=" and k.tanggal between '".$param['awal']."' and '".$param['akhir']."'";
+            $r.=" and tanggal < '".$param['awal']."'";
         }
         if ($param['norekening'] !== '') {
-            $q=" and id_rekening like ('%".$param['norekening']."%')";
+            $q=" and k.id_rekening like ('%".$param['norekening']."%') or k.id_rekening_pwk like ('%".$param['norekening']."%')";
         }
-        $sql = "select *
-            from jurnal
-            where id is not NULL $q";
+        $sql = "select k.*, u.uraian
+            from kasir k
+            left join uraian u on (k.id_uraian = u.id)
+            where k.id is not NULL $q";
         //echo "<pre>".$sql."</pre>";
-        return $this->db->query($sql);
+        $data['list_data'] = $this->db->query($sql)->result();
+        
+        $sql_saldo = "select 
+            (select sum(pengeluaran) from kasir where jenis != 'BKK' $r)-(select sum(pengeluaran) from kasir where jenis = 'BKK' $r) as awal
+                ";
+        
+        $data['saldo']= $this->db->query($sql_saldo)->row();
+        $data['what'] = $this->db->query($sql_saldo)->row();
+        return $data;
     }
     
     function get_saldo_awal_kas($bulan) {
