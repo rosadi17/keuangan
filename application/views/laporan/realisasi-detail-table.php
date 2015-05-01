@@ -27,12 +27,13 @@ $monthNames = array(
         <?php foreach ($monthNames as $key => $bname) { ?>
         <th width="5%" class="right"><?= $bname[1] ?></th>
         <?php } ?>
+        <th width="6%%" class="right"><small>Real <?= $tahun+1 ?></small></th>
         <th width="6%%" class="right">Total</th>
         <th width="6%%" class="right">Sisa</th>
         <th width="1%">&nbsp;</th>
     </tr>
     <?php 
-    $total = 0; $pagu = 0; $sisa = 0;
+    $total = 0; $pagu = 0; $sisa = 0; $next = 0;
     foreach ($list_data as $key => $data) { ?>
     <tr valign="top" class="<?= ($key%2==1)?'even':'odd' ?>">
         <td align="center"><?= ++$key ?></td>
@@ -46,14 +47,16 @@ $monthNames = array(
             ?>
         <td align="right"><?= rupiah($list) ?></td>
         <?php } ?>
-        <td align="right"><?= rupiah($subtotal) ?></td>
-        <td align="right"><?= rupiah($data->pagu-$subtotal) ?></td>
+        <td align="right"><?= rupiah($data->next_year) ?></td>
+        <td align="right"><?= rupiah($subtotal+$data->next_year) ?></td>
+        <td align="right"><?= rupiah($data->pagu-($subtotal+$data->next_year)) ?></td>
         <td></td>
     </tr>
     <?php 
     $pagu +=$data->pagu;
     $total+=$subtotal;
-    $sisa +=$data->pagu-$subtotal;
+    $sisa +=$data->pagu-($subtotal+$data->next_year);
+    $next +=$data->next_year;
     } ?>
     <tr class="odd">
         <td colspan="3"  align="center">TOTAL</td>
@@ -63,7 +66,8 @@ $monthNames = array(
             ?>
         <td align="right"><?= rupiah($total_bln->realisasi) ?></td>
         <?php } ?>
-        <td align="right"><b><?= rupiah($total) ?></b></td>
+        <td align="right"><b><?= rupiah($next) ?></b></td>
+        <td align="right"><b><?= rupiah($total+$next) ?></b></td>
         <td align="right"><b><?= rupiah($sisa) ?></b></td>
         <td></td>
     </tr>

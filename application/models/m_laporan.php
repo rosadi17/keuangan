@@ -53,7 +53,22 @@ class M_laporan extends CI_Model {
             where ks.tahun = '$tahun' $q
                 group by s.id order by s.kode asc";
         //echo $sql;
-        return $this->db->query($sql);
+        $result = $this->db->query($sql)->result();
+        foreach ($result as $key => $value) {
+            $sql_child = "select IFNULL(sum(ks.pengeluaran),0) as total 
+            from kasir ks
+            join uraian u on (ks.id_uraian = u.id)
+            join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
+            join kegiatan k on (sk.id_kegiatan = k.id)
+            join program p on (k.id_program = p.id)
+            join satker s on (p.id_satker = s.id)
+            where s.id = '".$value->id_satker."' and ks.tahun_anggaran = '".($param['tahun']+1)."'
+                and ks.jenis = 'BKK'";
+            //echo $sql_child;
+            $result[$key]->next_year = $this->db->query($sql_child)->row()->total;
+        }
+        $data['list_data'] = $result;
+        return $data;
     }
     
     function get_data_pencairan_normal($limit, $start, $search) {
@@ -252,6 +267,20 @@ class M_laporan extends CI_Model {
                 ";
         $result = $this->db->query($sql)->result();
         foreach ($result as $i => $val) {
+            $sql_child = "select IFNULL(sum(ks.pengeluaran),0) as realisasi 
+                    from kasir ks 
+                    join uraian u on (ks.id_uraian = u.id)
+                    join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
+                    join kegiatan k on (sk.id_kegiatan = k.id)
+                    join program p on (k.id_program = p.id)
+                    join satker s on (p.id_satker = s.id)
+                    where s.id = '".$search['satker']."' 
+                        and ks.id_uraian = '".$val->id_uraian."' 
+                        and ks.tanggal like ('".($search['tahun']+1)."%')
+                        and ks.jenis = 'BKK' and ks.tahun_anggaran = '".$search['tahun']."'
+                    ";
+            $query_child = $this->db->query($sql_child)->row();
+            $result[$i]->next_year = $query_child->realisasi;
             foreach ($monthNames as $key => $name) {
                 $sql_real = "select IFNULL(sum(ks.pengeluaran),0) as realisasi 
                     from kasir ks 
@@ -263,15 +292,16 @@ class M_laporan extends CI_Model {
                     where s.id = '".$search['satker']."' 
                         and ks.id_uraian = '".$val->id_uraian."' 
                         and ks.tanggal like ('".$name."%')
-                        and ks.jenis = 'BKK'
+                        and ks.jenis = 'BKK' and ks.tahun_anggaran = '".$search['tahun']."'
                     ";
                 $child_real = $this->db->query($sql_real)->row();
                 $result[$i]->rincian[$key] = $child_real->realisasi;
             }
         }
         $data['list_data'] = $result;
-        return $data;
         //die(json_encode($data));
+        return $data;
+        
     }
     
     function total_realisasi_perbulan_persatker($satker, $bname) {
@@ -302,7 +332,7 @@ class M_laporan extends CI_Model {
             join kegiatan k on (sk.id_kegiatan = k.id)
             join program p on (k.id_program = p.id)
             join satker s on (p.id_satker = s.id)
-            where ks.tanggal like ('".$bulan."%')
+            where ks.tanggal like ('".(substr($bulan, 0, 4)+1)."%') and ks.tahun_anggaran = '".substr($bulan, 0, 4)."'
                 and ks.jenis = 'BKK'
                 $q";
         //echo $sql;

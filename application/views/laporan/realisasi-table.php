@@ -32,6 +32,7 @@ $monthNames = array(
         <?php for($i = $month1; $i <= $month2; $i++) { ?>
         <th width="7%" class="right"><?= $monthNames[$i] ?></th>
         <?php } ?>
+        <th width="7%"><small>Real <?= $tahun+1 ?></small></th>
         <th width="7%">Jumlah</th>
         <th width="7%">Sisa</th>
     </tr>
@@ -56,8 +57,9 @@ $monthNames = array(
             
         <td align="right" style="min-width: 90px;"><?= isset($real->total)?rupiah($real->total):'-' ?></td>
         <?php } ?>
-        <td align="right"><?= ($total_kanan !== 0)?rupiah($total_kanan):'-' ?></td>
-        <td align="right"><?= rupiah($data->pagu-$total_kanan) ?></td>
+        <td align="right" style="min-width: 90px;"><?= rupiah($data->next_year) ?></td>
+        <td align="right"><?= rupiah($total_kanan+$data->next_year) ?></td>
+        <td align="right"><?= rupiah($data->pagu-($total_kanan+$data->next_year)) ?></td>
     </tr>
     <?php 
     $total_terpakai = $total_terpakai+$total_kanan;

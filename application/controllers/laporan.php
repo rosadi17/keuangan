@@ -67,7 +67,8 @@ class Laporan extends CI_Controller {
     }
     
     function get_list_data_realisasi($search) {
-        $data['list_data'] = $this->m_laporan->load_satker($search)->result();
+        $data = $this->m_laporan->load_satker($search);
+        //die(json_encode($data));
         return $data;
     }
     

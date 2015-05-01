@@ -24,12 +24,14 @@ $monthNames = array(
 </table>
 <table cellspacing="0" width="100%" border="1">
     <tr>
+        <th width="5%"></th>
         <th width="5%">&nbsp;Kode.&nbsp;</th>
-        <th width="15%">Unit</th>
+        <th width="15%">Satker</th>
         <th width="7%">Pagu Angg.</th>
         <?php for($i = $month1; $i <= $month2; $i++) { ?>
         <th width="7%" class="right"><?= $monthNames[$i] ?></th>
         <?php } ?>
+        <th width="7%"><small>Realisasi pada <?= $tahun+1 ?></small></th>
         <th width="7%">Jumlah</th>
         <th width="7%">Sisa</th>
     </tr>
@@ -41,6 +43,7 @@ $monthNames = array(
         $total_pagu = $total_pagu + $data->pagu;
         ?>
     <tr class="<?= ($key%2==1)?'even':'odd' ?>">
+        <td align="center"><button class="btn btn-default btn-xs" onclick="detail_kode_ma('<?= $data->id_satker ?>','<?= $data->nama ?>', '<?= $tahun ?>');"><i class="fa fa-eye"></i></button></td>
         <td align="center"><?= $data->kode ?></td>
         <td class="nowrap"><small><?= $data->nama ?></small></td>
         <td align="right"><?= ($data->pagu) ?></td>
@@ -51,10 +54,11 @@ $monthNames = array(
             $total_kanan = $total_kanan+$real->total;
             ?>
             
-        <td align="right" style="min-width: 90px;"><?= isset($real->total)?($real->total):'' ?></td>
+        <td align="right" style="min-width: 90px;"><?= isset($real->total)?($real->total):'-' ?></td>
         <?php } ?>
-        <td align="right"><?= ($total_kanan !== 0)?($total_kanan):'' ?></td>
-        <td align="right"><?= ($data->pagu-$total_kanan) ?></td>
+        <td align="right" style="min-width: 90px;"><?= ($data->next_year) ?></td>
+        <td align="right"><?= ($total_kanan+$data->next_year) ?></td>
+        <td align="right"><?= ($data->pagu-($total_kanan+$data->next_year)) ?></td>
     </tr>
     <?php 
     $total_terpakai = $total_terpakai+$total_kanan;
