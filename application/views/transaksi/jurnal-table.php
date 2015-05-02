@@ -4,7 +4,8 @@
         <th width="7%">Tanggal</th>
         <th width="10%">No. Bukti</th>
         <th width="7%" class="left">Rekening</th>
-        <th width="50%" class="left">Keterangan</th>
+        <th width="17%" class="left">Nama Rekening</th>
+        <th width="33%" class="left">Keterangan</th>
         <th width="10%" class="right">Debet</th>
         <th width="10%" class="right">Kredit</th>
         <th width="3%"></th>
@@ -15,6 +16,7 @@
         <td align="center"><?= datefmysql($data->tanggal) ?></td>
         <td align="center"><?= $data->kode_nota ?></td>
         <td><?= $data->id_rekening ?></td>
+        <td><?= $data->nama ?></td>
         <td><?= $data->keterangan ?></td>
         <td align="right"><?= rupiah($data->debet) ?></td>
         <td align="right"><?= rupiah($data->kredit) ?></td>

@@ -573,15 +573,17 @@ class M_transaksi extends CI_Model {
     function get_data_jurnal($limit, $start, $search) {
         $q = NULL;
         if ($search['awal'] !== '' and $search['akhir'] !== '') {
-            $q.=" and date(waktu) between '".$search['awal']."' and '".$search['akhir']."'";
+            $q.=" and date(j.waktu) between '".$search['awal']."' and '".$search['akhir']."'";
         }
         if ($search['norekening'] !== '') {
-            $q.=" and id_rekening = '".$search['norekening']."'";
+            $q.=" and j.id_rekening = '".$search['norekening']."'";
         }
         if ($search['nobukti'] !== '') {
-            $q.=" and kode_nota = '".$search['nobukti']."'";
+            $q.=" and j.kode_nota = '".$search['nobukti']."'";
         }
-        $sql = "select * from jurnal where id is not NULL $q order by id";
+        $sql = "select j.*, s.nama from jurnal j 
+            join sub_sub_sub_sub_rekening s on (j.id_rekening = s.id)
+            where j.id is not NULL $q order by j.id";
         
         $limitation = null;
         $limitation.=" limit $start , $limit";
