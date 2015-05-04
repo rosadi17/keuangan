@@ -172,6 +172,7 @@ class M_laporan extends CI_Model {
         }
         if ($param['norekening'] !== '') {
             $q.=" and k.id_rekening like ('%".$param['norekening']."%') or k.id_rekening_pwk like ('%".$param['norekening']."%')";
+            $r.=" and id_rekening like ('%".$param['norekening']."%') or id_rekening_pwk like ('%".$param['norekening']."%')";
         }
         $sql = "select k.*, u.uraian
             from kasir k

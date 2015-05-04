@@ -6,7 +6,7 @@
     }
 </script>
 <style type="text/css" media="print">
-    *, body { background: #fff; font-family: Calibri, Arial, "Trebuchet MS"; font-size: 10px; }
+    
 </style>
 <?php
 foreach ($list_data as $detail);
@@ -19,7 +19,7 @@ foreach ($list_data as $detail);
             <td align="center" width="60%">&nbsp;</td><td width="25%" valign="top" align="right">
                 <table>
                     <tr><td style="border: none;">&nbsp;</td><td style="border: none; text-align: right;"><?= $detail->kode ?></td></tr>
-                    <tr><td style="border: none;"></td><td style="border: none;"><?= date("d F Y") ?></td></tr>
+                    <tr><td style="border: none;"></td><td style="border: none;"><?= datefmysql($detail->tanggal) ?></td></tr>
                 </table>
             </td>
         </tr>
