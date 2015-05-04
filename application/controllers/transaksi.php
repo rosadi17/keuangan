@@ -489,6 +489,7 @@ class Transaksi extends CI_Controller {
                     'awal' => date2mysql(get_safe('awal')),
                     'akhir' => date2mysql(get_safe('akhir')),
                     'jenis' => get_safe('jenis'),
+                    'kodema' => get_safe('id_kode'),
                     'kegiatan' => get_safe('kegiatan'),
                     'png_jwb' => get_safe('png_jwb')
                 );

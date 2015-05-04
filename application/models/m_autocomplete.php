@@ -114,7 +114,7 @@ class M_autocomplete extends CI_Model {
             join program p on (k.id_program = p.id)
             join satker s on (p.id_satker = s.id) 
             where u.id is not NULL $f group by su.id
-            having ma_proja like ('%$q%') or keterangan like ('%$q%')";
+            having ma_proja like ('$q%') or keterangan like ('%$q%')";
         //echo $sql;
         return $this->db->query($sql);
     }

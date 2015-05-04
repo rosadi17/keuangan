@@ -659,6 +659,9 @@ class M_transaksi extends CI_Model {
         if ($search['jenis'] !== '') {
             $q.=" and pg.jenis = '".$search['jenis']."'";
         }
+        if ($search['kodema'] !== '') {
+            $q.=" and pg.id_uraian = '".$search['kodema']."'";
+        }
         if ($search['kegiatan'] !== '') {
             $q.=" and u.uraian like ('%".$search['kegiatan']."%')";
         }

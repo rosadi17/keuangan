@@ -111,7 +111,8 @@ $(function() {
             }, close: function() {
                 $('#dialog_kasir_search').dialog('close');
             }, open: function() {
-                $('#uraian').focus();
+                $('#awal_kasir, #akhir_kasir').datepicker('hide');
+                $('#jenis_transaksi').focus();
             }
         });
     });
@@ -311,6 +312,37 @@ $(function() {
         $('#keterangan').val(data.uraian);
         get_nominal_renbut(data.id, $('#tahun').val());
     });
+    $('#kodema').autocomplete("<?= base_url('autocomplete/ma_proja') ?>",
+    {
+        extraParams: { 
+            tahun: function() { 
+                return $('#tahun').val();
+            }
+        },
+        parse: function(data){
+            var parsed = [];
+            for (var i=0; i < data.length; i++) {
+                parsed[i] = {
+                    data: data[i],
+                    value: data[i].nama_sub_kegiatan // nama field yang dicari
+                };
+            }
+            return parsed;
+        },
+        formatItem: function(data,i,max){
+            var str = '<div class=result>'+pad(data.ma_proja,5)+' / '+data.uraian+' &Rightarrow; <i>'+data.keterangan+'</i></div>';
+            return str;
+        },
+        width: 400, // panjang tampilan pencarian autocomplete yang akan muncul di bawah textbox pencarian
+        dataType: 'json', // tipe data yang diterima oleh library ini disetup sebagai JSON
+        cacheLength: 0,
+        max: 100
+    }).result(
+    function(event,data,formated){
+        $(this).val(pad(data.ma_proja,5));
+        $('#id_kodema').val(data.id);
+        $('#keterangan_ma').html(data.keterangan);
+    });
     $('#kode_perkiraan').autocomplete("<?= base_url('autocomplete/kode_perkiraan') ?>",
     {
         parse: function(data){
@@ -387,6 +419,7 @@ function reset_form() {
     $('#awal_kasir').val('<?= date("01/m/Y") ?>');
     $('#akhir_kasir').val('<?= date("d/m/Y") ?>');
     $('#perwabku, #kode_renbut').removeAttr('disabled');
+    $('#keterangan_ma').html('');
 }
 
 function edit_kasir(id, transaksi) {
@@ -554,6 +587,8 @@ function paging(p) {
             <table width=100% cellpadding=0 cellspacing=0 class=inputan>
                 <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal_kasir" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir_kasir" value="<?= date("d/m/Y") ?>" /></td></tr>
                 <tr><td>Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Semua Jenis ...', 'BKK' => 'Kas Keluar', 'BKM' => 'Kas Masuk','MTS' => 'Mutasi'), NULL, 'id=jenis_transaksi style="width: 300px;"') ?></td></tr>
+                <tr><td>Kode MA/Proja:</td><td><?= form_input('kode', NULL, 'id=kodema') ?><?= form_hidden('id_kode', NULL, 'id=id_kodema') ?></td></tr>
+                <tr><td>Keterangan MA:</td><td id="keterangan_ma"></td></tr>
                 <tr><td>Kegiatan:</td><td><input type="text" name="kegiatan" id="kegiatan" /></td></tr>
                 <tr><td>Penanggung Jawab:</td><td><input type="text" name="png_jwb" id="png_jwb" /></td></tr>
             </table>

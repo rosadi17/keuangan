@@ -37,8 +37,8 @@ $monthNames = array(
     foreach ($list_data as $key => $data) { ?>
     <tr valign="top" class="<?= ($key%2==1)?'even':'odd' ?>">
         <td align="center"><?= ++$key ?></td>
-        <td align="center"><?= $data->ma_proja ?></td>
-        <td><?= $data->uraian ?></td>
+        <td align="center"><a onclick="return false;" href="#"><?= $data->ma_proja ?></a></td>
+        <td><a onclick="return false;" href="#"><?= $data->uraian ?></a></td>
         <td align="right"><?= rupiah($data->pagu) ?></td>
         <?php 
         $subtotal = 0;
