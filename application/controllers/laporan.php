@@ -460,4 +460,9 @@ class Laporan extends CI_Controller {
         $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, null);
         return $data;
     }
+    
+    function rekap_realisasi() {
+        $data['title'] = 'Rekap Rincian Realisasi';
+        $this->load->view('laporan/rekap-rincian-realisasi', $data);
+    }
 }
