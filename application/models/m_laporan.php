@@ -333,7 +333,7 @@ class M_laporan extends CI_Model {
             join kegiatan k on (sk.id_kegiatan = k.id)
             join program p on (k.id_program = p.id)
             join satker s on (p.id_satker = s.id)
-            where ks.tanggal like ('".(substr($bulan, 0, 4)+1)."%') and ks.tahun_anggaran = '".substr($bulan, 0, 4)."'
+            where ks.tanggal like ('".$bulan."%') and ks.tahun_anggaran = '".substr($bulan, 0, 4)."'
                 and ks.jenis = 'BKK'
                 $q";
         //echo $sql;
