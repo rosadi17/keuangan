@@ -49,9 +49,12 @@ class Autocomplete extends CI_Controller {
     }
     
     function ma_proja() {
-        $q = get_safe('q');
-        $tahun = get_safe('tahun');
-        $data = $this->m_autocomplete->get_ma_proja($q, $tahun)->result();
+        $search = array(
+            'q' => get_safe('q'),
+            'tahun' => get_safe('tahun'),
+            'satker' => get_safe('satker')
+        );
+        $data = $this->m_autocomplete->get_ma_proja($search)->result();
         die(json_encode($data));
     }
     

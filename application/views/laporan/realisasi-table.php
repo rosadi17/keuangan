@@ -25,7 +25,7 @@ $monthNames = array(
 <!--<b style="float: right; position: absolute;">LAPORAN ANGGARAN DAN REALISASI BULAN JANUARI - DESEMBER TAHUN <?= get_safe('tahun') ?><br />UNIVERSITAS BHAYANGKARA SURABAYA</b>-->
 <table cellspacing="0" width="150%" class="list-data-border">
     <tr>
-        <th width="5%"></th>
+        <th width="3%"></th>
         <th width="5%">&nbsp;Kode.&nbsp;</th>
         <th width="15%">Satker</th>
         <th width="7%">Pagu Angg.</th>

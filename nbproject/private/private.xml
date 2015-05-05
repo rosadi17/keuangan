@@ -19,6 +19,7 @@
             <file>file:/C:/wamp/www/keuangan/application/views/masterdata/unit-table.php</file>
             <file>file:/C:/wamp/www/keuangan/application/controllers/masterdata.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/laporan/excel-rekap-renbut.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/masterdata/list_account.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/laporan/perwabku2-table.php</file>
             <file>file:/C:/wamp/www/keuangan/assets/js/jquery-ui.css</file>
             <file>file:/C:/wamp/www/keuangan/application/views/transaksi/pagu-table.php</file>
@@ -53,6 +54,7 @@
             <file>file:/C:/wamp/www/keuangan/application/views/masterdata/kegiatan-preview.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/laporan/perwabku.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/transaksi/perwabku-table.php</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/laporan/rekap-rincian-realisasi.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/masterdata/kegiatan-table.php</file>
             <file>file:/C:/wamp/www/keuangan/application/controllers/transaksi.php</file>
             <file>file:/C:/wamp/www/keuangan/application/models/m_autocomplete.php</file>
@@ -61,6 +63,7 @@
             <file>file:/C:/wamp/www/keuangan/application/views/layout.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/transaksi/dropping.php</file>
             <file>file:/C:/wamp/www/keuangan/assets/css/print-A4-half.css</file>
+            <file>file:/C:/wamp/www/keuangan/application/views/masterdata/list_group.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/laporan/excel-realisasi-table.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/transaksi/kasir-table.php</file>
             <file>file:/C:/wamp/www/keuangan/application/views/transaksi/renbut.php</file>

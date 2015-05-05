@@ -18,13 +18,15 @@
             <td><?= $rows->nama ?></td>
             <td><?= $rows->user_group ?></td>
             <td class="aksi"> 
-                <a title="Reset Password" class="resetpass" onclick="resetpassword('<?= $rows->id ?>', '<?= $rows->username ?>');"></a>
-                <a title="Reset Password" class="edition" onclick="edit_user('<?= $str ?>');"></a>
-                <a title="Hapus user account" class="deletion" onclick="delete_user('<?= $rows->id ?>')"></a>
+                <button class="btn btn-xs" onclick="resetpassword('<?= $rows->id ?>', '<?= $rows->username ?>');"><i class="fa fa-refresh"></i></button>
+                <button class="btn btn-xs" onclick="edit_user('<?= $str ?>');"><i class="fa fa-pencil"></i></button>
+                <button class="btn btn-xs" onclick="delete_user('<?= $rows->id ?>')"><i class="fa fa-trash-o"></i></button>
             </td>  
         </tr>
     <?php endforeach; ?>
     </tbody>
 </table>
+<?= $infopage ?>
+<?= $paging ?>
 <br/>
-<div id="paging"><?= $paging ?></div>
+<br/>

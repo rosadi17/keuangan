@@ -339,5 +339,44 @@ class M_laporan extends CI_Model {
         //echo $sql;
         return $this->db->query($sql);
     }
+    
+    function get_list_data_rincian_realisasi($limit, $start, $search) {
+        $q = NULL;
+        if ($search['awal'] !== '' and $search['akhir'] !== '') {
+            $q.=" and pg.tanggal between '".$search['awal']."' and '".$search['akhir']."'";
+        }
+        if ($search['jenis'] !== '') {
+            $q.=" and p.status = '".$search['jenis']."'";
+        }
+        if ($search['satker'] !== '') {
+            $q.=" and s.id = '".$search['satker']."'";
+        }
+        if ($search['tahun'] !== '') {
+            $q.=" and pg.tahun_anggaran = '".$search['tahun']."'";
+        }
+        if ($search['kodema'] !== '') {
+            $q.=" and pg.id_uraian = '".$search['kodema']."'";
+        }
+        $sql = "select pg.id, pg.kode, pg.sumberdana, pg.tanggal, pg.id_rekening, pg.id_renbut, pg.posted, s.nama as satker,
+                pg.id_uraian, u.kode as kode_ma, pg.pengeluaran as nominal, pg.penerima as penanggung_jwb, pg.perwabku, substr(pg.kode,1,3) as kode_trans, 
+                u.uraian as keterangan, IFNULL(pg.id_renbut,'') as renbut, pg.keterangan as keterangan_kasir 
+                from kasir pg
+                left join uraian u on (pg.id_uraian = u.id)
+                join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
+                join kegiatan k on (sk.id_kegiatan = k.id)
+                join program p on (k.id_program = p.id)
+                join satker s on (p.id_satker = s.id)
+                where pg.jenis in ('BKK','BKM') $q order by pg.id desc";
+        $limitation = null;
+        if ($limit !== NULL) {
+            $limitation = " limit $start , $limit";
+        }
+        $query = $this->db->query($sql . $limitation);
+        //echo $sql . $q . $limitation;
+        $queryAll = $this->db->query($sql);
+        $data['data'] = $query->result();
+        $data['jumlah'] = $queryAll->num_rows();
+        return $data;
+    }
 }
 ?>

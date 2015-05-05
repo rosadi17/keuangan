@@ -99,10 +99,13 @@ class M_autocomplete extends CI_Model {
         return $this->db->query($sql);
     }
     
-    function get_ma_proja($q, $tahun) {
+    function get_ma_proja($param) {
         $f = NULL;
-        if ($tahun !== '') {
-            $f = " and su.tahun = '$tahun'";
+        if ($param['tahun'] !== '') {
+            $f.=" and su.tahun = '".$param['tahun']."'";
+        }
+        if ($param['satker'] !== '') {
+            $f.=" and s.id = '".$param['satker']."'";
         }
         $sql = "select u.*, s.nama as satker, 
             u.kode as ma_proja, su.keterangan as uraian,
@@ -114,7 +117,7 @@ class M_autocomplete extends CI_Model {
             join program p on (k.id_program = p.id)
             join satker s on (p.id_satker = s.id) 
             where u.id is not NULL $f group by su.id
-            having ma_proja like ('$q%') or keterangan like ('%$q%')";
+            having ma_proja like ('".$param['q']."%') or keterangan like ('%".$param['q']."%')";
         //echo $sql;
         return $this->db->query($sql);
     }

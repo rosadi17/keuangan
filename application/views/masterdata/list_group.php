@@ -1,8 +1,8 @@
-<table class="list-data" width="50%" cellspacing="0">
+<table class="list-data" width="100%" cellspacing="0">
     <thead>
     <tr>
-        <th width="8%">No.</th>
-        <th width="82%">Nama</th>
+        <th width="3%">No.</th>
+        <th width="87%">Nama</th>
         <th width="10%">Aksi</th>
     </tr>
     </thead>
@@ -11,14 +11,16 @@
         <tr class="<?= ($key % 2 == 1) ? 'even' : 'odd' ?>" ondblclick="edit_user('<?= $rows->id ?>')">
             <td align="center"><?= (++$key + (($page - 1) * $limit)) ?></td>
             <td><?= $rows->nama ?></td>
-            <td class="aksi" align="center"> 
-                <a title="Ubah group privileges" class="edition" onclick="edit_privileges('<?= $rows->id ?>', '<?= $rows->nama ?>');">&nbsp;</a>
-                <a title="Ubah user group" class="edition" onclick="edit_group('<?= $rows->id ?>', '<?= $rows->nama ?>');">&nbsp;</a>
-                <a title="Hapus user group" class="deletion" onclick="delete_group('<?= $rows->id ?>');">&nbsp;</a>
+            <td align="right"> 
+                <button class="btn btn-xs" onclick="edit_privileges('<?= $rows->id ?>', '<?= $rows->nama ?>');"><i class="fa fa-user-md"></i></button>
+                <button class="btn btn-xs" onclick="edit_group('<?= $rows->id ?>', '<?= $rows->nama ?>');"><i class="fa fa-pencil"></i></button>
+                <button class="btn btn-xs" onclick="delete_group('<?= $rows->id ?>');"><i class="fa fa-trash-o"></i></button>
             </td>  
         </tr>
     <?php endforeach; ?>
     </tbody>
 </table>
-<br/>
-<div id="paging"><?= $paging ?></div>
+<?= $infopage ?>
+<?= $paging ?>
+
+<br/><br/>

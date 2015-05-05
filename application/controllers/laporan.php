@@ -463,6 +463,58 @@ class Laporan extends CI_Controller {
     
     function rekap_realisasi() {
         $data['title'] = 'Rekap Rincian Realisasi';
+        $data['satker']= $this->m_masterdata->load_satker()->result();
         $this->load->view('laporan/rekap-rincian-realisasi', $data);
+    }
+    
+    function manage_rekap_realisasi($action, $page = NULL) {
+        $limit = 15;
+        switch ($action) {
+            case 'list':
+                $search =  array(
+                    'awal' => date2mysql(get_safe('awal')),
+                    'akhir' => date2mysql(get_safe('akhir')),
+                    'satker' => get_safe('id_satker'),
+                    'jenis' => get_safe('jenis'),
+                    'tahun' => get_safe('tahun'),
+                    'kodema' => get_safe('id_kode'),
+                );
+                $data = $this->get_list_data_rincian_realisasi($limit, $page, $search);
+                $data['cari'] = $search;
+                $this->load->view('laporan/rekap-rincian-realisasi-table', $data);
+            break;
+            case 'export_excel': 
+                $search =  array(
+                    'awal' => date2mysql(get_safe('awal')),
+                    'akhir' => date2mysql(get_safe('akhir')),
+                    'satker' => get_safe('id_satker'),
+                    'jenis' => get_safe('jenis'),
+                    'tahun' => get_safe('tahun'),
+                    'kodema' => get_safe('id_kode')
+                );
+                $query = $this->m_laporan->get_list_data_rincian_realisasi(NULL, NULL, $search);
+                $data['cari'] = $search;
+                $data['list_data'] = $query['data'];
+                $this->load->view('laporan/excel-rekap-rincian-realisasi', $data);
+            break;
+        }
+    }
+    
+    function get_list_data_rincian_realisasi($limit, $page, $search) {
+        if ($page == 'undefined') {
+            $page = 1;
+        }
+        //$str = 'null';
+        $start = ($page - 1) * $limit;
+        $data['page'] = $page;
+        $data['limit'] = $limit;
+        $data['auto'] = $start+1;
+        $query = $this->m_laporan->get_list_data_rincian_realisasi($limit, $start, $search);
+        $data['list_data'] = $query['data'];
+        $data['jumlah'] = $query['jumlah'];
+        
+        $data['infopage'] = page_summary($data['jumlah'], $page, $limit);
+        $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, null);
+        return $data;
     }
 }

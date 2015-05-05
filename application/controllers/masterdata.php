@@ -375,6 +375,7 @@ class Masterdata extends CI_Controller {
         $data['jumlah'] = $query['jumlah'];
         $data['user'] = $query['data'];
         $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, '');
+        $data['infopage'] = page_summary($data['jumlah'], $page, $limit);
         return $data;
     }
 
@@ -430,6 +431,7 @@ class Masterdata extends CI_Controller {
         $data['jumlah'] = $query['jumlah'];
         $data['user'] = $query['data'];
         $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 2, '');
+        $data['infopage'] = page_summary($data['jumlah'], $page, $limit);
         return $data;
     }
 
