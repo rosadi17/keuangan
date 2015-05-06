@@ -12,8 +12,8 @@
         <th width="7%">Kode</th>
         <th width="7%">Satker</th>
         <th width="5%">MA</th>
-        <th width="28%" class="left">Keterangan MA</th>
-        <th width="35%" class="left">Kegiatan</th>
+        <th width="48%" class="left">Keterangan MA</th>
+        <th width="15%" class="left">Penanggung Jawab</th>
         <th width="10%" class="right">Nominal</th>
     </tr>
     <?php foreach ($list_data as $key => $data) { 
@@ -44,11 +44,11 @@
         <td align="center"><?= ++$key ?></td>
         <td align="center"><?= datefmysql($data->tanggal) ?></td>
         <td><?= $data->kode ?></td>
-        <td><?= $data->satker ?></td>
+        <td><small><?= $data->satker ?></small></td>
         <td align="center"><?= $data->kode_ma ?></td>
-        <td><?= $data->keterangan ?></td>
-        <td><i><?= $data->keterangan_kasir ?></i></td>
-        <td align="right"><?= ($data->nominal) ?></td>
+        <td><?= $data->keterangan ?>, <i><?= $data->keterangan_kasir ?></i></td>
+        <td><?= $data->penanggung_jwb ?></td>
+        <td align="right"><?= rupiah($data->nominal) ?></td>
         
     </tr>
     <?php } ?>

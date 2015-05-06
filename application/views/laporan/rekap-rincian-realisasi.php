@@ -14,7 +14,7 @@ $(function() {
         $('#loaddata').load('<?= base_url('laporan/rekap_realisasi') ?>');
     });
     
-    $('#cari_button').button({
+    $('#cari_button_realisasi').button({
         icons: {
             secondary: 'ui-icon-search'
         }
@@ -30,14 +30,14 @@ $(function() {
             position: ['center',47],
             buttons: {
                 "Cancel": function() {
-                    $('#dialog_rekap_realisasi_search').dialog('close');
+                    $('#dialog_rekap_realisasi_search').dialog('destroy');
                 },
                 "Cari": function() {
                     $('#dialog_rekap_realisasi_search').dialog('close');
                     get_list_rekap_rekap_realisasi(1);
                 } 
             }, close: function() {
-                $('#dialog_rekap_realisasi_search').dialog('close');
+                $('#dialog_rekap_realisasi_search').dialog('destroy');
             }, open: function() {
                 $('#awal_rekap_realisasi, #akhir_rekap_realisasi').datepicker('hide');
                 $('#jenis_laporan').focus();
@@ -174,7 +174,7 @@ function paging(p) {
             <li><a href="#tabs-1">Parameter</a></li>
         </ul>
         <div id="tabs-1">
-            <button id="cari_button">Cari</button>
+            <button id="cari_button_realisasi">Cari</button>
             <button id="excel_rekap_realisasi">Export Excel</button>
             <button id="reload_rekap_realisasi_data">Reload Data</button>
             <div id="result-rekap_realisasi">

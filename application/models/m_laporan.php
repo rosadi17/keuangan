@@ -62,7 +62,9 @@ class M_laporan extends CI_Model {
             join kegiatan k on (sk.id_kegiatan = k.id)
             join program p on (k.id_program = p.id)
             join satker s on (p.id_satker = s.id)
-            where s.id = '".$value->id_satker."' and ks.tahun_anggaran = '".($param['tahun']+1)."'
+            where s.id = '".$value->id_satker."' 
+                and ks.tanggal like ('".($param['tahun']+1)."%') 
+                and ks.tahun_anggaran = '".($param['tahun'])."'
                 and ks.jenis = 'BKK'";
             //echo $sql_child;
             $result[$key]->next_year = $this->db->query($sql_child)->row()->total;
@@ -174,9 +176,10 @@ class M_laporan extends CI_Model {
             $q.=" and k.id_rekening like ('%".$param['norekening']."%') or k.id_rekening_pwk like ('%".$param['norekening']."%')";
             $r.=" and id_rekening like ('%".$param['norekening']."%') or id_rekening_pwk like ('%".$param['norekening']."%')";
         }
-        $sql = "select k.*, u.uraian
+        $sql = "select k.*, u.uraian, s.nama as rekening
             from kasir k
             left join uraian u on (k.id_uraian = u.id)
+            left join sub_sub_sub_sub_rekening s on (k.id_rekening = s.id)
             where k.id is not NULL $q";
         //echo "<pre>".$sql."</pre>";
         $data['list_data'] = $this->db->query($sql)->result();
