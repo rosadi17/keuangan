@@ -3,7 +3,7 @@
 <script type="text/javascript">
     $(function() {
         get_data_kas_bank(1);
-        $('#tabss').tabs();
+        $('#').tabs();
         $('#awal_kasbank, #akhir_kasbank').datepicker({
             changeYear: true,
             changeMonth: true
@@ -24,14 +24,14 @@
                 position: ['center',47],
                 buttons: {
                     "Cancel": function() {
-                        $('#dialog_kasbank_search').dialog('close');
+                        $('#dialog_kasbank_search').dialog('destroy');
                     },
                     "Cari": function() {
-                        $('#dialog_kasbank_search').dialog('close');
+                        $('#dialog_kasbank_search').dialog('destroy');
                         get_data_kas_bank(1);
                     } 
                 }, close: function() {
-                    $('#dialog_kasbank_search').dialog('close');
+                    $('#dialog_kasbank_search').dialog('destroy');
                 }, open: function() {
                     $('#awal_kasbank, #akhir_kasbank').datepicker('hide');
                     $('#kode_perkiraan').focus();
@@ -92,11 +92,11 @@
     }
 </script>
 <div class="kegiatan">
-    <div id="tabss">
+    <div id="tabs_kasbank">
         <ul>
-            <li><a href="#tabss-1">Parameter</a></li>
+            <li><a href="#tabs_kasbank-1">Parameter</a></li>
         </ul>
-        <div id="tabss-1">
+        <div id="tabs_kasbank-1">
             <button id="cari_kasbank">Cari</button>
             <button id="excel_kasbank">Export Excel</button>
             <button id="reload_kasbank">Reload Data</button>

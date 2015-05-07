@@ -181,7 +181,7 @@ class M_laporan extends CI_Model {
             left join uraian u on (k.id_uraian = u.id)
             left join sub_sub_sub_sub_rekening s on (k.id_rekening = s.id)
             where k.id is not NULL $q";
-        //echo "<pre>".$sql."</pre>";
+        echo "<pre>".$sql."</pre>";
         $data['list_data'] = $this->db->query($sql)->result();
         if ($param['norekening'] !== '') {
             $nama_rek = "select * from sub_sub_sub_sub_rekening where id = '".$param['norekening']."'";
