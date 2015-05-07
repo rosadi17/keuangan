@@ -2,7 +2,8 @@
 <div class="titling"><h1><?= $title ?></h1></div>
 <script type="text/javascript">
     $(function() {
-        get_data_kas_bank(1);
+        //get_data_kas_bank(1);
+        
         $('#tabs_kasbank').tabs();
         $('#awal_kasbank, #akhir_kasbank').datepicker({
             changeYear: true,
@@ -27,6 +28,9 @@
                         $('#dialog_kasbank_search').dialog('destroy');
                     },
                     "Cari": function() {
+                        if ($('#hide_kode_perkiraan').val() === '') {
+                            custom_message('Peringatan','Kode rekening tidak boleh kosong !','#kode_perkiraan'); return false;
+                        }
                         $('#dialog_kasbank_search').dialog('destroy');
                         get_data_kas_bank(1);
                     } 
@@ -99,9 +103,23 @@
         <div id="tabss-1">
             <button id="cari_kasbank">Cari</button>
             <button id="excel_kasbank">Export Excel</button>
-            <button id="reload_kasbank">Reload Data</button>
+            <!--<button id="reload_kasbank">Reload Data</button>-->
         <div id="result">
-
+            <table class="list-data" width="100%">
+                <thead>
+                <tr>
+                    <th width="3%">NO.</th>
+                    <th width="7%">NO. BUKTI</th>
+                    <th width="5%">TGL</th>
+                    <th width="5%">No.Rek</th>
+                    <th width="20%" class="left">Nama Rekening</th>
+                    <th width="32%" class="left">Keterangan</th>
+                    <th width="9%" class="right">DEBET</th>
+                    <th width="9%" class="right">KREDIT</th>
+                    <th width="9%" class="right">SALDO</th>
+                </tr>
+                </thead>
+            </table>
         </div>
         </div>
     </div>

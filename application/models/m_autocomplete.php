@@ -139,7 +139,7 @@ class M_autocomplete extends CI_Model {
             join rencana_kebutuhan rk on (rk.id_uraian = u.id)
             where u.id is not NULL 
             and rk.kode like ('%$q%') $param group by su.id";
-        echo $sql;
+        //echo $sql;
         return $this->db->query($sql);
     }
     
@@ -336,17 +336,17 @@ class M_autocomplete extends CI_Model {
         $sql = "select p.*, u.uraian as keterangan, CONCAT_WS(' ',p.kode,'Rp. ',p.pengeluaran,'<br/>',u.uraian) as kode, p.pengeluaran as cashbon, u.kode as kode_ma, r.id_renbut
             from kasir p
             left join rencana_kebutuhan r on (p.kode = r.kode_cashbon)
-            join uraian u on (p.id_uraian = u.id)
+            left join uraian u on (p.id_uraian = u.id)
             where p.id_renbut is NULL and p.kode like ('".$q."%')";
         //echo $sql;
         return $this->db->query($sql);
     }
     
     function nomorbkkdp($q) {
-        $sql = "select p.*, u.uraian as keterangan, p.kode, p.pengeluaran as cashbon, u.kode as kode_ma, r.id_renbut
+        $sql = "select p.*, IFNULL(u.uraian,p.keterangan) as keterangan, p.kode, p.pengeluaran as cashbon, u.kode as kode_ma, r.id_renbut
             from kasir p
             left join rencana_kebutuhan r on (p.kode = r.kode_cashbon)
-            join uraian u on (p.id_uraian = u.id)
+            left join uraian u on (p.id_uraian = u.id)
             where p.perwabku = 'Belum' and p.id not in (select id_pengeluaran from detail_perwabku) and p.kode like ('".$q."%') group by p.kode";
         //echo $sql;
         return $this->db->query($sql);

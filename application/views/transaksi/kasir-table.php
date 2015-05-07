@@ -47,6 +47,14 @@
             <button type="button" class="btn btn-default btn-xs" <?= $tombol ?> onclick="delete_kasir('<?= $data->id ?>', '<?= $page ?>','<?= $data->kode_trans ?>');" title="Klik untuk delete"><i class="fa fa-trash-o"></i></button>
         </td>
     </tr>
+    <tr class="<?= ($key%2==1)?'even':'odd' ?>">
+        <td align="center"></td>
+        <td align="center"></td>
+        <td><?= $data->id_rekening ?> <?= ($data->jenis === 'BKK')?'(K)':'(D)' ?></td>
+        <td><?= $data->rekening ?></td>
+        <td><?= $data->id_rekening_pwk ?><?= ($data->jenis === 'BKK')?'(D)':'(K)' ?></td>
+        <td colspan="3"><?= $data->rekening_pwk ?></td>
+    </tr>
     <?php } ?>
 </table>
 <?= $paging ?>

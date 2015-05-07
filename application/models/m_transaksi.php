@@ -29,11 +29,11 @@ class M_transaksi extends CI_Model {
             CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan) as detail, IFNULL(ks.id,'') as id_pengeluaran
             from rencana_kebutuhan rk
             left join kasir ks on (rk.kode_cashbon = ks.kode and ks.kode = 'BKK')
-            join uraian u on (rk.id_uraian = u.id)
-            join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
-            join kegiatan k on (sk.id_kegiatan = k.id)
-            join program p on (k.id_program = p.id)
-            join satker s on (p.id_satker = s.id)
+            left join uraian u on (rk.id_uraian = u.id)
+            left join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
+            left join kegiatan k on (sk.id_kegiatan = k.id)
+            left join program p on (k.id_program = p.id)
+            left join satker s on (p.id_satker = s.id)
             where rk.kode != ''";
         $limitation = null;
         $limitation.=" limit $start , $limit";
@@ -76,7 +76,7 @@ class M_transaksi extends CI_Model {
                 'kode' => $kode,
                 'tanggal_kegiatan' => $tanggal,
                 'tanggal_renbut' => $tgl_renbut,
-                'id_uraian' => $id_uraian,
+                'id_uraian' => ($id_uraian !== '')?$id_uraian:NULL,
                 'keterangan' => $keterangan,
                 'jml_renbut' => $jml_renbut,
                 'nominal' => $jml_renbut,
@@ -90,7 +90,7 @@ class M_transaksi extends CI_Model {
                 'tanggal_kegiatan' => $tanggal,
                 'tanggal_renbut' => $tgl_renbut,
                 'kode' => $kode,
-                'id_uraian' => $id_uraian,
+                'id_uraian' => ($id_uraian !== '')?$id_uraian:NULL,
                 'keterangan' => $keterangan,
                 'jml_renbut' => $jml_renbut,
                 'nominal' => $jml_renbut-$renbut->cashbon,
@@ -464,7 +464,7 @@ class M_transaksi extends CI_Model {
                     'penerima' => $penyetor
                 );
                 $this->db->insert('rencana_kebutuhan', $data_renbut);
-                $id_rencana = $this->db->insert_id();
+                //$id_rencana = $this->db->insert_id();
             }
             $jns = NULL;
             if ($jenis === 'bkk') {
@@ -671,9 +671,12 @@ class M_transaksi extends CI_Model {
         }
         $sql = "select pg.id, pg.kode, pg.sumberdana, pg.tanggal, pg.id_rekening, pg.id_renbut, pg.posted,
                 pg.id_uraian, pg.pengeluaran as nominal, pg.penerima as penanggung_jwb, pg.perwabku, substr(pg.kode,1,3) as kode_trans, 
-                u.uraian as keterangan, IFNULL(pg.id_renbut,'') as renbut, pg.keterangan as keterangan_kasir 
+                u.uraian as keterangan, IFNULL(pg.id_renbut,'') as renbut, pg.keterangan as keterangan_kasir, pg.id_rekening_pwk, pg.jenis,
+                s.nama as rekening, ss.nama as rekening_pwk
                 from kasir pg
                 left join uraian u on (pg.id_uraian = u.id)
+                left join sub_sub_sub_sub_rekening s on (pg.id_rekening = s.id)
+                left join sub_sub_sub_sub_rekening ss on (pg.id_rekening_pwk = ss.id)
                 where pg.id is not NULL $q order by pg.id desc";
         $limitation = null;
         if ($limit !== NULL) {
@@ -731,11 +734,11 @@ class M_transaksi extends CI_Model {
             from perwabku pw
             join detail_perwabku dp on (dp.id_perwabku = pw.id)
             join kasir pg on (dp.id_pengeluaran = pg.id)
-            join uraian u on (pg.id_uraian = u.id)
-            join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
-            join kegiatan k on (sk.id_kegiatan = k.id)
-            join program p on (k.id_program = p.id)
-            join satker s on (p.id_satker = s.id)
+            left join uraian u on (pg.id_uraian = u.id)
+            left join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
+            left join kegiatan k on (sk.id_kegiatan = k.id)
+            left join program p on (k.id_program = p.id)
+            left join satker s on (p.id_satker = s.id)
             join users us on (pw.id_user = us.id)
             where pw.id is not NULL $q group by pw.id";
         $limitation = null;

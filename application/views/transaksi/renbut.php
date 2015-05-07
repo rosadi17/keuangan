@@ -223,10 +223,10 @@ function form_renbut() {
             custom_message('Peringatan', 'Nomor yang anda masukkan harus dengan format yymmxxxx misal: 15010001 !', '#nomor');
             return false;
         }
-        if ($('#id_uraian').val() === '') {
+        /*if ($('#id_uraian').val() === '') {
             custom_message('Peringatan', 'Kode MA proja belum dipilih !', '#uraian');
             return false;
-        }
+        }*/
         if ($('#jml_renbut').val() === '') {
             custom_message('Peringatan', 'Jumlah renbut harus diisi !', '#jml_renbut');
             return false;

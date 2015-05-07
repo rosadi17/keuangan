@@ -187,13 +187,13 @@ $(function() {
         if ($('#jenis').val() === '') {
             custom_message('Peringatan', 'Nama transaksi harus dipilih', '#jenis'); return false;
         }
-//        if ($('#id_renbut').val() === '') {
-//            custom_message('Peringatan', 'Nomor renbut harus dipilih', '#kode_renbut'); return false;
-//        }
+        /*if ($('#id_renbut').val() === '') {
+            custom_message('Peringatan', 'Nomor renbut harus dipilih', '#kode_renbut'); return false;
+        }*/
         if ($('#jenis').val() !== 'mts') {
-            if ($('#kode').val() === '') {
+            /*if ($('#kode').val() === '') {
                 custom_message('Peringatan', 'Kode MA / Proja harus dipilih', '#kode'); return false;
-            }
+            }*/
             if ($('#nama_user').val() === '') {
                 custom_message('Peringatan', 'Penyetor / Penerima anggaran tidak boleh kosong', '#nama_user'); return false;
             }

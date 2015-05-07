@@ -78,7 +78,7 @@ foreach ($list_data as $detail);
             <th width="20%">&nbsp;</th>
             <th width="20%">&nbsp;</th>
         </tr>
-        <?php for ($i = 1; $i <= 3; $i++) { ?>
+        <?php for ($i = 1; $i <= 2; $i++) { ?>
         <tr>
             <td colspan="5">&nbsp;</td>
         </tr>
