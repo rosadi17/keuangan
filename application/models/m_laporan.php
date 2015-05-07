@@ -183,6 +183,10 @@ class M_laporan extends CI_Model {
             where k.id is not NULL $q";
         //echo "<pre>".$sql."</pre>";
         $data['list_data'] = $this->db->query($sql)->result();
+        if ($param['norekening'] !== '') {
+            $nama_rek = "select * from sub_sub_sub_sub_rekening where id = '".$param['norekening']."'";
+            $data['nama_rek'] = $this->db->query($nama_rek)->row();
+        }
         
         $sql_saldo = "select 
             (select sum(pengeluaran) from kasir where jenis != 'BKK' $r)-(select sum(pengeluaran) from kasir where jenis = 'BKK' $r) as awal

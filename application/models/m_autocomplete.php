@@ -151,7 +151,7 @@ class M_autocomplete extends CI_Model {
         if ($param['kategori'] === 'Bank') {
             $q.=" and s4r.id_sub_sub_sub_rekening = '111200'";
         }
-        $sql = "select r.*, s4r.id as id_akun, CONCAT_WS(' - ',r.nama,sr.nama,s2r.nama,s3r.nama,s4r.nama) as akun,
+        $sql = "select r.*, s4r.id as id_akun, CONCAT_WS(' / ',r.nama,sr.nama,s2r.nama,s3r.nama,s4r.nama) as akun,
             s4r.nama as perkiraan
             from sub_sub_sub_sub_rekening s4r
             join sub_sub_sub_rekening s3r on (s4r.id_sub_sub_sub_rekening = s3r.id)

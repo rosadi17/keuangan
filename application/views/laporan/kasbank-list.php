@@ -40,8 +40,8 @@
             <td align="center"><?= ++$key ?></td>
             <td align="center"><?= $data->kode ?></td>
             <td align="center"><?= datefmysql($data->tanggal) ?></td>
-            <td align="center"><?= $data->id_rekening ?></td>
-            <td><?= $data->rekening ?></td>
+            <td align="center"><?= (get_safe('kode_perkiraan') !== '')?$nama_rek->id:$data->id_rekening ?></td>
+            <td><?= (get_safe('kode_perkiraan') !== '')?$nama_rek->nama:$data->rekening ?></td>
             <td><?= ($data->keterangan !== '')?$data->keterangan:$data->uraian ?></td>
             <td align="right"><?= ($data->jenis !== 'BKK')?rupiah($data->pengeluaran):'-' ?></td>
             <td align="right"><?= ($data->jenis === 'BKK')?rupiah($data->pengeluaran):'-' ?></td>
