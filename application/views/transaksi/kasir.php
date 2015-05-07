@@ -217,13 +217,13 @@ $(function() {
                         dataType: 'json',
                         success: function(data) {
                             if (data.status === true) {
-                                if (data.act === 'bkm') {
+                                if (data.act === 'add') {
                                     get_list_rekap_kasir(1);
-                                    custom_message('Informasi','Transaksi BKM berhasil dilakukan !');
+                                    custom_message('Informasi','Tambah data berhasil dilakukan !');
                                     //cetak_bukti_kas(data.id, 'bkm');
                                 } else {
                                     get_list_rekap_kasir(1);
-                                    custom_message('Informasi','Transaksi BKK berhasil dilakukan !');
+                                    custom_message('Informasi','Edit data berhasil dilakukan !');
                                     //cetak_bukti_kas(data.id, 'bkk');
                                 }
                                 $('#form_kasir').dialog('destroy');

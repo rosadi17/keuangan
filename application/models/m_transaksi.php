@@ -493,6 +493,7 @@ class M_transaksi extends CI_Model {
             );
             $this->db->insert('kasir', $data);
             $id = $this->db->insert_id();
+            $result['act'] = 'add';
 
         } else { // proses edit data
             
@@ -513,6 +514,7 @@ class M_transaksi extends CI_Model {
             $this->db->where('id', $idkasir);
             $this->db->update('kasir', $data);
             $id = $idkasir;
+            $result['act'] = 'edit';
         }
 
         /*$data_cair  = array(
@@ -523,7 +525,6 @@ class M_transaksi extends CI_Model {
         $this->db->update('rencana_kebutuhan', $data_cair);*/
         //$get = $this->db->query("select id_renbut from rencana_kebutuhan where id_uraian = '$maproja' and YEAR(tanggal) = '".date("Y")."'")->row();
         $result['id'] = $id;
-        $result['act'] = 'bkk';
 
         $result['status'] = TRUE;
         return $result;
