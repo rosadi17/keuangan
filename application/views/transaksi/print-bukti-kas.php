@@ -6,7 +6,7 @@
     }
 </script>
 <style type="text/css" media="print">
-    
+    *, body { background: #fff; font-family: Calibri, Arial, "Trebuchet MS"; font-size: 10px; }
 </style>
 <?php
 foreach ($list_data as $detail);
