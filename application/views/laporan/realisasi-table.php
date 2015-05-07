@@ -50,7 +50,7 @@ $monthNames = array(
     <tr class="<?= ($key%2==1)?'even':'odd' ?>">
         <td align="center"><button class="btn btn-default btn-xs" onclick="detail_kode_ma('<?= $data->id_satker ?>','<?= $data->nama ?>', '<?= $tahun ?>');"><i class="fa fa-eye"></i></button></td>
         <td align="center"><?= $data->kode ?></td>
-        <td class="nowrap"><small><?= $data->nama ?></small></td>
+        <td class="nowrap"><?= $data->id_satker ?> <small><?= $data->nama ?></small></td>
         <td align="right"><?= rupiah($data->pagu) ?></td>
         <?php 
         $total_kanan = 0;
