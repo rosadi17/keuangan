@@ -3,7 +3,7 @@
 <script type="text/javascript">
     $(function() {
         get_data_kas_bank(1);
-        $('#').tabs();
+        $('#tabs_kasbank').tabs();
         $('#awal_kasbank, #akhir_kasbank').datepicker({
             changeYear: true,
             changeMonth: true
@@ -94,9 +94,9 @@
 <div class="kegiatan">
     <div id="tabs_kasbank">
         <ul>
-            <li><a href="#tabs_kasbank-1">Parameter</a></li>
+            <li><a href="#tabss-1">Parameter</a></li>
         </ul>
-        <div id="tabs_kasbank-1">
+        <div id="tabss-1">
             <button id="cari_kasbank">Cari</button>
             <button id="excel_kasbank">Export Excel</button>
             <button id="reload_kasbank">Reload Data</button>
