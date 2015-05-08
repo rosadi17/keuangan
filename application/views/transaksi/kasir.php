@@ -279,7 +279,9 @@ $(function() {
         }
     });
     $('#kode').blur(function() {
-        $('#id_kode').val('');
+        if ($('#kode').val() === '' || $('#kode').val() === ' ') {
+            $('#id_kode').val('');
+        }
     });
     $('#kode').autocomplete("<?= base_url('autocomplete/ma_proja') ?>",
     {
