@@ -298,7 +298,7 @@ $(function() {
                     value: data[i].nama_sub_kegiatan // nama field yang dicari
                 };
             }
-            $('#id_kode').val('');
+            //$('#id_kode').val('');
             return parsed;
         },
         formatItem: function(data,i,max){
