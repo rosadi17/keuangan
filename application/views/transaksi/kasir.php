@@ -277,7 +277,10 @@ $(function() {
                 return $('#tanggal').val();
             }
         }
-   });
+    });
+    $('#kode').blur(function() {
+        $('#id_kode').val('');
+    });
     $('#kode').autocomplete("<?= base_url('autocomplete/ma_proja') ?>",
     {
         extraParams: { 
@@ -293,6 +296,7 @@ $(function() {
                     value: data[i].nama_sub_kegiatan // nama field yang dicari
                 };
             }
+            $('#id_kode').val('');
             return parsed;
         },
         formatItem: function(data,i,max){
