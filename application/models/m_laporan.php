@@ -358,7 +358,7 @@ class M_laporan extends CI_Model {
                     join program p on (k.id_program = p.id)
                     join satker s on (p.id_satker = s.id)
                     where s.id = '$satker' 
-                        and ks.tanggal like ('".$bname."%') and ks.tahun_anggaran = '".substr($bulan, 0, 4)."'
+                        and ks.tanggal like ('".$bname."%') and ks.tahun_anggaran = '".substr($bname, 0, 4)."'
                         and ks.jenis = 'BKM') as realisasi
                     ";
         //echo $sql_real;
