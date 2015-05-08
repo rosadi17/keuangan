@@ -300,7 +300,7 @@ class M_laporan extends CI_Model {
                     where s.id = '".$search['satker']."' 
                         and ks.id_uraian = '".$val->id_uraian."' 
                         and ks.tanggal like ('".($search['tahun']+1)."%')
-                        and ks.jenis = 'BKM') as realisasi
+                        and ks.jenis = 'BKM' and ks.tahun_anggaran = '".$search['tahun']."') as realisasi
                     ";
             $query_child = $this->db->query($sql_child)->row();
             $result[$i]->next_year = $query_child->realisasi;
@@ -327,7 +327,8 @@ class M_laporan extends CI_Model {
                     where s.id = '".$search['satker']."' 
                         and ks.id_uraian = '".$val->id_uraian."' 
                         and ks.tanggal like ('".$name."%')
-                        and ks.jenis = 'BKM') as realisasi
+                        and ks.jenis = 'BKM'
+                        and ks.tahun_anggaran = '".$search['tahun']."') as realisasi
                     ";
                 $child_real = $this->db->query($sql_real)->row();
                 $result[$i]->rincian[$key] = $child_real->realisasi;
@@ -357,7 +358,7 @@ class M_laporan extends CI_Model {
                     join program p on (k.id_program = p.id)
                     join satker s on (p.id_satker = s.id)
                     where s.id = '$satker' 
-                        and ks.tanggal like ('".$bname."%')
+                        and ks.tanggal like ('".$bname."%') and ks.tahun_anggaran = '".substr($bulan, 0, 4)."'
                         and ks.jenis = 'BKM') as realisasi
                     ";
         //echo $sql_real;
@@ -385,7 +386,7 @@ class M_laporan extends CI_Model {
             join kegiatan k on (sk.id_kegiatan = k.id)
             join program p on (k.id_program = p.id)
             join satker s on (p.id_satker = s.id)
-            where ks.tanggal like ('".$bulan."%')
+            where ks.tanggal like ('".$bulan."%') and ks.tahun_anggaran = '".substr($bulan, 0, 4)."'
                 and ks.jenis = 'BKM'
                 $q) as total";
         //echo $sql."<br/>";
