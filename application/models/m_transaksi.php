@@ -655,8 +655,13 @@ class M_transaksi extends CI_Model {
     
     function get_data_kasir($limit = NULL, $start = NULL, $search = NULL) {
         $q = NULL;
-        if ($search['awal'] !== '' and $search['akhir'] !== '') {
-            $q.=" and pg.tanggal between '".$search['awal']."' and '".$search['akhir']."'";
+        if ($search['nomorbukti'] === '') {
+            if ($search['awal'] !== '' and $search['akhir'] !== '') {
+                $q.=" and pg.tanggal between '".$search['awal']."' and '".$search['akhir']."'";
+            }
+        }
+        if ($search['nomorbukti'] !== '') {
+            $q.=" and pg.kode = '".$search['nomorbukti']."'";
         }
         if ($search['jenis'] !== '') {
             $q.=" and pg.jenis = '".$search['jenis']."'";
