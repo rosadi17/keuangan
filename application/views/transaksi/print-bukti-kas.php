@@ -47,10 +47,22 @@ foreach ($list_data as $detail);
             <td><?= $data->keterangan ?></td>
             <td align="right"></td>
         </tr>
+        <tr valign="top">
+            <td align="center"></td>
+            <td><?= $data->id_rekening ?> <?= ($data->jenis === 'BKK')?'(K)':'(D)' ?></td>
+            <td><?= $data->rekening ?></td>
+            <td align="right"></td>
+        </tr>
+        <tr valign="top">
+            <td align="center"></td>
+            <td><?= $data->id_rekening_pwk ?> <?= ($data->jenis === 'BKK')?'(D)':'(K)' ?></td>
+            <td><?= $data->rekening_pwk ?></td>
+            <td align="right"></td>
+        </tr>
         <?php 
         $total = $total + $data->nominal;
         } 
-        for ($i = 1; $i <= (7-$key); $i++) { ?>
+        for ($i = 1; $i <= (5-$key); $i++) { ?>
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
@@ -71,13 +83,13 @@ foreach ($list_data as $detail);
         </tr>
     </table>
     <table width="100%" cellspacing="0">
-        <tr>
+<!--        <tr>
             <th width="30%">&nbsp;</th>
             <th width="15%">&nbsp;</th>
             <th width="15%">&nbsp;</th>
             <th width="20%">&nbsp;</th>
             <th width="20%">&nbsp;</th>
-        </tr>
+        </tr>-->
         <?php for ($i = 1; $i <= 2; $i++) { ?>
         <tr>
             <td colspan="5">&nbsp;</td>
