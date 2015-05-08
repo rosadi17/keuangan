@@ -25,7 +25,7 @@
         }
         $keterangan = $data->keterangan;
         if ($data->keterangan === NULL) {
-            $keterangan = 'Mutasi';
+            $keterangan = '';
         }
         
         $tombol = NULL;
