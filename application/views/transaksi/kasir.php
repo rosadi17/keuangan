@@ -466,6 +466,7 @@ function edit_kasir(id, transaksi) {
                     $('#pengguna').val(data.satker);
                     $('#label_uraian').html(data.keterangan);
                     $('#uraian').val(data.keterangan_kasir);
+                    $('#tahun').val(data.tahun_anggaran);
                     $('#jumlah').val(numberToCurrency(data.pengeluaran));
                     $('#nama_user').val(data.penerima);
                     $('#perwabku').val(data.perwabku);
