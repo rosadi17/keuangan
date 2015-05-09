@@ -412,7 +412,7 @@ class M_laporan extends CI_Model {
         }
         $sql = "select pg.id, pg.kode, pg.sumberdana, pg.tanggal, pg.id_rekening, pg.id_renbut, pg.posted, s.nama as satker,
                 pg.id_uraian, u.kode as kode_ma, pg.pengeluaran as nominal, pg.penerima as penanggung_jwb, pg.perwabku, substr(pg.kode,1,3) as kode_trans, 
-                u.uraian as keterangan, IFNULL(pg.id_renbut,'') as renbut, pg.keterangan as keterangan_kasir 
+                u.uraian as keterangan, IFNULL(pg.id_renbut,'') as renbut, pg.keterangan as keterangan_kasir, pg.jenis 
                 from kasir pg
                 left join uraian u on (pg.id_uraian = u.id)
                 join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)

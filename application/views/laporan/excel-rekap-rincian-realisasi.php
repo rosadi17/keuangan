@@ -48,7 +48,7 @@
         <td align="center"><?= $data->kode_ma ?></td>
         <td><?= $data->keterangan ?>, <i><?= $data->keterangan_kasir ?></i></td>
         <td><?= $data->penanggung_jwb ?></td>
-        <td align="right"><?= rupiah($data->nominal) ?></td>
+        <td align="right"><?= ($data->jenis !== 'BKM')?rupiah($data->nominal):-rupiah($data->nominal) ?></td>
         
     </tr>
     <?php } ?>
