@@ -436,7 +436,8 @@ class Transaksi extends CI_Controller {
                     'jenis' => get_safe('jenis'),
                     'kodema' => '',
                     'kegiatan' => get_safe('kegiatan'),
-                    'png_jwb' => get_safe('png_jwb')
+                    'png_jwb' => get_safe('png_jwb'),
+                    'nomorbukti' => ''
                 );
                 $data = $this->get_list_data_kasir($limit, $page, $search);
                 $this->load->view('transaksi/jurnal-verifikasi-table', $data);
