@@ -6,8 +6,9 @@
         
         $('#tabs_kasbank').tabs();
         $('#awal_kasbank, #akhir_kasbank').datepicker({
-            changeYear: true,
-            changeMonth: true
+                format: 'dd/mm/yyyy'
+        }).on('changeDate', function(){
+            $(this).datepicker('hide');
         });
         $('#cari_kasbank').button({
             icons: {
@@ -126,7 +127,7 @@
     <div id="dialog_kasbank_search" class="nodisplay">
         <form action="" id="search_kasbank">
             <table width=100% cellpadding=0 cellspacing=0 class=inputan>
-                <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal_kasbank" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir_kasbank" value="<?= date("d/m/Y") ?>" /></td></tr>
+                <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal_kasbank" class="hasDatepicker" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir_kasbank" value="<?= date("d/m/Y") ?>" class="hasDatepicker" /></td></tr>
                 <tr><td>Kode Rekening*:</td><td><?= form_input('', NULL, 'id=kode_perkiraan') ?><input type="hidden" name="kode_perkiraan" id="hide_kode_perkiraan" /></td></tr>
             </table>
         </form>

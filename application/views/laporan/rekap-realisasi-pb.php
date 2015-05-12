@@ -4,14 +4,14 @@
 <script type="text/javascript">
 
 $(function() {
-    get_list_rekap_rekap_realisasi(1);
+    get_list_rekap_rekap_realisasi_pb(1);
     $('#tabs').tabs();
     $('#reset').button({
         icons: {
             secondary: 'ui-icon-refresh'
         }
     }).click(function() {
-        $('#loaddata').load('<?= base_url('laporan/rekap_realisasi') ?>');
+        alert('fuck');
     });
     
     $('#cari_button_realisasi').button({
@@ -19,7 +19,7 @@ $(function() {
             secondary: 'ui-icon-search'
         }
     }).click(function() {
-        $('#dialog_rekap_realisasi_search').dialog({
+        $('#dialog_rekap_realisasi_pb_search').dialog({
             title: 'Cari Rekap Realisasi',
             autoOpen: true,
             width: 480,
@@ -30,45 +30,55 @@ $(function() {
             position: ['center',47],
             buttons: {
                 "Cancel": function() {
-                    $('#dialog_rekap_realisasi_search').dialog('destroy');
+                    $('#dialog_rekap_realisasi_pb_search').dialog('destroy');
                 },
                 "Cari": function() {
-                    $('#dialog_rekap_realisasi_search').dialog('close');
-                    get_list_rekap_rekap_realisasi(1);
+                    $('#dialog_rekap_realisasi_pb_search').dialog('close');
+                    get_list_rekap_rekap_realisasi_pb(1);
                 } 
             }, close: function() {
-                $('#dialog_rekap_realisasi_search').dialog('destroy');
+                $('#dialog_rekap_realisasi_pb_search').dialog('destroy');
             }, open: function() {
-                $('#awal_rekap_realisasi, #akhir_rekap_realisasi').datepicker('hide');
+                $('#awal_rekap_realisasi_pb, #akhir_rekap_realisasi_pb').datepicker('hide');
                 $('#jenis_laporan').focus();
             }
         });
     });
     
-    $('#reload_rekap_realisasi_data').button({
+    $('#reload_rekap_realisasi_pb_data').button({
         icons: {
             secondary: 'ui-icon-refresh'
         }
     }).click(function() {
         reset_form();
-        get_list_rekap_rekap_realisasi(1);
+        get_list_rekap_rekap_realisasi_pb(1);
     });
-    $('#excel_rekap_realisasi').button({
+    $('#excel_rekap_realisasi_pb').button({
         icons: {
             secondary: 'ui-icon-print'
         }
     }).click(function() {
-        location.href='<?= base_url('laporan/manage_rekap_realisasi/export_excel') ?>/?'+$('#search_rekap_realisasi').serialize();
+        location.href='<?= base_url('laporan/manage_rekap_realisasi/export_excel') ?>/?'+$('#search_rekap_realisasi_pb').serialize();
     });
     $('#tahun_anggaran').change(function() {
         $('#kodema, #id_kodema').val('');
     });
-    $('#awal_rekap_realisasi, #akhir_rekap_realisasi').datepicker({
+    $("#awal_rekap_realisasi_pb, #akhir_rekap_realisasi_pb").datepicker({
         format: 'dd/mm/yyyy'
     }).on('changeDate', function(){
         $(this).datepicker('hide');
     });
-    
+    $('#tanggal').datepicker({
+        changeYear: true,
+        changeMonth: true,
+        onSelect: function() {
+            var jenis = $('#jenis').val();
+            if ($('#id_rekap_realisasi_pb').val() === '') {
+                get_last_code_rekap_realisasi_pb(jenis, $(this).val());
+                get_nominal_renbut($('#id_kode').val(), $('#tahun').val());
+            }
+        }
+    });
     $('#kodema').autocomplete("<?= base_url('autocomplete/ma_proja') ?>",
     {
         extraParams: { 
@@ -107,16 +117,15 @@ $(function() {
 });
 
 function reset_form() {
-    $('input[type=text], input[type=hidden], select, textarea').val('');
+    $('input[type=text], select, textarea').val('');
     $('#s2id_supplier_auto a .select2-chosen, #label_uraian').html('');
     $('#tanggal').val('<?= date("d/m/Y") ?>');
-    $('#awal_rekap_realisasi').val('<?= date("01/m/Y") ?>');
-    $('#akhir_rekap_realisasi').val('<?= date("d/m/Y") ?>');
-    $('#perwabku, #kode_renbut').removeAttr('disabled');
-    $('#keterangan_ma').html('');
+    $('#awal_rekap_realisasi_pb').val('<?= date("01/m/Y") ?>');
+    $('#akhir_rekap_realisasi_pb').val('<?= date("d/m/Y") ?>');
+    $('#id_kodema').val('');
 }
 
-function delete_rekap_realisasi(id, page, kode) {
+function delete_rekap_realisasi_pb(id, page, kode) {
     $('<div id=alert>Anda yakin akan menghapus data ini?</div>').dialog({
         title: 'Konfirmasi Penghapusan',
         autoOpen: true,
@@ -125,10 +134,10 @@ function delete_rekap_realisasi(id, page, kode) {
             "OK": function() {
                 
                 $.ajax({
-                    url: '<?= base_url('laporan/manage_rekap_realisasi/delete') ?>?id='+id+'&kode='+kode,
+                    url: '<?= base_url('laporan/manage_rekap_realisasi_pb/delete') ?>?id='+id+'&kode='+kode,
                     cache: false,
                     success: function() {
-                        get_list_rekap_rekap_realisasi(page);
+                        get_list_rekap_rekap_realisasi_pb(page);
                         $('#alert').dialog().remove();
                     }
                 });
@@ -140,23 +149,23 @@ function delete_rekap_realisasi(id, page, kode) {
     });
 }
 
-function get_list_rekap_rekap_realisasi(page) {
+function get_list_rekap_rekap_realisasi_pb(page) {
     $.ajax({
         url: '<?= base_url('laporan/manage_rekap_realisasi') ?>/list/'+page,
-        data: $('#search_rekap_realisasi').serialize(),
+        data: $('#search_rekap_realisasi_pb').serialize(),
         cache: false,
         beforeSend: function() {
             show_ajax_indicator();
         },
         success: function(data) {
             hide_ajax_indicator();
-            $('#result-rekap_realisasi').html(data);
+            $('#result-rekap_realisasi_pb').html(data);
         }
     });
 }
 
 function paging(p) {
-    get_list_rekap_rekap_realisasi(p);
+    get_list_rekap_rekap_realisasi_pb(p);
 }
 </script>
 <div class="kegiatan">
@@ -166,17 +175,18 @@ function paging(p) {
         </ul>
         <div id="tabs-1">
             <button id="cari_button_realisasi">Cari</button>
-            <button id="excel_rekap_realisasi">Export Excel</button>
-            <button id="reload_rekap_realisasi_data">Reload Data</button>
-            <div id="result-rekap_realisasi">
+            <button id="excel_rekap_realisasi_pb">Export Excel</button>
+            <button id="reload_rekap_realisasi_pb_data">Reload Data</button>
+            <div id="result-rekap_realisasi_pb">
 
             </div>
         </div>
     </div>
-    <div id="dialog_rekap_realisasi_search" class="nodisplay">
-        <form action="" id="search_rekap_realisasi">
+    <div id="dialog_rekap_realisasi_pb_search" class="nodisplay">
+        <form action="" id="search_rekap_realisasi_pb">
+            <input type="hidden" name="perwabku" id="perwabku" value="Sudah" />
             <table width=100% cellpadding=0 cellspacing=0 class=inputan>
-                <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal_rekap_realisasi" value="<?= date("01/m/Y") ?>" size="10" class="hasDatepicker" /> s.d <input type="text" name="akhir" id="akhir_rekap_realisasi" value="<?= date("d/m/Y") ?>" class="hasDatepicker" /></td></tr>
+                <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal_rekap_realisasi_pb" value="<?= date("01/m/Y") ?>" size="10" class="hasDatepicker" /> s.d <input type="text" name="akhir" id="akhir_rekap_realisasi_pb" value="<?= date("d/m/Y") ?>" class="hasDatepicker" /></td></tr>
                 <tr><td>Jenis:</td><td><?= form_dropdown('jenis', array('' => 'Semua Jenis ...', 'SPP' => 'SPP', 'NON SPP' => 'Non SPP'), NULL, 'id=jenis_laporan style="width: 300px;"') ?></td></tr>
                 <tr><td>Satuan Kerja:</td><td><select name="id_satker" id="id_satker_rekap"><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->kode ?> <?= $data->nama ?></option><?php } ?></select></td></tr>
                 <tr><td>Tahun Anggaran:</td><td>

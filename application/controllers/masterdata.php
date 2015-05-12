@@ -4,6 +4,10 @@ class Masterdata extends CI_Controller {
     
     function __construct() {
         parent::__construct();
+        $id_user = $this->session->userdata('id_user');
+        if (empty($id_user)) {
+            die(json_encode(array('error' => 'Anda belum login')));
+        }
     }
     
     function unit() {

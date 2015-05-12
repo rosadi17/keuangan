@@ -17,10 +17,11 @@
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/jquery.treetable.theme.default.css') ?>" media="all" />
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap.css') ?>" media="all" />
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/font-awesome/css/font-awesome.min.css') ?>" media="all" />
+        <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/datepicker3.css') ?>" media="all" />
         
         <script type="text/javascript" src="<?= base_url('assets/js/jquery-1.8.3.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/jquery-ui-1.9.2.custom.js') ?>"></script>
-        <script type="text/javascript" src="<?= base_url('assets/js/jquery-ui-timepicker-addon.js') ?>"></script>
+        <script type="text/javascript" src="<?= base_url('assets/js/bootstrap-datepicker.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/jquery-print.min.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/jquery.form.js') ?>"></script>
         

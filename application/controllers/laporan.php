@@ -2,6 +2,14 @@
 
 class Laporan extends CI_Controller {
     
+    function __construct() {
+        parent::__construct();
+        $id_user = $this->session->userdata('id_user');
+        if (empty($id_user)) {
+            die(json_encode(array('error' => 'Anda belum login')));
+        }
+    }
+    
     function realisasi() {
         $data['title'] = 'Laporan Anggaran dan Realisasi';
         $data['satker']= $this->m_masterdata->load_satker()->result();
@@ -478,6 +486,7 @@ class Laporan extends CI_Controller {
                     'jenis' => get_safe('jenis'),
                     'tahun' => get_safe('tahun'),
                     'kodema' => get_safe('id_kode'),
+                    'perwabku' => get_safe('perwabku')
                 );
                 $data = $this->get_list_data_rincian_realisasi($limit, $page, $search);
                 $data['cari'] = $search;
@@ -490,7 +499,8 @@ class Laporan extends CI_Controller {
                     'satker' => get_safe('id_satker'),
                     'jenis' => get_safe('jenis'),
                     'tahun' => get_safe('tahun'),
-                    'kodema' => get_safe('id_kode')
+                    'kodema' => get_safe('id_kode'),
+                    'perwabku' => get_safe('perwabku')
                 );
                 $query = $this->m_laporan->get_list_data_rincian_realisasi(NULL, NULL, $search);
                 $data['cari'] = $search;
@@ -516,5 +526,11 @@ class Laporan extends CI_Controller {
         $data['infopage'] = page_summary($data['jumlah'], $page, $limit);
         $data['paging'] = paging_ajax($data['jumlah'], $limit, $page, 1, null);
         return $data;
+    }
+    
+    function rekap_realisasi_pb() {
+        $data['title'] = 'Rekap Realisasi Pusat Biaya';
+        $data['satker']= $this->m_masterdata->load_satker()->result();
+        $this->load->view('laporan/rekap-realisasi-pb', $data);
     }
 }

@@ -48,8 +48,9 @@ $(function() {
         });
     });
     $('#awal_lpwk, #akhir_lpwk').datepicker({
-        changeYear: true,
-        changeMonth: true
+        format: 'dd/mm/yyyy'
+    }).on('changeDate', function(){
+        $(this).datepicker('hide');
     });
     $('#reload_perwabku').button({
         icons: {
@@ -225,13 +226,6 @@ function form_perwabku() {
             get_nomor_perwabku();
         }
     });
-    $('#tanggal').datepicker({
-        changeYear: true,
-        changeMonth: true,
-        onSelect: function() {
-            get_nomor_perwabku();
-        }
-    });
     $('#save_perwabku').submit(function() {
         var jml = $('.rows_bkk').length;
         for (i = 1; i <= jml; i++) {
@@ -316,7 +310,7 @@ function delete_perwabku(id, page) {
     <div id="dialog_perwabku_search" class="nodisplay">
         <form action="" id="search_perwabku">
         <table width=100% cellpadding=0 cellspacing=0 class=inputan>
-            <tr><td>Tanggal Perwabku:</td><td><input type="text" name="awal" id="awal_lpwk" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir_lpwk" value="<?= date("d/m/Y") ?>" /></td></tr>
+            <tr><td>Tanggal Perwabku:</td><td><input type="text" name="awal" id="awal_lpwk" class="hasDatepicker" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir_lpwk" value="<?= date("d/m/Y") ?>" class="hasDatepicker" /></td></tr>
             <tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Semua Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->nama ?></option><?php } ?></select></td></tr>
             <tr><td>No. Perwabku:</td><td><input type="text" name="nomorpwk" id="nomorpwk" /></td></tr>
             <tr><td>No. BKK:</td><td><input type="text" name="nomorbkk" id="nomorbkk" /></td></tr>

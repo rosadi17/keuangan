@@ -169,18 +169,19 @@ $(function() {
         }
     });
     $('#awal_kasir, #akhir_kasir').datepicker({
-        changeYear: true,
-        changeMonth: true
+         format: 'dd/mm/yyyy'
+    }).on('changeDate', function(){
+        $(this).datepicker('hide');
     });
+    
     $('#tanggal').datepicker({
-        changeYear: true,
-        changeMonth: true,
-        onSelect: function() {
-            var jenis = $('#jenis').val();
-            if ($('#id_kasir').val() === '') {
-                get_last_code_kasir(jenis, $(this).val());
-                get_nominal_renbut($('#id_kode').val(), $('#tahun').val());
-            }
+        format: 'dd/mm/yyyy'
+    }).on('changeDate', function(){
+        $(this).datepicker('hide');
+        var jenis = $('#jenis').val();
+        if ($('#id_kasir').val() === '') {
+            get_last_code_kasir(jenis, $(this).val());
+            get_nominal_renbut($('#id_kode').val(), $('#tahun').val());
         }
     });
     $('#form').submit(function() {
@@ -592,7 +593,7 @@ function paging(p) {
     <div id="dialog_kasir_search" class="nodisplay">
         <form action="" id="search_kasir">
             <table width=100% cellpadding=0 cellspacing=0 class=inputan>
-                <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal_kasir" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir_kasir" value="<?= date("d/m/Y") ?>" /></td></tr>
+                <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal_kasir" class="hasDatepicker" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir_kasir" value="<?= date("d/m/Y") ?>" class="hasDatepicker" /></td></tr>
                 <tr><td>Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Semua Jenis ...', 'BKK' => 'Kas Keluar', 'BKM' => 'Kas Masuk','MTS' => 'Mutasi'), NULL, 'id=jenis_transaksi style="width: 300px;"') ?></td></tr>
                 <tr><td>Nomor Bukti:</td><td><input type="text" name="nomorbukti" id="nomorbukti" /></td></tr>
                 <tr><td>Kode MA/Proja:</td><td><?= form_input('kode', NULL, 'id=kodema') ?><?= form_hidden('id_kode', NULL, 'id=id_kodema') ?></td></tr>

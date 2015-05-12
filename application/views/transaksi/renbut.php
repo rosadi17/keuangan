@@ -51,8 +51,9 @@ $(function() {
         get_list_renbut(1);
     });
     $('#awal, #akhir, #awal_keg, #akhir_keg').datepicker({
-        changeYear: true,
-        changeMonth: true
+        format: 'dd/mm/yyyy'
+    }).on('changeDate', function(){
+        $(this).datepicker('hide');
     });
 });
 function get_list_renbut(page, id) {
@@ -139,15 +140,16 @@ function form_renbut() {
         }
     });
     $('#tanggal_renbut').datepicker({
-        changeYear: true,
-        changeMonth: true,
-        onSelect: function() {
-            get_nomor_renbut();
-        }
+        format: 'dd/mm/yyyy'
+    }).on('changeDate', function(){
+        $(this).datepicker('hide');
+        get_nomor_renbut();
     });
+    
     $('#tanggal').datepicker({
-        changeYear: true,
-        changeMonth: true
+        format: 'dd/mm/yyyy'
+    }).on('changeDate', function(){
+        $(this).datepicker('hide');
     });
     $('#nomorbkk').autocomplete("<?= base_url('autocomplete/nomorbkk') ?>",
     {

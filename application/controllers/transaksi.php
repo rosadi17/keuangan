@@ -2,6 +2,14 @@
 
 class Transaksi extends CI_Controller {
     
+    function __construct() {
+        parent::__construct();
+        $id_user = $this->session->userdata('id_user');
+        if (empty($id_user)) {
+            die(json_encode(array('error' => 'Anda belum login')));
+        }
+    }
+    
     function renbut() {
         $data['title'] = 'Rencana Kebutuhan';
         $data['satker']= $this->m_masterdata->load_satker()->result();

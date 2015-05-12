@@ -113,14 +113,9 @@ function form_sub_uraian() {
         }
     });
     $('#tahun').datepicker({
-        changeMonth: true,
-        changeYear: true,
-        showButtonPanel: true,
-        dateFormat: 'yy',
-        onClose: function(dateText, inst) { 
-            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-            $(this).datepicker('setDate', new Date(year, 1));
-        }
+        format: 'yyyy'
+    }).on('changeDate', function(){
+        $(this).datepicker('hide');
     });
     $("#tahun").focus(function () {
         $(".ui-datepicker-month").hide();

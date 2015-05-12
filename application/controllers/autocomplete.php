@@ -2,6 +2,14 @@
 
 class Autocomplete extends CI_Controller {
   
+    function __construct() {
+        parent::__construct();
+        $id_user = $this->session->userdata('id_user');
+        if (empty($id_user)) {
+            die(json_encode(array('error' => 'Anda belum login')));
+        }
+    }
+    
     function satker() {
         $q = get_safe('q');
         $data = $this->m_autocomplete->get_satker($q)->result();

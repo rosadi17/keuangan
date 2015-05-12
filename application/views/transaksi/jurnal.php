@@ -6,13 +6,17 @@ $(function() {
     get_list_jurnal(1);
     get_list_verifikasi(1);
     $('#tanggal').datepicker({
-        changeYear: true,
-        changeMonth: true
+        format: 'dd/mm/yyyy'
+    }).on('changeDate', function(){
+        $(this).datepicker('hide');
     });
+    
     $('#awal_verifikasi, #akhir_verifikasi, #awal_jurnal, #akhir_jurnal').datepicker({
-        changeYear: true,
-        changeMonth: true
+        format: 'dd/mm/yyyy'
+    }).on('changeDate', function(){
+        $(this).datepicker('hide');
     });
+    
     $('#tabs').tabs();
     $('#simpan').button({
         icons: {
@@ -576,7 +580,7 @@ function delete_jurnal(id, page) {
 <div id="dialog_verifikasi_search" class="nodisplay">
     <form action="" id="search_kasir_verifikasi">
         <table width=100% cellpadding=0 cellspacing=0 class=inputan>
-            <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal_verifikasi" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir_verifikasi" value="<?= date("d/m/Y") ?>" /></td></tr>
+            <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal_verifikasi" value="<?= date("01/m/Y") ?>" size="10" class="hasDatepicker" /> s.d <input type="text" name="akhir" id="akhir_verifikasi" value="<?= date("d/m/Y") ?>" class="hasDatepicker" /></td></tr>
             <tr><td>Transaksi:</td><td><?= form_dropdown('jenis', array('' => 'Semua Jenis ...', 'BKK' => 'Kas Keluar', 'BKM' => 'Kas Masuk','MTS' => 'Mutasi'), NULL, 'id=jenis_transaksi style="width: 300px;"') ?></td></tr>
             <tr><td>Kegiatan:</td><td><input type="text" name="kegiatan" id="kegiatan" /></td></tr>
         </table>
@@ -585,7 +589,7 @@ function delete_jurnal(id, page) {
 <div id="dialog_jurnal_search" class="nodisplay">
     <form action="" id="search_jurnal">
         <table width=100% cellpadding=0 cellspacing=0 class=inputan>
-            <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal_jurnal" value="<?= date("01/m/Y") ?>" size="10" /> s.d <input type="text" name="akhir" id="akhir_jurnal" value="<?= date("d/m/Y") ?>" /></td></tr>
+            <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal_jurnal" value="<?= date("01/m/Y") ?>" size="10" class="hasDatepicker" /> s.d <input type="text" name="akhir" id="akhir_jurnal" value="<?= date("d/m/Y") ?>" class="hasDatepicker" /></td></tr>
             <tr><td>No. Rekening:</td><td><input type="text" name="kode_rekening" id="kode_rekening" /></td></tr>
             <tr><td>No. Bukti:</td><td><input type="text" name="nobukti" id="nobukti" /></td></tr>
         </table>
