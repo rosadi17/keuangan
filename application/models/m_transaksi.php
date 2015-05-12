@@ -746,7 +746,7 @@ class M_transaksi extends CI_Model {
             left join program p on (k.id_program = p.id)
             left join satker s on (p.id_satker = s.id)
             join users us on (pw.id_user = us.id)
-            where pw.id is not NULL $q group by pw.id order by pw.id desc";
+            where pw.id is not NULL $q group by pw.id order by pw.kode desc";
         $limitation = null;
         if ($limit !== NULL) {
             $limitation =" limit $start , $limit";
