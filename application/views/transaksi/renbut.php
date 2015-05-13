@@ -148,25 +148,45 @@
         });
     }
     
+    function konfirmasi_simpan() {
+        bootbox.dialog({
+          message: "Anda yakin akan menyimpan data ini?",
+          title: "Konfirmasi Simpan",
+          buttons: {
+            batal: {
+              label: '<i class="fa fa-refresh"></i> Batal',
+              className: "btn-default",
+              callback: function() {
+                
+              }
+            },
+            ya: {
+              label: '<i class="fa fa-check-square-o"></i>  Ya',
+              className: "btn-primary",
+              callback: function() {
+                save_renbut();
+              }
+            }
+          }
+        });
+    }
+    
     function save_renbut() {
         if ($('#tanggal_renbut').val() === '') {
-            custom_message('Peringatan', 'Tanggal renbut tidak boleh kosong !','#tanggal_renbut'); return false;
+            dc_validation('#tanggal_renbut','Tanggal renbut tidak boleh kosong !'); return false;
         }
         if ($('#nomor').val().length < 8) {
-            custom_message('Peringatan', 'Nomor yang anda masukkan harus dengan format yymmxxxx misal: 15010001 !', '#nomor');
-            return false;
+            dc_validation('#nomor','Nomor yang anda masukkan harus dengan format yymmxxxx misal: 15010001 !'); return false;
         }
         /*if ($('#id_uraian').val() === '') {
             custom_message('Peringatan', 'Kode MA proja belum dipilih !', '#uraian');
             return false;
         }*/
         if ($('#jml_renbut').val() === '') {
-            custom_message('Peringatan', 'Jumlah renbut harus diisi !', '#jml_renbut');
-            return false;
+            dc_validation('#jml_renbut','Jumlah renbut harus diisi !'); return false;
         }
         if ($('#penerima').val() === '') {
-            custom_message('Peringatan', 'Penerima / penanggung jawab harus diisi !', '#uraian');
-            return false;
+            dc_validation('#uraian','Penerima / penanggung jawab harus diisi !'); return false;
         }
         var cek_id = $('#id_renbut').val();
         $.ajax({
@@ -343,7 +363,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-refresh"></i> Batal</button>
-          <button type="button" class="btn btn-primary" id="save" onclick="save_renbut();"><i class="fa fa-save"></i> Simpan</button>
+          <button type="button" class="btn btn-primary" id="save" onclick="konfirmasi_simpan();"><i class="fa fa-save"></i> Simpan</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
