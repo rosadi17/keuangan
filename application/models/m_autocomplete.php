@@ -122,6 +122,29 @@ class M_autocomplete extends CI_Model {
         return $this->db->query($sql);
     }
     
+    function get_ma_proja_dropping($param) {
+        $f = NULL;
+        if ($param['tahun'] !== '') {
+            $f.=" and su.tahun = '".$param['tahun']."'";
+        }
+        if ($param['satker'] !== '') {
+            $f.=" and s.id = '".$param['satker']."'";
+        }
+        $sql = "select u.*, s.nama as satker, 
+            u.kode as ma_proja, su.keterangan as uraian,
+            CONCAT_WS(' / ',s.nama, p.status, p.nama_program, k.nama_kegiatan, sk.nama_sub_kegiatan, CONCAT_WS(' ','Thn.',su.tahun)) as keterangan
+            from uraian u
+            join sub_uraian su on (su.id_uraian = u.id)
+            join sub_kegiatan sk on (u.id_sub_kegiatan = sk.id)
+            join kegiatan k on (sk.id_kegiatan = k.id)
+            join program p on (k.id_program = p.id)
+            join satker s on (p.id_satker = s.id) 
+            where u.id is not NULL $f group by u.id
+            having ma_proja like ('".$param['q']."%') or keterangan like ('%".$param['q']."%')";
+        //echo $sql;
+        return $this->db->query($sql);
+    }
+    
     function get_kode_renbut($q, $tanggal = NULL) {
         $param = NULL;
         if ($tanggal !== NULL) {

@@ -66,6 +66,16 @@ class Autocomplete extends CI_Controller {
         die(json_encode($data));
     }
     
+    function ma_proja_dropping() {
+        $search = array(
+            'q' => get_safe('q'),
+            'tahun' => get_safe('tahun'),
+            'satker' => get_safe('satker')
+        );
+        $data = $this->m_autocomplete->get_ma_proja_dropping($search)->result();
+        die(json_encode($data));
+    }
+    
     function get_last_code($table, $kolom, $id_parent) {
         $data = $this->m_autocomplete->get_last_code($table, $kolom, $id_parent)->row();
         die(json_encode($data));
