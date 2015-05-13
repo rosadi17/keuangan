@@ -11,7 +11,7 @@ $(function() {
             secondary: 'ui-icon-refresh'
         }
     }).click(function() {
-        alert('fuck');
+        
     });
     
     $('#cari_button_realisasi').button({
@@ -19,30 +19,7 @@ $(function() {
             secondary: 'ui-icon-search'
         }
     }).click(function() {
-        $('#dialog_rekap_realisasi_pb_search').dialog({
-            title: 'Cari Rekap Realisasi',
-            autoOpen: true,
-            width: 480,
-            autoResize:true,
-            modal: true,
-            hide: 'explode',
-            show: 'blind',
-            position: ['center',47],
-            buttons: {
-                "Cancel": function() {
-                    $('#dialog_rekap_realisasi_pb_search').dialog('destroy');
-                },
-                "Cari": function() {
-                    $('#dialog_rekap_realisasi_pb_search').dialog('close');
-                    get_list_rekap_rekap_realisasi_pb(1);
-                } 
-            }, close: function() {
-                $('#dialog_rekap_realisasi_pb_search').dialog('destroy');
-            }, open: function() {
-                $('#awal_rekap_realisasi_pb, #akhir_rekap_realisasi_pb').datepicker('hide');
-                $('#jenis_laporan').focus();
-            }
-        });
+        $('#datamodal_rekap_pb').modal('show');
     });
     
     $('#reload_rekap_realisasi_pb_data').button({
@@ -67,17 +44,6 @@ $(function() {
         format: 'dd/mm/yyyy'
     }).on('changeDate', function(){
         $(this).datepicker('hide');
-    });
-    $('#tanggal').datepicker({
-        changeYear: true,
-        changeMonth: true,
-        onSelect: function() {
-            var jenis = $('#jenis').val();
-            if ($('#id_rekap_realisasi_pb').val() === '') {
-                get_last_code_rekap_realisasi_pb(jenis, $(this).val());
-                get_nominal_renbut($('#id_kode').val(), $('#tahun').val());
-            }
-        }
     });
     $('#kodema').autocomplete("<?= base_url('autocomplete/ma_proja') ?>",
     {
@@ -118,8 +84,7 @@ $(function() {
 
 function reset_form() {
     $('input[type=text], select, textarea').val('');
-    $('#s2id_supplier_auto a .select2-chosen, #label_uraian').html('');
-    $('#tanggal').val('<?= date("d/m/Y") ?>');
+    $('#awal_rekap_realisasi_pb').val('');
     $('#awal_rekap_realisasi_pb').val('<?= date("01/m/Y") ?>');
     $('#akhir_rekap_realisasi_pb').val('<?= date("d/m/Y") ?>');
     $('#id_kodema').val('');
@@ -150,6 +115,7 @@ function delete_rekap_realisasi_pb(id, page, kode) {
 }
 
 function get_list_rekap_rekap_realisasi_pb(page) {
+    $('#datamodal_rekap_pb').modal('hide');
     $.ajax({
         url: '<?= base_url('laporan/manage_rekap_realisasi') ?>/list/'+page,
         data: $('#search_rekap_realisasi_pb').serialize(),
@@ -174,29 +140,65 @@ function paging(p) {
             <li><a href="#tabs-1">Parameter</a></li>
         </ul>
         <div id="tabs-1">
-            <button id="cari_button_realisasi">Cari</button>
-            <button id="excel_rekap_realisasi_pb">Export Excel</button>
-            <button id="reload_rekap_realisasi_pb_data">Reload Data</button>
+            <button class="btn" id="cari_button_realisasi"><i class="fa fa-search"></i> Cari</button>
+            <button class="btn" id="excel_rekap_realisasi_pb"><i class="fa fa-file-text"></i> Export Excel</button>
+            <button class="btn" id="reload_rekap_realisasi_pb_data"><i class="fa fa-refresh"></i> Reload Data</button>
             <div id="result-rekap_realisasi_pb">
 
             </div>
         </div>
     </div>
-    <div id="dialog_rekap_realisasi_pb_search" class="nodisplay">
-        <form action="" id="search_rekap_realisasi_pb">
+    <div id="datamodal_rekap_pb" class="modal fade">
+    <div class="modal-dialog" style="width: 600px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="modal_title">Pencarian</h4>
+        </div>
+        <div class="modal-body">
+        <form action="" id="search_rekap_realisasi_pb" role="form" class="form-horizontal">
             <input type="hidden" name="perwabku" id="perwabku" value="Sudah" />
-            <table width=100% cellpadding=0 cellspacing=0 class=inputan>
-                <tr><td>Range Tanggal:</td><td><input type="text" name="awal" id="awal_rekap_realisasi_pb" value="<?= date("01/m/Y") ?>" size="10" class="hasDatepicker" /> s.d <input type="text" name="akhir" id="akhir_rekap_realisasi_pb" value="<?= date("d/m/Y") ?>" class="hasDatepicker" /></td></tr>
-                <tr><td>Jenis:</td><td><?= form_dropdown('jenis', array('' => 'Semua Jenis ...', 'SPP' => 'SPP', 'NON SPP' => 'Non SPP'), NULL, 'id=jenis_laporan style="width: 300px;"') ?></td></tr>
-                <tr><td>Satuan Kerja:</td><td><select name="id_satker" id="id_satker_rekap"><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->kode ?> <?= $data->nama ?></option><?php } ?></select></td></tr>
-                <tr><td>Tahun Anggaran:</td><td>
-                <select name="tahun" id="tahun_anggaran">
-                <?php for ($i = date("Y"); $i >=2014 ; $i--) { ?>
-                    <option value="<?= $i ?>" <?= (($i === date("Y"))?'selected':'') ?>><?= $i ?></option>
-                <?php } ?>
-                </select></td></tr>
-                <tr><td>Kode MA/Proja:</td><td><?= form_input('kode', NULL, 'id=kodema') ?><?= form_hidden('id_kode', NULL, 'id=id_kodema') ?></td></tr>
-            </table>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Range Tanggal:</label>
+                <div class="col-lg-8">
+                    <input type="text" name="awal" id="awal_rekap_realisasi_pb" value="<?= date("01/m/Y") ?>" size="10" class="hasDatepicker form-control" /> <input type="text" name="akhir" id="akhir_rekap_realisasi_pb" value="<?= date("d/m/Y") ?>" class="hasDatepicker form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Jenis:</label>
+                <div class="col-lg-8">
+                    <?= form_dropdown('jenis', array('' => 'Semua Jenis ...', 'SPP' => 'SPP', 'NON SPP' => 'Non SPP'), NULL, 'id=jenis_laporan class="form-control"') ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Satuan Kerja:</label>
+                <div class="col-lg-8">
+                    <select name="id_satker" id="id_satker_rekap" class="form-control"><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->kode ?> <?= $data->nama ?></option><?php } ?></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Tahun Anggaran:</label>
+                <div class="col-lg-8">
+                    <select name="tahun" id="tahun_anggaran" class="form-control">
+                    <?php for ($i = date("Y"); $i >=2014 ; $i--) { ?>
+                        <option value="<?= $i ?>" <?= (($i === date("Y"))?'selected':'') ?>><?= $i ?></option>
+                    <?php } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Kode MA/Proja:</label>
+                <div class="col-lg-8">
+                    <?= form_input('kode', NULL, 'id=kodema class="form-control"') ?><?= form_hidden('id_kode', NULL, 'id=id_kodema') ?>
+                </div>
+            </div>
         </form>
-    </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-refresh"></i> Batal</button>
+          <button type="button" class="btn btn-primary" id="tampilkan" onclick="get_list_rekap_rekap_realisasi_pb(1);"><i class="fa fa-eye"></i> Tampilkan</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </div>

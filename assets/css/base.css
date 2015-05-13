@@ -4,7 +4,7 @@ fieldset { border: none; padding: 0; margin: 0; }
 h1, h2, h3, h4, h5, h6 {margin: 0; padding: 0}
 h3 { font-weight: normal; }
 html, body { height: 100%; font-weight: normal; background: #efefef; }
-input[type=text] { border: 1px solid #abadb3; padding: 2px; outline: none; width: 294px; }
+input[type=text] { border: 1px solid #abadb3; outline: none; }
 select { border: 1px solid #abadb3; margin: 0; outline: none; padding: 2px; width: 299px; margin-bottom: 1px; }
 textarea { resize: none; border: 1px solid #abadb3; outline: none; max-height: 35px; margin-bottom: 0; width: 294px; }
 input[type=text]:focus, select:focus, textarea:focus { border: 1px solid blue; }
@@ -39,7 +39,8 @@ input[type=text]:focus, select:focus, textarea:focus { border: 1px solid blue; }
 .list-data input[type=text], .list-data input[type=button] { margin: 0; font-size: inherit; }
 .list-data input[type=text] { width: 100%; margin: 0; border: none; }
 .list-data select { border: none; }
-.list-data th { font-weight: normal; text-transform: uppercase; border-bottom: 1px solid #ccc; background: #3399ff; border-bottom: #dfdfdf; height: 30px; color: #fff; cursor: pointer; }
+.list-data tr td { line-height: 20px; }
+.list-data th { text-align: center; font-weight: normal; text-transform: uppercase; border-bottom: 1px solid #ccc; background: #3399ff; border-bottom: #dfdfdf; height: 30px; color: #fff; cursor: pointer; }
 .list-data th.left { text-align: left; }
 .list-data th.right { text-align: right; }
 .list-data td { height: 20px; border-bottom: 1px solid #ccc; height: 20px; empty-cells: show; padding: 1px 2px; }
@@ -79,8 +80,7 @@ input[type=text]:focus, select:focus, textarea:focus { border: 1px solid blue; }
 .table-neraca td { border-bottom: 1px solid #ccc; border-right: none; padding: 3px 5px; }
 .data-dokter td { text-align: center; }
 .logo-apotek { background: url(../images/logofix.png) no-repeat; width: 190px; height: 38px; float: left; margin: 5px 0 0 5px; background-size: 180px; }
-#awal, #akhir, #awal_keg, #akhir_keg { width: 100px; }
-input.hasDatepicker { width: 100px; }
+input.hasDatepicker { width: 145px; float: left; margin-right: 10px; }
 #bt_cari { display: inline-block; padding: 1px 10px; background: url(../images/detail.png) no-repeat; height: 18px; color: #fff; cursor: pointer; margin-left: 3px; position: absolute; }
 /*Paging*/
 .block { 

@@ -329,7 +329,7 @@ class M_masterdata extends CI_Model {
     }
     
     function save_sub_uraian() {
-        $id         = $_POST['id_sub_uraian'];
+        $id         = post_safe('id_sub_uraian');
         $id_uraian  = post_safe('id_uraian');
         $kuat       = post_safe('kuat');
         $keterangan = post_safe('sub_uraian');

@@ -54,6 +54,16 @@ function IsNumeric(input)
             c = (b <= 0) ? '' : c;
             return f[0] + c + f[1]; 
 }
+
+function dc_validation(element, pesan){
+    $(element).next().remove();
+    $(element).after('<div class="error" style="font-weight: normal;">'+pesan+'</div>').closest('.form-group').removeClass('has-success').addClass('has-error');
+}
+
+function dc_validation_remove(element){
+    $(element).next().remove();
+    $(element).closest('.form-group').removeClass('has-error');
+}
     
 //Menghitung Umur dari tanggal ditentukan    
 

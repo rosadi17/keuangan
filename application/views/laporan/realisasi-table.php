@@ -77,7 +77,7 @@ $monthNames = array(
         <td align="right"><?= rupiah($total_pagu) ?></td>
         <?php
         for($i = $month1; $i <= $month2; $i++) { 
-        $real = $this->m_laporan->load_realisasi_total_satker($tahun."-".pad($i, 2))->row();
+        $real = $this->m_laporan->load_realisasi_total_satker($tahun."-".pad($i, 2), (get_safe('id_satker') !== '')?get_safe('id_satker'):NULL)->row();
         ?>
         <td align="right" style="min-width: 90px;"><?= isset($real->total)?rupiah($real->total):'-' ?></td>
         <?php } ?>

@@ -86,8 +86,8 @@
                 <tr><td width=10%>Tahun:</td><td><select name="year" id="year" style="width: 72px;"><option value="">Select Year ....</option><?php for($i = 2010; $i <= date("Y"); $i++) { ?> <option value="<?= $i ?>" <?php if ($i == date("Y")) echo "selected"; else echo ""; ?>><?= $i ?></option><?php } ?></select></td></tr>
                 <tr><td>Satuan Kerja:</td><td><select name=id_satker id=id_satker><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>" <?= ($data->id == 1)?'selected':NULL ?>><?= $data->nama ?></option><?php } ?></select></td></tr>
                 <tr><td></td><td>
-                    <button id="cari_button_cashbon">Tampilkan Grafik</button>
-                    <button id="reload_cashbon">Refresh</button>
+                    <button class="btn" id="cari_button_cashbon"><i class="fa fa-eye"></i> Tampilkan Grafik</button>
+                    <button class="btn" id="reload_cashbon"><i class="fa fa-refresh"></i> Refresh</button>
                 </td></tr>
             </table>
         </div><br/><br/>

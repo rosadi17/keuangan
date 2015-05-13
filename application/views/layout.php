@@ -15,29 +15,26 @@
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/jquery.contextmenu.css') ?>" media="all" />
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/jquery.treetable.css') ?>" media="all" />
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/jquery.treetable.theme.default.css') ?>" media="all" />
-        <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap.css') ?>" media="all" />
+        <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap.min.css') ?>" media="all" />
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/font-awesome/css/font-awesome.min.css') ?>" media="all" />
         <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/datepicker3.css') ?>" media="all" />
+        <link rel="stylesheet" type="text/css" href="<?= base_url('assets/pnotify/jquery.pnotify.default.css') ?>" media="all" />
         
         <script type="text/javascript" src="<?= base_url('assets/js/jquery-1.8.3.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/jquery-ui-1.9.2.custom.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/bootstrap-datepicker.js') ?>"></script>
-        <script type="text/javascript" src="<?= base_url('assets/js/jquery-print.min.js') ?>"></script>
+        <script type="text/javascript" src="<?= base_url('assets/js/bootstrap-modal.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/jquery.form.js') ?>"></script>
-        
-        <script type="text/javascript" src="<?= base_url('assets/js/colResizable-1.3.min.js') ?>"></script>
-        <script type="text/javascript" src="<?= base_url('assets/js/jquery.tablesorter.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/jquery.autocomplete.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/library.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/workspace.js') ?>"></script>
-        <script type="text/javascript" src="<?= base_url('assets/js/jquery.watermark.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/jquery.treetable.js') ?>"></script>
-        <script type="text/javascript" src="<?= base_url('assets/js/jquery.contextmenu.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/highchart/highcharts.js') ?>"></script>
-        <script type="text/javascript" src="<?= base_url('assets/js/mousetrap.min.js') ?>"></script>
-        <script type="text/javascript" src="<?= base_url('assets/js/jquery.nicescroll.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/jquery.cookies.js') ?>"></script>
         <script type="text/javascript" src="<?= base_url('assets/js/jquery.blockUI.js') ?>"></script>
+        <script type="text/javascript" src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
+        <script type="text/javascript" src="<?= base_url('assets/js/bootbox.js') ?>"></script>
+        <script type="text/javascript" src="<?= base_url('assets/pnotify/jquery.pnotify.min.js') ?>"></script>
         <script type="text/javascript">
             function show_ajax_indicator(){
                 $('body').block({ 
@@ -106,9 +103,6 @@
                 if ($.cookie('url') !== null) {
                     load_menu($.cookie('url'));
                 }
-                $(window).bind("load", function() {
-                    $(".menu-detail").niceScroll({touchbehavior:true,cursorcolor:"#666",cursoropacitymax:1,cursorwidth:0,cursorborder:"1px solid #919295",cursorborderradius:"0px",background:"#ccc",autohidemode:"scroll"}).cursor.css({"background":"#ccc"}); 
-                });
                 
                 $(document).ready(function(){
                     
