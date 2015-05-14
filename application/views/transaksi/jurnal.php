@@ -553,14 +553,14 @@ function delete_jurnal(id, page) {
             <li><a href="#tabs-2">Jurnal Transaksi</a></li>
         </ul>
         <div id="tabs-1">
-            <button id="cari_verifikasi">Cari</button>
-            <button id="reload_verifikasi">Reload Data</button>
+            <button class="btn" id="cari_verifikasi"><i class="fa fa-search"></i> Cari</button>
+            <button class="btn" id="reload_verifikasi"><i class="fa fa-refresh"></i> Reload Data</button>
             <div id="result_verifikasi"></div>
         </div>
         <div id="tabs-2">
-            <button id="add_jurnal">Tambah Data</button>
-            <button id="cari_jurnal">Cari</button>
-            <button id="reload">Reload Data</button>
+            <button class="btn btn-primary" id="add_jurnal"><i class="fa fa-plus-circle"></i> Tambah Data</button>
+            <button class="btn" id="cari_jurnal"><i class="fa fa-search"></i> Cari</button>
+            <button class="btn" id="reload"><i class="fa fa-refresh"></i> Reload Data</button>
             <div id="result"></div>
         </div>
     </div>

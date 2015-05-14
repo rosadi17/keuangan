@@ -279,8 +279,8 @@
             <li><a href="#tabs-1">Entri Rencana Kebutuhan</a></li>
         </ul>
         <div id="tabs-1">
-            <button class="btn" id="add_renbut"><i class="fa fa-plus-circle"></i> Tambah Data</button>
-            <button class="btn" id="cari_button"><i class="fa fa-search"></i> Cari Data</button>
+            <button class="btn btn-primary" id="add_renbut"><i class="fa fa-plus-circle"></i> Tambah</button>
+            <button class="btn" id="cari_button"><i class="fa fa-search"></i> Cari</button>
             <button class="btn" id="reload_renbut"><i class="fa fa-refresh"></i> Reload Data</button>
             <div id="result">
 

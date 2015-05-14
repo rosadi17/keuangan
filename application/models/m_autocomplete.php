@@ -366,7 +366,7 @@ class M_autocomplete extends CI_Model {
     }
     
     function nomorbkkdp($q) {
-        $sql = "select p.*, IFNULL(u.uraian,p.keterangan) as keterangan, p.kode, p.pengeluaran as cashbon, u.kode as kode_ma, r.id_renbut
+        $sql = "select p.*, CONCAT_WS(' ', '<i>',p.keterangan,'</i>') as keterangan, p.kode, p.pengeluaran as cashbon, u.kode as kode_ma, r.id_renbut
             from kasir p
             left join rencana_kebutuhan r on (p.kode = r.kode_cashbon)
             left join uraian u on (p.id_uraian = u.id)
