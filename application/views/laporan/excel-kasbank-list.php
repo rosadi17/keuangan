@@ -30,7 +30,7 @@
         <td>SALDO AWAL</td>
         <td></td>
         <td></td>
-        <td align="right"><?= rupiah($saldo->awal) ?></td>
+        <td align="right"><?= ($saldo->awal) ?></td>
     </tr>
 
     <?php 
@@ -40,32 +40,32 @@
     foreach ($list_data as $key => $data) { 
         if ($data->jenis === 'BKK' and $data->id_rekening_pwk === get_safe('kode_perkiraan')) {
             $sisa += $data->pengeluaran;
-            $debet = rupiah($data->pengeluaran); // bertambah
+            $debet = ($data->pengeluaran); // bertambah
             $kredit= '';
         } 
         else if ($data->jenis === 'BKK' and $data->id_rekening === get_safe('kode_perkiraan')) {
             $sisa -= $data->pengeluaran;
             $debet = '';
-            $kredit= rupiah($data->pengeluaran);
+            $kredit= ($data->pengeluaran);
         }
         else if ($data->jenis === 'MTS' and $data->id_rekening_pwk === get_safe('kode_perkiraan')) {
             $sisa -= $data->pengeluaran;
             $debet = '';
-            $kredit= rupiah($data->pengeluaran); // bertambah
+            $kredit= ($data->pengeluaran); // bertambah
         }
         else if ($data->jenis === 'MTS' and $data->id_rekening === get_safe('kode_perkiraan')) {
             $sisa += $data->pengeluaran;
-            $debet = rupiah($data->pengeluaran); // bertambah
+            $debet = ($data->pengeluaran); // bertambah
             $kredit= '';
         }
         else if ($data->jenis === 'BKM' and $data->id_rekening_pwk === get_safe('kode_perkiraan')) {
             $sisa -= $data->pengeluaran;
             $debet = '';
-            $kredit= rupiah($data->pengeluaran); // bertambah
+            $kredit= ($data->pengeluaran); // bertambah
         }
         else if ($data->jenis === 'BKM' and $data->id_rekening === get_safe('kode_perkiraan')) {
             $sisa += $data->pengeluaran;
-            $debet = rupiah($data->pengeluaran); // bertambah
+            $debet = ($data->pengeluaran); // bertambah
             $kredit= '';
         }
         ?>
