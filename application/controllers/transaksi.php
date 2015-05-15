@@ -518,7 +518,8 @@ class Transaksi extends CI_Controller {
                     'jenis' => get_safe('jenis'),
                     'kodema' => get_safe('id_kode'),
                     'kegiatan' => get_safe('kegiatan'),
-                    'png_jwb' => get_safe('png_jwb')
+                    'png_jwb' => get_safe('png_jwb'),
+                    'nomorbukti' => get_safe('nomorbukti')
                 );
                 $query = $this->m_transaksi->get_data_kasir(NULL, NULL, $search);
                 $data['list_data'] = $query['data'];

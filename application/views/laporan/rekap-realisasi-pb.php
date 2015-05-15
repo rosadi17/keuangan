@@ -157,7 +157,7 @@ function paging(p) {
         </div>
         <div class="modal-body">
         <form action="" id="search_rekap_realisasi_pb" role="form" class="form-horizontal">
-            <input type="hidden" name="perwabku" id="perwabku" value="Sudah" />
+            
             <div class="form-group">
                 <label class="col-lg-3 control-label">Range Tanggal:</label>
                 <div class="col-lg-8">
@@ -171,9 +171,18 @@ function paging(p) {
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-lg-3 control-label">Perwabku:</label>
+                <div class="col-lg-8">
+                    <select name="perwabku" id="perwabku" class="form-control">
+                        <option value="Sudah">Sudah</option>
+                        <option value="Default">Default</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="col-lg-3 control-label">Satuan Kerja:</label>
                 <div class="col-lg-8">
-                    <select name="id_satker" id="id_satker_rekap" class="form-control"><option value="">Pilih Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->kode ?> <?= $data->nama ?></option><?php } ?></select>
+                    <select name="id_satker" id="id_satker_rekap" class="form-control"><option value="">Semua Satker ...</option><?php foreach ($satker as $data) { ?><option value="<?= $data->id ?>"><?= $data->kode ?> <?= $data->nama ?></option><?php } ?></select>
                 </div>
             </div>
             <div class="form-group">

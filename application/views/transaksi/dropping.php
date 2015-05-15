@@ -208,8 +208,8 @@ $(function() {
             <div class="form-group">
                 <label class="col-lg-3 control-label">Tanggal Renbut:</label>
                 <div class="col-lg-8">
-                    <input type="text" name="awal" id="awal_dropping" value="<?= date("01/m/Y") ?>" size="10" class="form-control hasDatepicker" />
-                    <input type="text" name="akhir" id="akhir_dropping" value="<?= date("d/m/Y") ?>" class="hasDatepicker form-control" />
+                    <div><input type="text" name="awal" id="awal_dropping" value="<?= date("01/m/Y") ?>" size="10" class="form-control hasDatepicker" /></div>
+                    <div><input type="text" name="akhir" id="akhir_dropping" value="<?= date("d/m/Y") ?>" class="hasDatepicker form-control" /></div>
                 </div>
             </div>
             <div class="form-group">
