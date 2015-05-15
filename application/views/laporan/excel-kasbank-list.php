@@ -38,10 +38,35 @@
     $sisa  = $what->awal;
 
     foreach ($list_data as $key => $data) { 
-        if ($data->jenis === 'BKK') {
-            $sisa-=$data->pengeluaran;
-        } else {
-            $sisa+=$data->pengeluaran;
+        if ($data->jenis === 'BKK' and $data->id_rekening_pwk === get_safe('kode_perkiraan')) {
+            $sisa += $data->pengeluaran;
+            $debet = rupiah($data->pengeluaran); // bertambah
+            $kredit= '';
+        } 
+        else if ($data->jenis === 'BKK' and $data->id_rekening === get_safe('kode_perkiraan')) {
+            $sisa -= $data->pengeluaran;
+            $debet = '';
+            $kredit= rupiah($data->pengeluaran);
+        }
+        else if ($data->jenis === 'MTS' and $data->id_rekening_pwk === get_safe('kode_perkiraan')) {
+            $sisa -= $data->pengeluaran;
+            $debet = '';
+            $kredit= rupiah($data->pengeluaran); // bertambah
+        }
+        else if ($data->jenis === 'MTS' and $data->id_rekening === get_safe('kode_perkiraan')) {
+            $sisa += $data->pengeluaran;
+            $debet = rupiah($data->pengeluaran); // bertambah
+            $kredit= '';
+        }
+        else if ($data->jenis === 'BKM' and $data->id_rekening_pwk === get_safe('kode_perkiraan')) {
+            $sisa -= $data->pengeluaran;
+            $debet = '';
+            $kredit= rupiah($data->pengeluaran); // bertambah
+        }
+        else if ($data->jenis === 'BKM' and $data->id_rekening === get_safe('kode_perkiraan')) {
+            $sisa += $data->pengeluaran;
+            $debet = rupiah($data->pengeluaran); // bertambah
+            $kredit= '';
         }
         ?>
         <tr class="<?= ($key%2===0)?'odd':'even' ?>">
@@ -51,9 +76,9 @@
             <td align="center"><?= (get_safe('kode_perkiraan') !== '')?$nama_rek->id:$data->id_rekening ?></td>
             <td><?= (get_safe('kode_perkiraan') !== '')?$nama_rek->nama:$data->rekening ?></td>
             <td><?= ($data->keterangan !== '')?$data->keterangan:$data->uraian ?></td>
-            <td align="right"><?= ($data->jenis !== 'BKK')?rupiah($data->pengeluaran):'-' ?></td>
-            <td align="right"><?= ($data->jenis === 'BKK')?rupiah($data->pengeluaran):'-' ?></td>
-            <td align="right"><?= rupiah($sisa) ?></td>
+            <td align="right"><?= $debet ?></td>
+            <td align="right"><?= $kredit ?></td>
+            <td align="right"><?= ($sisa) ?></td>
         </tr>
     <?php
     } ?>

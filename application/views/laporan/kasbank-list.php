@@ -34,7 +34,7 @@
             $kredit= '';
         } 
         else if ($data->jenis === 'BKK' and $data->id_rekening === get_safe('kode_perkiraan')) {
-            $sisa += $data->pengeluaran;
+            $sisa -= $data->pengeluaran;
             $debet = '';
             $kredit= rupiah($data->pengeluaran);
         }
