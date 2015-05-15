@@ -366,7 +366,7 @@
                 $('#user').val('Penerima');
                 var kd_pwk = data.kode_rekening_pwk;
                 var id_kd_pwk = data.id_rekening_pwk;
-
+                //alert(kd_pwk+' '+id_kd_pwk);
                 $('#kode_perkiraan_pwk').val(kd_pwk);
                 $('#hide_kode_perkiraan_pwk').val(id_kd_pwk);
             }
@@ -615,7 +615,8 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label"" id="kdbawah">Kode Perkiraan Lawan (K)*:</label>
                 <div class="col-lg-8">
-                    <?= form_input('', NULL, 'id=kode_perkiraan_pwk class="form-control"') ?><?= form_hidden('kode_perkiraan_pwk', NULL, 'id=hide_kode_perkiraan_pwk') ?>
+                    <div><?= form_input('', NULL, 'id=kode_perkiraan_pwk class="form-control"') ?></div>
+                    <div><?= form_hidden('kode_perkiraan_pwk', NULL, 'id=hide_kode_perkiraan_pwk') ?></div>
                 </div>
             </div>
         <?= form_close() ?>
