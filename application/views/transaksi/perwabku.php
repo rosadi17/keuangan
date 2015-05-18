@@ -43,6 +43,7 @@
         $('input[type=text], input[type=hidden], select, textarea').val('');
         $('#awal_pwk').val('<?= date("01/m/Y") ?>');
         $('#akhir_pwk').val('<?= date("d/m/Y") ?>');
+        $('#tanggal').val('<?= date("d/m/Y") ?>');
     }
 
     function get_list_perwabku(page, src, id) {
@@ -335,7 +336,8 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label">Tanggal Perwabku:</label>
                 <div class="col-lg-8">
-                    <input type="text" name="awal" id="awal_pwk" value="<?= date("01/m/Y") ?>" size="10" class="hasDatepicker form-control" /> <input type="text" name="akhir" id="akhir_pwk" value="<?= date("d/m/Y") ?>" class="hasDatepicker form-control" />
+                    <div><input type="text" name="awal" id="awal_pwk" value="<?= date("01/m/Y") ?>" size="10" class="hasDatepicker form-control" /> </div>
+                    <div><input type="text" name="akhir" id="akhir_pwk" value="<?= date("d/m/Y") ?>" class="hasDatepicker form-control" /></div>
                 </div>
             </div>
             <div class="form-group">

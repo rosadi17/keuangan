@@ -751,6 +751,7 @@ class M_transaksi extends CI_Model {
         if ($limit !== NULL) {
             $limitation =" limit $start , $limit";
         }
+        //echo "<pre>".$sql . $limitation."</pre>";
         $result = $this->db->query($sql . $limitation)->result();
         foreach ($result as $key => $val) {
             $sql_bkk = "select k.kode as kodes

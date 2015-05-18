@@ -345,8 +345,9 @@ class M_autocomplete extends CI_Model {
     }
     
     function get_nomor_renbut($tanggal) {
-        $row = $this->db->query("select substr(kode,10,4) as kode from rencana_kebutuhan where kode != '' and tanggal_renbut like '".$tanggal."%' order by id_renbut desc limit 1")->row();
-        //echo "select substr(kode,10,4) as kode from rencana_kebutuhan where kode != '' and tanggal like '".$tanggal."%' order by id_renbut desc limit 1";
+        $sql = "select substr(kode,10,4) as kode from rencana_kebutuhan where kode != '' and tanggal_renbut like '".$tanggal."%' order by kode desc limit 1";
+        $row = $this->db->query($sql)->row();
+        //echo $sql;
         if (!isset($row->kode)) {
             $nomor = 0;
         } else {
@@ -376,8 +377,8 @@ class M_autocomplete extends CI_Model {
     }
     
     function get_nomor_perwabku($tanggal) {
-        $row = $this->db->query("select substr(kode,10,4) as kode from perwabku where tanggal like '".$tanggal."%' order by id desc limit 1")->row();
-        //echo "select substr(kode,10,4) as kode from perwabku where tanggal like '".$tanggal."%' order by id desc limit 1";
+        $sql = "select substr(kode,10,4) as kode from perwabku where tanggal like '".$tanggal."%' order by id desc limit 1";
+        $row = $this->db->query($sql)->row();
         if (!isset($row->kode)) {
             $nomor = 0;
         } else {
