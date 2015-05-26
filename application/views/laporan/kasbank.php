@@ -31,6 +31,7 @@
                         value: data[i].id_akun // nama field yang dicari
                     };
                 }
+                $('#hide_kode_perkiraan').val('');
                 return parsed;
             },
             formatItem: function(data,i,max){
@@ -61,6 +62,13 @@
                 $('#result').html(data);
             }
         });
+    }
+    
+    function cek_hide_kode_rekening() {
+        var kode_rek = $('#kode_perkiraan').val();
+        if (kode_rek === '' || kode_rek === ' ') {
+            $('#hide_kode_perkiraan').val('');
+        }
     }
 </script>
 <div class="kegiatan">
@@ -110,7 +118,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label">Kode Rekening*:</label>
                 <div class="col-lg-8">
-                    <?= form_input('', NULL, 'id=kode_perkiraan class="form-control"') ?><input type="hidden" name="kode_perkiraan" id="hide_kode_perkiraan" />
+                    <?= form_input('', NULL, 'id=kode_perkiraan class="form-control" onblur="cek_hide_kode_rekening();"') ?><input type="hidden" name="kode_perkiraan" id="hide_kode_perkiraan" />
                     <span id="error_kode_rekening"></span>
                 </div>
             </div>

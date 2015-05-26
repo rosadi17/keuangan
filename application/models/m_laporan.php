@@ -180,25 +180,35 @@ class M_laporan extends CI_Model {
             $q.=" and (k.id_rekening like ('%".$param['norekening']."%') or k.id_rekening_pwk like ('%".$param['norekening']."%'))";
             $r.=" and (id_rekening like ('%".$param['norekening']."%') or id_rekening_pwk like ('%".$param['norekening']."%'))";
         }
-        $sql = "select s.id, s.nama as rekening
-            from kasir k
-            left join uraian u on (k.id_uraian = u.id)
-            left join sub_sub_sub_sub_rekening s on (k.id_rekening = s.id)
-            where k.id is not NULL $q group by s.id";
-        //echo "<pre>".$sql."</pre>";
-        $result = $this->db->query($sql)->result();
+        if ($param['norekening'] === '') {
+            $sql = "select k.*, u.uraian, s.id, s.nama as rekening
+                from kasir k
+                left join uraian u on (k.id_uraian = u.id)
+                left join sub_sub_sub_sub_rekening s on (k.id_rekening = s.id)
+                where k.id is not NULL $q group by s.id";
+            //echo "<pre>".$sql."</pre>";
+            $result = $this->db->query($sql)->result();
+        } else {
+            $sql = "select id, nama as rekening from sub_sub_sub_sub_rekening 
+                where id = '".$param['norekening']."'
+                ";
+            $result = $this->db->query($sql)->result();
+        }
         foreach ($result as $key => $value) {
             $sql_child = "select k.*, u.uraian, s.nama as rekening
             from kasir k
             left join uraian u on (k.id_uraian = u.id)
             left join sub_sub_sub_sub_rekening s on (k.id_rekening = s.id)
-            where k.id is not NULL and (k.id_rekening = '".$value->id."' or k.id_rekening_pwk = '".$value->id."')";
+            where k.id is not NULL and (k.id_rekening = '".$value->id."' or k.id_rekening_pwk = '".$value->id."')
+                and k.tanggal between '".$param['awal']."' and '".$param['akhir']."'
+                ";
+            //echo $sql_child;
             $result[$key]->detail = $this->db->query($sql_child)->result();
             
             $sql_saldo = "select 
-            (select sum(pengeluaran) from kasir where jenis != 'BKK' and (id_rekening like ('%".$value->id."%') or id_rekening_pwk like ('%".$value->id."%')))
+            (select sum(pengeluaran) from kasir where jenis != 'BKK' and tanggal < '".$param['awal']."' and (id_rekening like ('%".$value->id."%') or id_rekening_pwk like ('%".$value->id."%')))
                 -
-            (select sum(pengeluaran) from kasir where jenis = 'BKK' and (id_rekening like ('%".$value->id."%') or id_rekening_pwk like ('%".$value->id."%'))) as awal
+            (select sum(pengeluaran) from kasir where jenis = 'BKK' and tanggal < '".$param['awal']."' and (id_rekening like ('%".$value->id."%') or id_rekening_pwk like ('%".$value->id."%'))) as awal
                 ";
         
             $result[$key]->saldo = $this->db->query($sql_saldo)->row()->awal;
