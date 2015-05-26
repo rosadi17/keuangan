@@ -529,7 +529,7 @@ class Laporan extends CI_Controller {
     }
     
     function rekap_realisasi_pb() {
-        $data['title'] = 'Rekap Realisasi Pusat Biaya';
+        $data['title'] = 'Rekap Realisasi Non Perwabku';
         $data['satker']= $this->m_masterdata->load_satker()->result();
         $this->load->view('laporan/rekap-realisasi-pb', $data);
     }

@@ -8,8 +8,9 @@
         <th width="7%">Tgl PWK</th>
         <th width="7%">Thn Agr</th>
         <!--<th width="10%" class="left">Unit Kerja</th>-->
-        <th width="30%" class="left">Nomor BKK</th>
-        <th width="10%" class="left">User</th>
+        <th width="13%" class="left">Nomor BKK</th>
+        <th width="20%" class="left">Keterangan</th>
+        <th width="7%" class="left">User</th>
         <th width="5%"></th>
     </tr>
     <?php foreach ($list_data as $key => $data) { ?>
@@ -31,6 +32,7 @@
             echo implode(', ', $value);
             ?>
         </td>
+        <td><?= $data->catatan ?></td>
         <td><i><?= $data->username ?></i></td>
         <td align="right" class="nowrap">
             <button type="button" class="btn btn-default btn-xs" onclick="print_perwabku('<?= $data->id ?>');" title="Klik untuk print"><i class="fa fa-print"></i></button>

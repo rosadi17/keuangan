@@ -180,24 +180,33 @@ class M_laporan extends CI_Model {
             $q.=" and (k.id_rekening like ('%".$param['norekening']."%') or k.id_rekening_pwk like ('%".$param['norekening']."%'))";
             $r.=" and (id_rekening like ('%".$param['norekening']."%') or id_rekening_pwk like ('%".$param['norekening']."%'))";
         }
-        $sql = "select k.*, u.uraian, s.nama as rekening
+        $sql = "select s.id, s.nama as rekening
             from kasir k
             left join uraian u on (k.id_uraian = u.id)
             left join sub_sub_sub_sub_rekening s on (k.id_rekening = s.id)
-            where k.id is not NULL $q";
+            where k.id is not NULL $q group by s.id";
         //echo "<pre>".$sql."</pre>";
-        $data['list_data'] = $this->db->query($sql)->result();
-        if ($param['norekening'] !== '') {
-            $nama_rek = "select * from sub_sub_sub_sub_rekening where id = '".$param['norekening']."'";
-            $data['nama_rek'] = $this->db->query($nama_rek)->row();
-        }
-        
-        $sql_saldo = "select 
-            (select sum(pengeluaran) from kasir where jenis != 'BKK' $r)-(select sum(pengeluaran) from kasir where jenis = 'BKK' $r) as awal
+        $result = $this->db->query($sql)->result();
+        foreach ($result as $key => $value) {
+            $sql_child = "select k.*, u.uraian, s.nama as rekening
+            from kasir k
+            left join uraian u on (k.id_uraian = u.id)
+            left join sub_sub_sub_sub_rekening s on (k.id_rekening = s.id)
+            where k.id is not NULL and (k.id_rekening = '".$value->id."' or k.id_rekening_pwk = '".$value->id."')";
+            $result[$key]->detail = $this->db->query($sql_child)->result();
+            
+            $sql_saldo = "select 
+            (select sum(pengeluaran) from kasir where jenis != 'BKK' and (id_rekening like ('%".$value->id."%') or id_rekening_pwk like ('%".$value->id."%')))
+                -
+            (select sum(pengeluaran) from kasir where jenis = 'BKK' and (id_rekening like ('%".$value->id."%') or id_rekening_pwk like ('%".$value->id."%'))) as awal
                 ";
         
-        $data['saldo']= $this->db->query($sql_saldo)->row();
-        $data['what'] = $this->db->query($sql_saldo)->row();
+            $result[$key]->saldo = $this->db->query($sql_saldo)->row()->awal;
+            $result[$key]->what = $this->db->query($sql_saldo)->row()->awal;
+        }
+        $data['list_data'] = $result;
+        
+        //die(json_encode($data));
         return $data;
     }
     

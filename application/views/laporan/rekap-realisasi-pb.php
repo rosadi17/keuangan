@@ -176,6 +176,7 @@ function paging(p) {
                     <select name="perwabku" id="perwabku" class="form-control">
                         <option value="Sudah">Sudah</option>
                         <option value="Default">Default</option>
+                        <option value="">Kosong</option>
                     </select>
                 </div>
             </div>

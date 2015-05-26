@@ -51,7 +51,7 @@
     function get_data_kas_bank() {
         dc_validation_remove('#error_kode_rekening');
         if ($('#hide_kode_perkiraan').val() === '') {
-            dc_validation('#error_kode_rekening','Kode rekening harus dipilih !'); return false;
+            //dc_validation('#error_kode_rekening','Kode rekening harus dipilih !'); return false;
         }
         $.ajax({
             url: '<?= base_url('laporan/get_data_kas_bank') ?>',

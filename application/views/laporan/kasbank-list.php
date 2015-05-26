@@ -1,5 +1,6 @@
 <br/>
-<b>Kode Rekening: <?= (get_safe('kode_perkiraan') !== '')?$nama_rek->id:$data->id_rekening ?> <?= (get_safe('kode_perkiraan') !== '')?$nama_rek->nama:$data->rekening ?></b>
+<?php foreach ($list_data as $key => $value) { ?>
+<b>Kode Rekening: <?= $value->id.' '.$value->rekening ?></b>
 <table class="list-data" width="100%">
     <thead>
     <tr>
@@ -20,14 +21,14 @@
         <td>SALDO AWAL</td>
         <td></td>
         <td></td>
-        <td align="right"><?= rupiah($saldo->awal) ?></td>
+        <td align="right"><?= rupiah($value->saldo) ?></td>
     </tr>
 
     <?php 
     $saldo = 0;
-    $sisa  = $what->awal;
+    $sisa  = $value->what;
     $debet = ''; $kredit = '';
-    foreach ($list_data as $key => $data) { 
+    foreach ($value->detail as $key => $data) { 
         if ($data->jenis === 'BKK' and $data->id_rekening_pwk === get_safe('kode_perkiraan')) {
             $sisa += $data->pengeluaran;
             $debet = rupiah($data->pengeluaran); // bertambah
@@ -75,3 +76,4 @@
     } ?>
         </tbody>
 </table>
+<?php } ?>
