@@ -2,7 +2,7 @@
     <tr>
         <th width="3%">No.</th>
         <th width="5%">Tanggal</th>
-        <th width="7%" class="left">Kode</th>
+        <th width="7%" class="left">No. Bukti</th>
         <th width="40%" class="left">Kegiatan</th>
         <th width="10%" class="left">Penanggungjawab</th>
         <th width="10%" class="right">Jml Pembayaran</th>

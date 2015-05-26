@@ -875,6 +875,12 @@
                     <input type="text" name="kegiatan" id="kegiatan" class="form-control" />
                 </div>
             </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">No. Bukti:</label>
+                <div class="col-lg-8">
+                    <input type="text" name="nomorbukti" id="nomorbukti" class="form-control" />
+                </div>
+            </div>
         </table>
         </form>
         </div>
