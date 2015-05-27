@@ -4,10 +4,11 @@
         <?php if ($cari['satker'] === '') { ?>
         <th width="15%" class="left">Satker</th>
         <?php } ?>
-        <th width="15%" class="left">No. BKK</th>
+        <th width="7%" class="left">No. BKK</th>
         <th width="7%">Tgl BKK</th>
         <th width="30%" class="left">Uraian Kegiatan</th>
         <th width="7%" class="right">Jumlah</th>
+        <th width="7%" class="right">Png Jawab</th>
         <?php if ($cari['satker'] !== '') { ?>
         <th width="15%" class="left">Pengguna Ang.</th>
         <?php } ?>
@@ -33,8 +34,9 @@
             ?>
         </td>
         <td align="center"><?= datefmysql($data->tanggal_pengeluaran) ?></td>
-        <td><?= $data->uraian ?> <i><?= $data->catatan ?></i></td>
+        <td><?= $data->uraian ?> <i><?= $data->keterangan ?></i></td>
         <td align="right"><?= rupiah($data->dana) ?></td>
+        <td><?= $data->penerima ?></td>
         <?php if ($cari['satker'] !== '') { ?>
             <td>
                <?php
