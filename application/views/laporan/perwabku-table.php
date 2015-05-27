@@ -8,7 +8,7 @@
         <th width="7%">Tgl BKK</th>
         <th width="30%" class="left">Uraian Kegiatan</th>
         <th width="7%" class="right">Jumlah</th>
-        <th width="7%" class="right">Png Jawab</th>
+        <th width="7%" class="left">Png Jawab</th>
         <?php if ($cari['satker'] !== '') { ?>
         <th width="15%" class="left">Pengguna Ang.</th>
         <?php } ?>
