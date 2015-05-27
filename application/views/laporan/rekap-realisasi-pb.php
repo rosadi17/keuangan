@@ -149,7 +149,7 @@ function paging(p) {
         </div>
     </div>
     <div id="datamodal_rekap_pb" class="modal fade">
-    <div class="modal-dialog" style="width: 600px;">
+    <div class="modal-dialog" style="width: 700px;">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -176,7 +176,6 @@ function paging(p) {
                     <select name="perwabku" id="perwabku" class="form-control">
                         <option value="Sudah">Sudah</option>
                         <option value="Default">Default</option>
-                        <option value="">Kosong</option>
                     </select>
                 </div>
             </div>
@@ -202,6 +201,27 @@ function paging(p) {
                     <?= form_input('kode', NULL, 'id=kodema class="form-control"') ?><?= form_hidden('id_kode', NULL, 'id=id_kodema') ?>
                 </div>
             </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Kode Perkiraan:</label>
+                <div class="col-lg-8">
+                    <select name="sts_kode_perkiraan" id="sts_kode_perkiraan" class="form-control">
+                        <option value=""> Semua ... </option>
+                        <option value="Kosong">Kosong</option>
+                        <option value="Terisi">Terisi</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Kode Perkiraan Pwk:</label>
+                <div class="col-lg-8">
+                    <select name="sts_kode_perkiraan_pwk" id="sts_kode_perkiraan_pwk" class="form-control">
+                        <option value=""> Semua ... </option>
+                        <option value="Kosong">Kosong</option>
+                        <option value="Terisi">Terisi</option>
+                    </select>
+                </div>
+            </div>
+            
         </form>
         </div>
         <div class="modal-footer">

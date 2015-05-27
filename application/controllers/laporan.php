@@ -486,7 +486,9 @@ class Laporan extends CI_Controller {
                     'jenis' => get_safe('jenis'),
                     'tahun' => get_safe('tahun'),
                     'kodema' => get_safe('id_kode'),
-                    'perwabku' => get_safe('perwabku')
+                    'perwabku' => get_safe('perwabku'),
+                    'sts_kd_perkiraan' => get_safe('sts_kode_perkiraan'),
+                    'sts_kd_perkiraan_pwk' => get_safe('sts_kode_perkiraan_pwk')
                 );
                 $data = $this->get_list_data_rincian_realisasi($limit, $page, $search);
                 $data['cari'] = $search;
@@ -500,7 +502,9 @@ class Laporan extends CI_Controller {
                     'jenis' => get_safe('jenis'),
                     'tahun' => get_safe('tahun'),
                     'kodema' => get_safe('id_kode'),
-                    'perwabku' => get_safe('perwabku')
+                    'perwabku' => get_safe('perwabku'),
+                    'sts_kd_perkiraan' => '',
+                    'sts_kd_perkiraan_pwk' => ''
                 );
                 $query = $this->m_laporan->get_list_data_rincian_realisasi(NULL, NULL, $search);
                 $data['cari'] = $search;

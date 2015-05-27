@@ -440,6 +440,20 @@ class M_laporan extends CI_Model {
         if ($search['perwabku'] !== '') {
             $q.=" and pg.perwabku = '".$search['perwabku']."'";
         }
+        if ($search['sts_kd_perkiraan'] !== '') {
+            if ($search['sts_kd_perkiraan'] === 'Kosong') {
+                $q.=" and pg.id_rekening is NULL";
+            } else {
+                $q.=" and pg.id_rekening is not NULL";
+            }
+        }
+        if ($search['sts_kd_perkiraan_pwk'] !== '') {
+            if ($search['sts_kd_perkiraan_pwk'] === 'Kosong') {
+                $q.=" and pg.id_rekening_pwk is NULL";
+            } else {
+                $q.=" and pg.id_rekening_pwk is not NULL";
+            }
+        }
         $sql = "select pg.id, pg.kode, pg.sumberdana, pg.tanggal, pg.id_rekening, pg.id_renbut, pg.posted, s.nama as satker,
                 pg.id_uraian, u.kode as kode_ma, pg.pengeluaran as nominal, pg.penerima as penanggung_jwb, pg.perwabku, substr(pg.kode,1,3) as kode_trans, 
                 u.uraian as keterangan, IFNULL(pg.id_renbut,'') as renbut, pg.keterangan as keterangan_kasir, pg.jenis 

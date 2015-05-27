@@ -33,7 +33,7 @@
             ?>
         </td>
         <td align="center"><?= datefmysql($data->tanggal_pengeluaran) ?></td>
-        <td><?= $data->uraian ?></td>
+        <td><?= $data->uraian ?> <i><?= $data->catatan ?></i></td>
         <td align="right"><?= rupiah($data->dana) ?></td>
         <?php if ($cari['satker'] !== '') { ?>
             <td>
