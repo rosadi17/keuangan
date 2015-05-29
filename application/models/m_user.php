@@ -42,7 +42,7 @@ class M_user extends CI_Model {
             join users u on (ug.id = u.id_user_group)
             join module m on (p.module_id = m.id)
             where p.id is not null $q and ug.id = '".$this->session->userdata('id_group')."' and p.show_desktop = '1'
-            order by p.urut";
+            order by p.form_nama";
         //echo $sql;
         return $this->db->query($sql);
     }
